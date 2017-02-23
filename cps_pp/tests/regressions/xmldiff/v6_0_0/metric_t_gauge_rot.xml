@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<assertions>
+
+<assertion xpath="//link_trace" type="double"
+comparison="relative" tolerance="0.001"/>
+
+</assertions>

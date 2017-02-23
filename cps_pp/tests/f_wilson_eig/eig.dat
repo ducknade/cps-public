@@ -1,0 +1,16 @@
+mass = -1
+  iter = 30
+  lambda[0] = 0.0523957  chirality = -0.0185478  valid = 0
+  lambda[1] = -0.138584  chirality = 0.111409  valid = 0
+  hsum[0][0] = 0.516575
+  hsum[0][1] = 0.483425
+  hsum[1][0] = 0.492802
+  hsum[1][1] = 0.507198
+mass = -1.05
+  iter = 22
+  lambda[0] = -0.0496261  chirality = -0.0522207  valid = 0
+  lambda[1] = 0.129015  chirality = 0.135797  valid = 0
+  hsum[0][0] = 0.50017
+  hsum[0][1] = 0.49983
+  hsum[1][0] = 0.499568
+  hsum[1][1] = 0.500432

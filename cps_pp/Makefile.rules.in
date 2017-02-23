@@ -1,0 +1,181 @@
+# $Id: Makefile.rules.in,v 1.31 2012-08-10 21:25:11 chulwoo Exp $
+# @configure_input@
+
+SRCDIR = @abs_top_srcdir@
+BUILDDIR = @abs_top_builddir@
+#depdrecated (used to be for QCDOC)
+#QOS = @QOS@
+#QOSLIB = ${QOS}/quser/gcc-lib-user///
+HAVE_MAKEDEPEND=@HAVE_MAKEDEPEND@
+
+PWD := $(shell pwd)
+DIR := $(subst $(BUILDDIR)/objs,,$(PWD))
+DIR := $(subst $(SRCDIR)/src,,$(DIR))/
+SRCDIR2 := $(SRCDIR)/src/$(DIR)
+BUILDDIR2 := $(BUILDDIR)/objs/$(DIR)
+VPATH:=$(SRCDIR2) ${BUILDDIR2}
+
+CC = @CC@
+CXX = @CXX@
+AR = @AR@
+AS = @AS@
+CC_PATH = @CC_PATH@
+
+CFLAGS = @CFLAGS@
+CXXFLAGS = @CXXFLAGS@
+ASFLAGS = @ASFLAGS@
+XLCFLAGS = -qarch=pwr3 -O3 -D_XLC_
+
+INCLUDE_FLAGS = -I${BUILDDIR} -I${SRCDIR}/include @INCLUDE_FLAGS@
+
+ifeq	($(LIB_NAME_SET),yes)
+SEPARATE_LIB = yes
+endif
+
+ifeq	($(SEPARATE_LIB),yes)
+DIR2 := $(subst util/,,$(DIR))
+DIR2 := $(subst dirac_op/,,$(DIR2))
+DIR2 := $(subst lattice/,,$(DIR2))
+DIR2 := $(subst mem/,,$(DIR2))
+DIR2 := $(subst comms/,,$(DIR2))
+DIR2 := $(subst alg/,,$(DIR2))
+DIR2 := $(subst comsrc/,,$(DIR2))
+LIBNAME := XXX$(subst /,_,$(DIR2))XXX
+LIBNAME := $(subst XXX_,,$(LIBNAME))
+LIBNAME := $(subst _XXX,,$(LIBNAME))
+LIBNAME := $(subst XXX,,$(LIBNAME))
+else
+LIBNAME = cps
+endif
+LIBNAME ?= cps
+
+DFLAGS += @DFLAGS@
+
+DIRLIST := $(shell ls  $(SRCDIR2)/*/Makefile )
+DIRLIST := $(filter %/Makefile ,$(DIRLIST))
+DIRLIST := $(patsubst $(SRCDIR2)/%/Makefile, %, $(DIRLIST))
+
+ARCH = @ARCH@
+ARCHDIR := $(@ARCHDIR@)
+
+PRECDIR := $(@PRECDIR@)
+
+FILTERDIR := $(filter-out $(ARCHDIR) $(PRECDIR), $(NORECURSE_DIR))
+RECURSEDIRS := $(filter-out $(FILTERDIR) , $(DIRLIST))
+
+libcps_CXXFLAGS = $(INCLUDE_FLAGS) $(CXXFLAGS) $(DFLAGS)
+libcps_CFLAGS = $(INCLUDE_FLAGS) $(CFLAGS) $(DFLAGS)
+.PHONY: $(RECURSEDIRS) cps all recurse clean
+
+all: cps 
+
+recurse: $(RECURSEDIRS)
+	@echo CONCUR = $(CONCUR)
+
+$(RECURSEDIRS):
+	$(if $(findstring s, $(MAKEFLAGS)),,@echo RECURSEDIRS = $(RECURSEDIRS))
+	mkdir -p $(BUILDDIR2)/$@
+	touch -a $(BUILDDIR2)/$@/Makefile_depend
+	cp -p $(SRCDIR2)/$@/Makefile $(BUILDDIR2)/$@
+ifeq	($(LIB_NAME_SET),yes)
+	$(MAKE) -C $@ LIBNAME=$(LIBNAME) $(MAKECMDGOALS)
+else
+ifeq	($(SEPARATE_LIB),yes)
+	$(MAKE) -C $@ SEPARATE_LIB=$(SEPARATE_LIB) $(MAKECMDGOALS)
+else
+	$(MAKE) -C $@ $(MAKECMDGOALS)
+endif
+endif
+
+
+.SUFFIXES:
+.SUFFIXES:  .o .C .S .c
+
+CSRC :=$(wildcard $(SRCDIR2)/*.c)
+CCSRC:=$(wildcard $(SRCDIR2)/*.C)
+SSRC := $(wildcard $(SRCDIR2)/*.S)
+
+COBJ=$(CSRC:.c=.o)
+CCOBJ=$(CCSRC:.C=.o)
+SOBJ=$(SSRC:.S=.o)
+
+OBJS_SRC = $(SOBJ) $(CCOBJ) $(COBJ)
+OBJS := $(notdir $(OBJS_SRC))
+
+XLCOBJ=$(CSRC:.c=.xlo)
+XLCCOBJ=$(CCSRC:.C=.xlo)
+XLCOBJS_SRC = $(XLCCOBJ) $(XLCOBJ)
+XLCOBJS := $(notdir $(XLCOBJS_SRC))
+
+
+%.o:%.c
+	${CC} -c $< -o $(BUILDDIR2)/$@ ${libcps_CFLAGS}
+ifneq ($(CONCUR),yes)
+	cd $(BUILDDIR2) ; ${AR} rcs ${BUILDDIR}/$(LIBNAME).a $@
+endif
+
+%.o:%.C
+#	$(CXX) -E $(libcps_CXXFLAGS) $< > $(BUILDDIR2)/$*.i
+	${CXX} -c $< -o $(BUILDDIR2)/$@ ${libcps_CXXFLAGS}
+ifneq ($(CONCUR),yes)
+	cd $(BUILDDIR2) ; ${AR} rcs ${BUILDDIR}/$(LIBNAME).a $@
+endif
+
+%.xlo:%.c
+	cd $(BUILDDIR2)/ ; xlC -F$(BUILDDIR)/XLC.cfg -S $< ${XLCFLAGS}
+	xlC -F$(BUILDDIR)/XLC.cfg -c $< -o $(BUILDDIR2)/$@ ${XLCFLAGS}
+ifneq ($(CONCUR),yes)
+	cd $(BUILDDIR2) ; objcopy -R .eh_frame $@
+	cd $(BUILDDIR2) ; ar  rcs ${BUILDDIR}/$(LIBNAME).xla $@
+endif
+
+%.xlo:%.C
+	cd $(BUILDDIR2)/ ; xlC -F$(BUILDDIR)/XLC.cfg -S $< ${XLCFLAGS}
+	xlC -F$(BUILDDIR)/XLC.cfg -c $< -o $(BUILDDIR2)/$@ ${XLCFLAGS}
+ifneq ($(CONCUR),yes)
+	cd $(BUILDDIR2) ; objcopy -R .eh_frame $@
+	cd $(BUILDDIR2) ; ar  rcs ${BUILDDIR}/$(LIBNAME).xla $@
+endif
+
+%.o:%.S
+	${CC} -c $< -o $(BUILDDIR2)/$@ ${libcps_CFLAGS}
+#       $(CC) -E $(libcps_CXXFLAGS) $< > $(BUILDDIR2)/$*.i
+#       $(AS) $(ASFLAGS) -o $(BUILDDIR2)/$@ $(BUILDDIR2)/$*.i
+ifneq ($(CONCUR),yes)
+	cd $(BUILDDIR2) ; ${AR} rcs ${BUILDDIR}/$(LIBNAME).a $@
+endif
+
+depend: recurse
+	echo > Makefile_depend
+ifeq ($(HAVE_MAKEDEPEND),yes)
+	cd $(SRCDIR2) ;makedepend -f$(BUILDDIR2)/Makefile_depend $(INCLUDE_FLAGS) $(DFLAGS) $(notdir $(CSRC)) $(notdir $(CCSRC))
+else
+######################################################################
+# use these lines if you don't have makedepend (is a bit slower)
+######################################################################
+	cd $(SRCDIR2) ; \
+	$(CXX) -M $(INCLUDE_FLAGS) $(DFLAGS) $(notdir $(CSRC)) $(notdir $(CCSRC)) \
+	| sed -e 's/:.*\.[cC]/\:/g' > $(PWD)/Makefile_depend
+endif
+
+clean: recurse
+	cd $(BUILDDIR2) ; rm -f *.o *.i *.xlo *.bak
+
+cleanlib:
+	rm -f $(BUILDDIR)/*.a
+
+cps: recurse $(OBJS) 
+
+cps_xlc: recurse $(XLCOBJS) 
+
+buildlib: recurse $(OBJS)
+ifneq ($(OBJS),)
+	cd $(BUILDDIR2) ; ${AR} rcs ${BUILDDIR}/$(LIBNAME).a $(OBJS)
+endif
+
+$(BUILDDIR2)/Makefile_depend: depend
+
+ifneq ($(MAKECMDGOALS), clean)
+include $(BUILDDIR2)/Makefile_depend
+endif
+

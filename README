@@ -1,0 +1,16 @@
+CPS version 5.0.16 with some modification by Luchang
+
+CPS version greg_MADWF_CJ.
+
+Build and install CPS along with all its dependencies.
+$ ./build.sh
+
+or optionally on DD2 to compile DD1 version
+
+$ host=DD1 cps=~/cps-jlc-dd1 ./build.sh
+
+Just build CPS. (Require all its dependencies has been installed)
+$ ./scripts/cps.sh
+
+Works well on BGQ. On Qcdserver, one need to install openmpi.
+To build on cuth, one need to compile a newer version of GCC.

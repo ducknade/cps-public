@@ -1,0 +1,276 @@
+//$Id: programming.dox,v 1.7 2004-11-02 15:06:40 zs Exp $
+/*!
+
+\page progpage CPS programming
+
+An object oriented design should make it very easy to develop application 
+software.
+Here we look at things you need to know when you start hacking: 
+considerations of programming style, CPS programming ideoms, and information
+on building and testing.
+
+\section language Language
+
+The higher level CPS code is written in C++, and for most users this object 
+oriented interface is all that they should have to see.
+
+Lower level code is written in C and, where appropriate, in assembly 
+language, the latter being particularly important to achieve high performance
+on the QCD{SP|OC}.
+
+Because the CPS was originally developed for a specific platform (QCDSP),
+having its very own operating system and using the Tartan C++
+compiler, there are certain language ideosyncrasies in the code, namely
+the absence of a few common C++ features, presumably
+because they were not supported in the QCDSP programming environment.
+
+\subsection cppnotthere C++ ideosyncrasies
+
+While the code is now ANSI compliant the following C++ features remain absent
+from the QCDSP code.
+
+- Templates
+- The \c bool datatype
+- The keywords \c new, \c delete and \c delete[]. All dynamic memory is 
+controlled with the CPS functions (see the \ref malloc section) which
+work essentially the same way as the usual C  malloc and free
+functions declared in stdlib.h.
+- Execptions, and the keywords \c throw, \c try and \c catch for exception 
+handling. It is  probably best to avoid 
+the C functions \c setjmp and \c longjump declared in setjmp.h because, 
+although similar behaviour can be achieved with them, they do not handle 
+object destructors correctly.
+- The IO-stream library. The C functions declared in stdio.h are used instead
+of the \c ostream and \c istream classes and their derivatives (like \c cin 
+and \c cout) and the insertion and extraction operators (\c << and \c >> ).
+- The string library. All stringy operations are handled with C style  
+ASCII-NULL
+terminated \c char arrays and the C functions declared in string.h, rather than
+the \c string class.
+- The Standard Template Library, so no STL containers, iterators, generic 
+algorithms, \e etc.
+- Namespaces, although they are supported on the QCDOC.
+
+
+If you want to include language features that the QCDSP complier does
+not support you should provide some way of compiling them out. In this
+way the portability of the CPS should be preserved. This, of course,
+does not prevent the development of seperate applications that use the
+CPS library.
+
+\section port Platforms and portability
+
+The code is ANSI compliant and so should be reasonably portable.
+There are some differences in the way that the code is built but this should 
+not be a problem.
+
+\subsection qcdspspecific QCDSP specific features
+
+It might be worth noting at this point those features of the code
+which are specific to the original QCDSP platform and which are not
+duplicated on other platforms in the way that the QCDSP system calls
+are. These are necessary optimisations on QCDSP but can otherwise be
+ignored. Knowing what platform-specific code one can ignore might make
+it easier to tell the wood from the trees when reading the CPS code.
+
+One such feature is the relocation of code to CRAM. This is
+implemented by the code in p2v.C 
+
+Another is the circular buffer. This is any code which involves 
+variables defined in nga_reg.h
+
+There are many routines optimised for the QCDSP, but usually there is
+a "vanilla" version so it should be possible to understand the
+functionality.
+
+A detailed account of QCDSP programming can found in 
+\htmlonly
+<a href="../../qcdsp/toplevel.html">a separate document</a>.
+\endhtmlonly
+\latexonly
+a seperate document: 
+http://www.epcc.ed.ac.uk/~ukqcd/cps/qcdsp/toplevel.html
+\endlatexonly
+
+\section cpscode CPS programming conventions
+
+\subsection cpsnamespace Namespace
+
+In order to use the CPS with other libraries all code can be put in a cps 
+namespace. This is not backwards-compatible with the QCDSP so by defualt 
+there is no namespace defined on the QCDOC. The code can be configured at 
+build-time to use the namespace (see the \ref config section).
+
+\subsection glob Global variables
+
+The CPS code defines certain globally scoped variables.
+These are
+- An instance of the GlobalJobParameter class named ::GJP
+- An instance of the Verbose class named ::VRB
+- An instance of the Error class named ::ERR
+- An instance of the LatRanGen class named ::LRG
+
+
+\subsection stdio Standard IO
+
+Code that is expected to run on the QCDOC should avoid the C standard library 
+file IO functions like \a fopen, \a fprint and \a fclose and instead use 
+the analogous function described in the Reference Manual (see \ref std_file_io).
+These functions make sure that only a single node handles the file, which is 
+usually what one wants. However, they do provide for an alternative behaviour 
+whereby each node opens its own file and appends its node number to the 
+file name.
+
+On MPI, all the standard IO functions are reimplemented in the cps::MPISCU 
+namespace so that only a single node does the IO. Again, alternatives are 
+provided to allow all nodes to perform IO with the node number prefixed 
+to the string being written.
+
+\subsection fileio File IO
+
+Rather than the C++ \a fstream class or the standard C file IO functions, 
+one should use ::Fopen and ::Fclose to open and close files.
+This  
+
+
+\subsection malloc Memory allocation
+
+For code expected to run on the QCDOC, the C standard library memory 
+allocation routines should be eschewed in favour of the analogous 
+CPS routines (see \ref  mem_alloc in the Reference Manual). This is because on the QCDOC, memory can be
+allocated from the off-chip DDR or the on-chip EDRAM, and there are 
+three types of caching behaviour: normal caching; transient caching, which 
+usues only 1kB of the cache; and non-caching, which guarantees that the data in
+this allocated memory will not be cached. All this is handled by the \a qalloc 
+QOS system call, but these CPS functions provide a portable wrapper, as 
+well as checking for allocation errors.
+
+In particular, on the QCDOC, smalloc and pmalloc  allocate transient 
+caching DDR space and fmalloc allocates from the EDRAM 
+
+
+
+\subsection things Other things
+
+The Lattice class allocates memory for the gauge field but the destructor
+does not free this memory. For this reason it is inadvisable to have two
+Lattice instances in scope together.
+This means that it is possible to write an 
+application which uses two different actions on the same configuration by
+starting the second Lattice instance with DoArg::start_conf_kind set to
+::START_CONF_MEM
+ to indicate that the gauge field is already present in memory.
+The DoArg::start_conf_load_addr field must also be supplied with the memory
+address of the configuration.
+
+
+\section doth Header files
+
+What header files should be included where?
+
+
+\section build CPS build structure 
+
+First get a copy of the CPS source from the CVS repository as described
+\htmlonly
+<a href="../../cvsaccess.html">here</a>.
+\endhtmlonly
+\latexonly
+here: http://www.epcc.ed.ac.uk/~ukqcd/cps/cvsaccess.html
+\endlatexonly
+
+\subsection The directory structure 
+
+See
+\htmlonly
+<a href="../../new_structure/structure.html">here</a>.
+\endhtmlonly
+\latexonly
+here: http://www.epcc.ed.ac.uk/~ukqcd/cps/new_structure/structure.html
+\endlatexonly
+and 
+http://www.ph.ed.ac.uk/ukqcd/community/qcdoc/build
+for the discussions on this. 
+
+See
+\htmlonly
+<a href="../../structure/structure.html">here</a>.
+\endhtmlonly
+\latexonly
+here: http://www.epcc.ed.ac.uk/~ukqcd/cps/structure/structure.html
+\endlatexonly
+for a description of the old directory structure 
+
+\subsection config Configuring the CPS
+
+The effort to reconstruct the CPS in a reasonably platform independent
+manner prompts us to use the
+\e autoconf (http://www.gnu.org/autoconf/) program to configure the code.
+Autoconf produces a shell script called \a configure from the macros
+in the file \a configure.in. When \a configure  is run
+it writes the makefile \a Makefile and \a Makefile.rules from the templates \a
+Makefile.in and \a Makefile.rules.in and the header file \a config.h from
+the template \a config.h.in. 
+
+The autoconf program does not run on the QCDOC platform but the configure 
+script will be useable there.
+
+for details of how to use the configure script in order to build the library  
+for various platforms, please read the \a README included in the top cps++ 
+directory. 
+
+For a non-QCDOC platform, the basic build is achieved simply by typing
+
+\verbatim
+$ ./configure
+\endverbatim
+
+This sets up \a Makefile,  and \a config.h for a serial build.
+
+The QCDSP build predates this method of configuring the code, so you will have
+to edit the \a Makefile and \a config.h by hand.
+
+The QCDSP build can be a parallel build or a serial build. For the
+former, define the variable \a _TARTAN in \a config.h
+\verbatim
+#define _TARTAN
+\endverbatim
+For the latter, make sure it is not defined.
+
+\subsection compiling Compiling a program
+
+Having got the files \a Makefile and \a config.h prepared as
+described in section \ref config, the make targets are the same
+regardless of platform. Note that GNU make (http://www.gnu.org/software/make)
+is needed.
+\verbatim
+$ gmake 
+\endverbatim
+builds the library \a cps.a.
+
+Other targets are described in the \a README file. Of particlar interest might be
+\verbatim
+$ make Makefile docs
+\endverbatim
+which makes this documentation package, and
+\verbatim
+$ make Makefile realclean
+\endverbatim
+which removes all the files made by the Makefile and  which therefore can be remade. 
+
+
+\section testing Testing  a  CPS program 
+
+Some preliminary ideas are presented 
+\htmlonly
+<a href="../../testing/testing.html">here</a>.
+\endhtmlonly
+\latexonly
+here: http://www.epcc.ed.ac.uk/~ukqcd/cps/testing/testing.html
+\endlatexonly
+
+Some further developments are presented here:
+http://www.ph.ed.ac.uk/ukqcd/community/testing
+
+
+*/

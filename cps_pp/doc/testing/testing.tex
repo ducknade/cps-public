@@ -1,0 +1,302 @@
+%------------------------------------------------------------------
+% $Id: testing.tex,v 1.8 2004-08-18 11:57:35 zs Exp $
+%------------------------------------------------------------------
+%Anj: EPCC: e-mail: a.jackson@epcc.ed.ac.uk
+%
+% For best results, this latex file should be compiled using pdflatex.
+% However it will also compile under normal latex, if you prefer.
+%
+% The conversion of this latex document to html is best done
+% using the  "tth" program.
+%
+%------------------------------------------------------------------
+\documentclass[12pt]{article}
+
+% importing other useful packages:
+\usepackage{times}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{tabularx}
+% color for the pdf links:
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.5}
+% for conditional latex source:
+\usepackage{ifthen}
+% pdftex specifications, these are only included if we are using pdflatex:
+\providecommand{\pdfoutput}{0}
+\ifthenelse{\pdfoutput = 0}{
+% Not PDF:
+\usepackage{html}
+\newcommand{\hreff}[2]{\htmladdnormallink{#2}{#1}}
+}{
+% PDF: hyperref for pdf with full linkages:
+\usepackage[
+pagebackref,
+hyperindex,
+hyperfigures,
+colorlinks,
+linkcolor=darkblue,
+citecolor=darkblue,
+pagecolor=darkblue,
+urlcolor=blue,
+%bookmarksopen,
+pdfpagemode=None,
+%=UseOutlines,
+pdfhighlight={/I},
+pdftitle={Frameworks For Testing. $Revision: 1.8 $ - $Date: 2004-08-18 11:57:35 $.},
+pdfauthor={A.N. Jackson, C. McNeile, Z. Sroczynski, \& S. Booth},
+plainpages=false
+]{hyperref}
+}
+
+
+% Code style commands:
+\newcommand{\cls}[1]{{\bf #1}}            % Classes
+\newcommand{\struct}[1]{{\bf #1}}         % Structs
+\newcommand{\cde}[1]{{\tt #1}}            % Code fragments
+
+% document style modifications:
+\setlength{\parskip}{2.0mm}
+\setlength{\parindent}{0mm}
+
+% Questionbox commands:
+\newcounter{quescount}
+\setcounter{quescount}{0}
+\newcommand{\quesbox}[2]{\begin{center}\refstepcounter{quescount}\fbox{\parbox{130mm}{
+\label{#1}{\bf Q. \arabic{quescount}:} #2} } \end{center} }
+
+
+% title information:
+\title{Testing framework for the Columbia code.}
+\author{A.N. Jackson, C. McNeile, , Z. Sroczynski,  \& S. Booth}
+\date{\mbox{\small $$Revision: 1.8 $$  $$Date: 2004-08-18 11:57:35 $$}}
+
+%------------------------------------------------------------------
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+%-------------------------------------------------------------------
+\section{Motivation for Testing Framework}
+
+We are ``growing'' a testing framework for the cps++ code.
+The aim is to produce a basic regression testing framework to allow
+``refactoring'' and physics checks on relevant parts of the operating
+system.
+The history of the testing framework is described in 
+section~\ref{se:history}.
+
+
+This testing framework is meant to be used for the CPS code on its own
+without any additional libraries, such as 
+\href{http://www.jlab.org/~edwards/qdp/}{QDP++}.
+  In particular we
+assume that none of the output is in XML format, hence we can not use the
+\href{https://forge.nesc.ac.uk/projects/xmldiff/}{XMLDiff}
+tool developed by EPCC for UKQCD.  There will be an additional
+testing framework for the hybrid applications that use a mixture of
+CPS and QDP++ libraries.
+
+\subsection{Running the tests}
+
+The tests are run using the makefile target.
+\begin{verbatim}
+make -f Makefile test
+\end{verbatim}
+%%
+This produces output like
+\begin{verbatim}
+COMPILATION STATUS
+f_hmd SUCCESS
+f_hmd_dwfso SUCCESS
+g_hb SUCCESS
+g_hmd SUCCESS
+s_spect SUCCESS
+w_spect SUCCESS
+f_wilson_eig SUCCESS
+xi_spect_gsum SUCCESS
+f_stag_pbp SUCCESS
+t_asqtad_pion SUCCESS
+TEST_CASE_STATUS
+f_hmd    PASS
+f_hmd_dwfso    FAIL
+g_hb    FAIL
+g_hmd    FAIL
+s_spect    PASS
+w_spect    PASS
+f_wilson_eig  NO_CORRECT_OUTPUT
+xi_spect_gsum  NO_CORRECT_OUTPUT
+f_stag_pbp  NO_CORRECT_OUTPUT
+t_asqtad_pion PASS
+------------------------------
+DISCLAIMER
+Please also test this code on
+a physical system before using in
+production runs
+------------------------------
+\end{verbatim}
+
+A perl script loops over the test cases, compiles the code,
+and then runs it. The output is compared against
+previous output and a PASS/FAIL tag is generated.
+If there is no test data to compare against the
+NO\_CORRECT\_OUTPUT tag is printed.
+
+The latest version of the system first compiles all the 
+applications and then runs them. This allows the user to
+see which applications compile and which don't.
+
+
+\subsection{Philosophy behind the testing framework}
+
+Lattice QCD codes produce a lot of output. It is important that the 
+output is automatically tested against older output, otherwise
+a user could miss a problem.
+
+Because of rounding errors, the output can not be tested against older
+output by using a crude tool such as diff. We have taken the
+philosophy that only an important subset of the data needs to be
+tested. For example, a regression test may only need to check that the
+pion correlator at a single timeslice is correct. If the pion
+correlator at timeslice 2 is correct, then it is likely that all the
+meson correlators are correct. This will trigger a PASS/FAIL
+print out, but we would still keep a snapshot of all the output.
+
+In this testing framework, we use perl scripts to
+extract a subset of the correlators. The important
+perl script that does the comparison is called
+regressions/check\_data.pl. This compares the output from
+the program to previous output stored in a special format.
+
+
+
+\subsection{Adding a new test to the testing framework}
+
+In the older testing framework all the files were 
+combined together to form a single file of the form.
+
+\begin{verbatim}
+-------------------
+a0.dat
+--------------------
+1 0 0 -1.4003954066e+00
+1 1 0 -1.0403947310e+00
+--------------------
+a0_prime.dat
+--------------------
+1 0 0 2.2492961048e+00
+1 1 0 -6.7672838306e-01
+\end{verbatim}
+
+The script regressions/check\_data.pl stores selected data
+from the file in the format
+%%%
+\begin{center}
+name:column:row\_from\_name:value
+\end{center}
+%%
+In the above example the testing data for the w\_spect
+test is:
+
+\begin{verbatim}
+a0.dat:2:3:-1.4003954061e+00
+pion.dat:3:3:1.5681429497e+00
+nucleon.dat:2:3:1.179528e+00
+\end{verbatim}
+
+
+\subsection{Structure of makefile target}
+
+The test target in the Makefile looks like:
+%%%%
+\begin{verbatim}
+TEST_DIR = tests
+
+test: cps
+        cd $(TEST_DIR) ; perl regression.pl
+        cd $(TEST_DIR) ; sh regression.sh
+\end{verbatim}
+
+The perl script regression.pl writes the script 
+regression.sh. The script regression.sh compiles the codes,
+runs them and checks the output. This two step solution
+was required for running on QCDSP.
+
+\subsection{Testing framework code in CPS}
+
+In the original design of CPS some of the physics
+measurement code was buried a number of layers 
+in a class hierarchy. To test code the output from 
+the routines needs to close to the main program.
+Hence some simple testing code has been placed 
+in
+\begin{verbatim}
+src/util/testing_framework
+\end{verbatim}
+
+At the moment there is code to compute the local pion for staggered
+fermions and to compare two arrays. We would expect that this 
+would evolve into an API.
+
+The code is used in the test ``t\_asqtad\_pion'' like:
+
+\begin{verbatim}
+  // known output
+  Float pion_corr_good[] = { 7.563369 , 6.546032 , 5.474610 ,
+  5.255596 } ;
+  int good_size = sizeof(pion_corr_good) / sizeof(Float) ;
+
+  // compute the time sliced pion correlator
+  int time_size=GJP.Tnodes()*GJP.TnodeSites();
+  GwilsonFasqtad lat;
+  Float* pion_corr = (Float*)smalloc(time_size*sizeof(IFloat));
+  staggered_local_pion(lat,cg_arg.mass,pion_corr,time_size) ;
+
+  Float tol = 0.00001 ;
+  compare_array_relative(pion_corr, pion_corr_good,tol,
+                           time_size) ;
+\end{verbatim}
+
+Links to the some of 
+\href{../examples}{the test codes }
+are now
+included in the documentation bundle.
+This is the place to include a short explanation of 
+what the test is meant to check.
+
+\section{Things to do} 
+
+\begin{itemize}
+
+
+\item The idea of using the perl script regression.pl to write
+      the shell script regression.sh is a bit ugly.
+      As the name of the test also needs to be correlated with the 
+      type of comparison test, it might be better to use a single
+      python script. Each test has a number of things 
+      associated with it, hence some kind of object oriented 
+      solution would be useful. The OO features of perl are
+      a bit weird.
+
+\end{itemize}
+
+%-------------------------------------------------------------------
+
+\section{History of the testing framework} \label{se:history}
+
+The original testing framework was written by Chris Miller
+at Columbia. The testing framework was taken over and improved
+by Andy Jackson (EPCC). 
+
+Zbyszek Sroczynski and Craig McNeile are currently maintaining
+the system.
+
+
+
+\end{document}
+
+

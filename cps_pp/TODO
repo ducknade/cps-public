@@ -1,0 +1,15 @@
+# started by CJ. 12/01/04
+# It is meant to be the list of things to be done.
+# Please feel free to add
+
+To-do list:
+# Please delete when done. Also, please add appropriate comment, so that it can be followed via CVS/Changelog!
+
+v5_0_11:
+
+The following are merged to the main trunk, but not tested after it.
+
+1. EigCG by Qi Liu 
+
+2. Splitting propagators by color and spin, by Tom Blum
+

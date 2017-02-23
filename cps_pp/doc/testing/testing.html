@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<meta name="GENERATOR" content="TtH 3.40">
+ <style type="text/css"> div.p { margin-top: 7pt;}</style>
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+ 
+                                 
+<title> Testing framework for the Columbia code.</title>
+ 
+<h1 align="center">Testing framework for the Columbia code. </h1>
+
+<h3 align="center">A.N. Jackson, C. McNeile, , Z. Sroczynski,  &amp; S. Booth </h3>
+
+<h3 align="center"><font size="-1">
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap" align="center">
+Revision: 1.6.2.2 </td></tr></table>
+</td></tr></table>
+
+  
+<br clear="all" /><table border="0" width="100%"><tr><td>
+<table align="center" cellspacing="0" cellpadding="0"><tr><td nowrap="nowrap" align="center">
+Date: 2004/04/04 16:03:12 </td></tr></table>
+</td></tr></table>
+
+</font> </h3>
+
+<div class="p"><!----></div>
+
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;Motivation for Testing Framework</h2>
+
+<div class="p"><!----></div>
+We are "growing" a testing framework for the cps++ code.
+The aim is to produce a basic regression testing framework to allow
+"refactoring" and physics checks on relevant parts of the operating
+system.
+The history of the testing framework is described in 
+section&nbsp;.
+
+<div class="p"><!----></div>
+This testing framework is meant to be used for the CPS code on its own
+without any additional libraries, such as 
+<a href="http://www.jlab.org/~edwards/qdp/">QDP++</a>.
+  In particular we
+assume that none of the output is in XML format, hence we can not use the
+<a href="https://forge.nesc.ac.uk/projects/xmldiff/">XMLDiff</a>
+tool developed by EPCC for UKQCD.  There will be an additional
+testing framework for the hybrid applications that use a mixture of
+CPS and QDP++ libraries.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.1">
+1.1</a>&nbsp;&nbsp;Running the tests</h3>
+
+<div class="p"><!----></div>
+The tests are run using the makefile target.
+
+<pre>
+make -f Makefile test
+
+</pre>
+This produces output like
+
+<pre>
+COMPILATION STATUS
+f_hmd SUCCESS
+f_hmd_dwfso SUCCESS
+g_hb SUCCESS
+g_hmd SUCCESS
+s_spect SUCCESS
+w_spect SUCCESS
+f_wilson_eig SUCCESS
+xi_spect_gsum SUCCESS
+f_stag_pbp SUCCESS
+t_asqtad_pion SUCCESS
+TEST_CASE_STATUS
+f_hmd    PASS
+f_hmd_dwfso    FAIL
+g_hb    FAIL
+g_hmd    FAIL
+s_spect    PASS
+w_spect    PASS
+f_wilson_eig  NO_CORRECT_OUTPUT
+xi_spect_gsum  NO_CORRECT_OUTPUT
+f_stag_pbp  NO_CORRECT_OUTPUT
+t_asqtad_pion PASS
+------------------------------
+DISCLAIMER
+Please also test this code on
+a physical system before using in
+production runs
+------------------------------
+
+</pre>
+
+<div class="p"><!----></div>
+A perl script loops over the test cases, compiles the code,
+and then runs it. The output is compared against
+previous output and a PASS/FAIL tag is generated.
+If there is no test data to compare against the
+NO_CORRECT_OUTPUT tag is printed.
+
+<div class="p"><!----></div>
+The latest version of the system first compiles all the 
+applications and then runs them. This allows the user to
+see which applications compile and which don't.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.2">
+1.2</a>&nbsp;&nbsp;Philosophy behind the testing framework</h3>
+
+<div class="p"><!----></div>
+Lattice QCD codes produce a lot of output. It is important that the 
+output is automatically tested against older output, otherwise
+a user could miss a problem.
+
+<div class="p"><!----></div>
+Because of rounding errors, the output can not be tested against older
+output by using a crude tool such as diff. We have taken the
+philosophy that only an important subset of the data needs to be
+tested. For example, a regression test may only need to check that the
+pion correlator at a single timeslice is correct. If the pion
+correlator at timeslice 2 is correct, then it is likely that all the
+meson correlators are correct. This will trigger a PASS/FAIL
+print out, but we would still keep a snapshot of all the output.
+
+<div class="p"><!----></div>
+In this testing framework, we use perl scripts to
+extract a subset of the correlators. The important
+perl script that does the comparison is called
+regressions/check_data.pl. This compares the output from
+the program to previous output stored in a special format.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.3">
+1.3</a>&nbsp;&nbsp;Adding a new test to the testing framework</h3>
+
+<div class="p"><!----></div>
+In the older testing framework all the files were 
+combined together to form a single file of the form.
+
+<div class="p"><!----></div>
+
+<pre>
+-------------------
+a0.dat
+--------------------
+1 0 0 -1.4003954066e+00
+1 1 0 -1.0403947310e+00
+--------------------
+a0_prime.dat
+--------------------
+1 0 0 2.2492961048e+00
+1 1 0 -6.7672838306e-01
+
+</pre>
+
+<div class="p"><!----></div>
+The script regressions/check_data.pl stores selected data
+from the file in the format
+
+<center>
+name:column:row_from_name:value
+</center>
+In the above example the testing data for the w_spect
+test is:
+
+<div class="p"><!----></div>
+
+<pre>
+a0.dat:2:3:-1.4003954061e+00
+pion.dat:3:3:1.5681429497e+00
+nucleon.dat:2:3:1.179528e+00
+
+</pre>
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.4">
+1.4</a>&nbsp;&nbsp;Structure of makefile target</h3>
+
+<div class="p"><!----></div>
+The test target in the Makefile looks like:
+
+<pre>
+TEST_DIR = tests
+
+test: cps
+        cd $(TEST_DIR) ; perl regression.pl
+        cd $(TEST_DIR) ; sh regression.sh
+
+</pre>
+
+<div class="p"><!----></div>
+The perl script regression.pl writes the script 
+regression.sh. The script regression.sh compiles the codes,
+runs them and checks the output. This two step solution
+was required for running on QCDSP.
+
+<div class="p"><!----></div>
+     <h3><a name="tth_sEc1.5">
+1.5</a>&nbsp;&nbsp;Testing framework code in CPS</h3>
+
+<div class="p"><!----></div>
+In the original design of CPS some of the physics
+measurement code was buried a number of layers 
+in a class hierarchy. To test code the output from 
+the routines needs to close to the main program.
+Hence some simple testing code has been placed 
+in
+
+<pre>
+src/util/testing_framework
+
+</pre>
+
+<div class="p"><!----></div>
+At the moment there is code to compute the local pion for staggered
+fermions and to compare two arrays. We would expect that this 
+would evolve into an API.
+
+<div class="p"><!----></div>
+The code is used in the test "t_asqtad_pion" like:
+
+<div class="p"><!----></div>
+
+<pre>
+  // known output
+  Float pion_corr_good[] = { 7.563369 , 6.546032 , 5.474610 ,
+  5.255596 } ;
+  int good_size = sizeof(pion_corr_good) / sizeof(Float) ;
+
+  // compute the time sliced pion correlator
+  int time_size=GJP.Tnodes()*GJP.TnodeSites();
+  GwilsonFasqtad lat;
+  Float* pion_corr = (Float*)smalloc(time_size*sizeof(IFloat));
+  staggered_local_pion(lat,cg_arg.mass,pion_corr,time_size) ;
+
+  Float tol = 0.00001 ;
+  compare_array_relative(pion_corr, pion_corr_good,tol,
+                           time_size) ;
+
+</pre>
+
+<div class="p"><!----></div>
+Links to the some of 
+<a href="../examples">the test codes </a>
+are now
+included in the documentation bundle.
+This is the place to include a short explanation of 
+what the test is meant to check.
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Things to do</h2> 
+
+<div class="p"><!----></div>
+
+<ul>
+<li> The idea of using the perl script regression.pl to write
+      the shell script regression.sh is a bit ugly.
+      As the name of the test also needs to be correlated with the 
+      type of comparison test, it might be better to use a single
+      python script. Each test has a number of things 
+      associated with it, hence some kind of object oriented 
+      solution would be useful. The OO features of perl are
+      a bit weird.<br /><br /></li>
+</ul>
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;History of the testing framework</h2> <a name="se:history">
+</a>
+
+<div class="p"><!----></div>
+The original testing framework was written by Chris Miller
+at Columbia. The testing framework was taken over and improved
+by Andy Jackson (EPCC). 
+
+<div class="p"><!----></div>
+Zbyszek Sroczynski and Craig McNeile are currently maintaining
+the system.
+
+<div class="p"><!----></div>
+
+<br /><br /><hr /><small>File translated from
+T<sub><font size="-1">E</font></sub>X
+by <a href="http://hutchinson.belmont.ma.us/tth/">
+T<sub><font size="-1">T</font></sub>H</a>,
+version 3.40.<br />On  4 Apr 2004, 17:18.</small>
+</html>

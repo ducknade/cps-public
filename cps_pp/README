@@ -1,0 +1,219 @@
+Welcome to the Columbia Physics System 
+
+	0. Preliminaries
+
+The CPS consists of code to build a library which is can be statically
+linked to your code to create an executable. In addition there are
+tests and documentation. More about this in the 'Compiling' section.
+
+CPS has optimized codes for QCDOC, IBM Blue Gene machines, and builds for
+scalar machines or parallel machines with QMP. This will be covered in
+the 'Configuring' section. 
+
+The directory containg this file is the source directory and will be 
+denoted <sourcedir> in what follows.
+
+The code can be built in such a way that the object files and
+libraries are placed in an entirely different build directory. This
+could be useful if you want to use the same source for multiple builds
+and is an alternative to the common 'install' procedure.
+
+The source and build directories can be identical. 
+
+(De)serialization of input structures to files are available vil VML.
+Currently, CgArg, DoArg, WspectArg,WspecOutput are processed via VML. Refer to 
+tests/f_hmd/main.C for usage example. Also, refer to section 2.
+
+	1. Configuring.
+
+The configure script should be run from the build directory, e.g.
+
+$ <sourcedir>/configure [flags]
+
+where <sourcedir> is the absolute path of the source directory or the
+relative path from the build directory.
+
+The flags determine the type of system that can be built; type
+
+$ <sourcedir>/configure --help 
+
+for a summary. Here are some useful general flags
+
+--enable-target[=<target architecture>]
+Specifies that target architecture for which the compilation is to be
+made. Valid values are 'qcdoc', 'qcdsp', and 'noarch' (scalar
+architecture). The latter is the default.
+
+--enable-optimise  
+Compile with maximum optimisation. This is on by default.
+
+--enable-debug     
+Compile with flags to enable running a debugger on the code. This
+turns off all compiler optimisation flags. This is off by default.
+
+--enable-namespace   
+Compiles the library inside a 'cps' namespace. The default for a QCDOC
+build is not to use the namespace. A QCDSP build ignores this flag and
+never uses the namespace. For other architectures the namespace is
+used by default.
+
+--enable-double-prec    
+Build the code to use double-precision floating opint arithmetic. This
+is on by default.
+
+These --enable-FEATURE flags can be negated by using --disable-FEATURE
+or --enable-feature=no (except for --enable-target, where negation
+doesn't make sense). 
+
+    1.1 Build for a scalar machine
+
+No further flags should be needed if you are building for a workstation.
+
+    1.2 Build for QCDOC and Blue Gene
+
+This is slightly complicated because in this case a cross-compilation
+is needed. 
+
+The flags are
+--enable-target=qcdoc --build=powerpc-ibm-aix5.2.0.0 (for AIX frontend) --host=powerpc-gnu-elf QOS=$QOS
+where $QOS should be be the path to the main QOS directory. 
+
+If you don't want to remember that, use use the script 'conf':
+
+$ <sourcedir>/conf --enable-target=qcdoc
+
+or
+
+$ <sourcedir>/conf --enable-target=(bgl,bgp) for BG/(L,P)
+
+
+which puts the command above into a file called 'config_wrapper'.
+
+Using 'conf' script, the whole configuring process would look like:
+
+cd <builddir>
+<sourcedir>/conf --enable-target=qcdoc (or bgl, bgp)
+source config_wrapper --enable-gmp=<GNU GMP library>
+For BG/L and P, you usually need QMP, described below.
+
+
+   1.3 Build with SciDAC packages (QIO,QMP)
+
+Building with QMP and QIO packages is supported. The configure flags
+--enable-<qio or qmp> are used. The location of the packages can be specified by either QMP_DIR and QIO_DIR evironment variable or specifing it in the configure command ( for example, --enable-qmp=/qcdoc/sfw/SciDAC/qmp)
+
+	2. Compiling
+
+Note that GNU make is needed. Having configured the system, the
+library is built by simply running GNU make: 
+
+($ gmake vml)
+$ gmake
+
+'gmake vml' is needed to generate headers for input structures via VML.
+Results of it with both (I)Floats as double are included in the source
+tree. If you want different precision for (I)Floats or made changes in
+the VML-processed classes (DoArg, CgArg, WspectArg, WspectOutput), you need to
+run 'gmake vml' each time you switch targets. Otherwise, 'gmake vml' is needed only once.
+
+This produces  directory tree called objs containing all the object
+files and the library cps.a in your build directory (But see also
+section 4).
+
+
+	3. Other make targets
+
+    3.1. docs
+
+You need to have doxygen, perl and bash installed on your system for
+this to work. 
+
+Making this target produces the HTML code reference manual and user
+guide in doc/ref/html and doc/usr/html respectively
+
+    3.2.  test
+
+This target runs the suite of regression tests. The file
+tests/Makefile_common provides a useful template of makefile to use to
+build executables with the CPS.
+This uses xmldiff, so you need that to be installed in your PATH, and the 
+appropriate Java libraries.
+You need also perl installed on your system in order for this to work.
+
+    3.3.  clean
+
+This removes all the object files.
+
+    3.4.  cleanlib 
+
+This removes the libraries.
+
+    3.5.  realclean
+
+This removes everything created by the makefile.
+
+    3.6.  webdocs
+
+This creates the Reference Manual and User Guide  referred to above and
+a whole raft of other documentation in a form suitable for publishing
+on the web. N.B. THIS COMMAND WILL DELETE ALL THE SOURCE CODE.
+
+
+	4. Makefiles & Separate libraries
+
+While the configured Makefiles (Makefile,Makefile.rules,Makefile.users) has
+all the usual compiling & linking options, the architecture-dependent 
+implementations are  specified in Makefile's in each subdirectories
+
+For example, in cps++/src/util/dirac_op/d_op_wilson/Makefile:
+
+#SEPARATE_LIB=yes
+NORECURSE_DIR = CVS  bgl noarch qcdoc qcdsp qcdsp_lcl_nos qcdsp_nos qcdsp_nos_hdw_diag qcdsp_scl noarch_pv bgp bgp_asm bg_bagel bg_bagel_spi bgl
+BGL_DIR = bgl
+BGL_QMP_DIR = bg_bagel
+QCDOC_DIR = qcdoc
+QCDSP_DIR = qcdsp
+NOARCH_DIR = noarch
+include ../../../../Makefile.rules
+
+NONRECURSE_DIR refers to all the directories which may or may not be compiled
+depending on the acrhitecture. 'QCDOC_DIR = qcdoc' would mean the QCDOC-specific
+implementation (defined as ARCHDIR in Makefile.rules) is in the directory 
+'qcdoc'. Please note that directories without Makefile will be ignored in the 
+compile process -- YOU HAVE TO PUT Makefile IN IT IF YOU ADD A DIRECTORY!
+
+By default, CPS produces a single library called cps.a containing all
+the object code. However, you can divide the object code into separate
+libraries. This involves editing the Makefiles in the src/ tree.
+
+Each directory in the src/ tree has a Makefile. By defining a variable
+called SEPERATE_LIB (sic) and giving it the value "yes", the code in
+the subdirectories will be compiled into separate libraries. 
+The name of each library will be the path of the
+directory, with '_' replacing '/'. Some common directory names are
+ommited for brevity.  
+
+For example, suppose we have a directory structure like this:
+
+src/util/dirac_op/d_op_wilson/  
+				/dir1 
+					/dir1_1
+				       	/dir1_2	
+				/dir2
+
+where dir1_1 and dir1_2 contain source code.
+
+If SEPARATE_LIB="yes" in src/util/dirac_op/d_op_wilson/Makefile, 
+the source code in dir1_1 is compiled into the library
+d_op_wilson_dir1_dir1_1.a 
+and the source code in dir1_2 is compiled into the library
+d_op_wilson_dir1_dir1_2.a, 
+while the code in dir2 will be compiled into d_op_wilson_dir2.a
+
+		
+	5 See Also
+
+The browsable documentation, starting at doc/index.html
+
+The CPS++ mailing list archives at 
+http://forge.nesc.ac.uk/pipermail/qcd-measure-cps++/

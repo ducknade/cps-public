@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<assertions>
+
+<assertion xpath="//last" type="double_array"
+comparison="relative" tolerance="0.001"/>
+
+</assertions>
