@@ -3,19 +3,19 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Implementation of Gwilson class.
 
-  $Id: g_wilson.C,v 1.13 2013-04-05 17:51:14 chulwoo Exp $
+  $Id: g_wilson.C,v 1.11.96.1 2012/08/21 14:26:28 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-04-05 17:51:14 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/g_wilson/g_wilson.C,v 1.13 2013-04-05 17:51:14 chulwoo Exp $
-//  $Id: g_wilson.C,v 1.13 2013-04-05 17:51:14 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/08/21 14:26:28 $
+//  $Header: /space/cvs/cps/cps++/src/util/lattice/g_wilson/g_wilson.C,v 1.11.96.1 2012/08/21 14:26:28 yinnht Exp $
+//  $Id: g_wilson.C,v 1.11.96.1 2012/08/21 14:26:28 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.13 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/g_wilson/g_wilson.C,v $
+//  $Revision: 1.11.96.1 $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/g_wilson/g_wilson.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -35,7 +35,8 @@ CPS_END_NAMESPACE
 #include <util/gjp.h>
 #include <util/gw_hb.h>
 #include <util/time_cps.h>
-//#include <comms/nga_reg.h>
+#include <util/gauge_field.h>
+#include <comms/nga_reg.h>
 #include <comms/glb.h>
 #include <comms/cbuf.h>
 CPS_START_NAMESPACE
@@ -131,6 +132,29 @@ void Gwilson::GforceSite(Matrix& force, int *x, int mu)
 // Float GhamiltonNode(void):
 // The pure gauge Hamiltonian of the node sublattice.
 //------------------------------------------------------------------
+/*Float Gwilson::GhamiltonNode(void){
+  char *fname = "GhamiltonNode()";
+
+  static bool initialized = false;
+  static Offsets offsets;
+  cps::GaugeField gf(*this);
+  GaugeAction& ga = *(getGaugeAction(*this));
+  gf.resize(gaInteractionRange(ga));
+  if (!initialized) {
+    gf.refresh();
+    gf.recordOffsetStart(false, true);
+  } else {
+    gf.refresh(offsets);
+  }
+  Float ret = gfGhamiltonNode(gf, ga);
+  if (!initialized) {
+    offsets = gf.getRecordedOffsets();
+    gf.recordOffsetEnd();
+    initialized = true;
+  }
+  delete &ga;
+  return ret;
+}*/
 Float Gwilson::GhamiltonNode(void){
   char *fname = "GhamiltonNode()";
   VRB.Func(cname,fname);
@@ -139,7 +163,6 @@ Float Gwilson::GhamiltonNode(void){
   Float sum = SumReTrPlaqNode();
   sum *= tmp;
   return sum;
-
 }
 
 //------------------------------------------------------------------------------

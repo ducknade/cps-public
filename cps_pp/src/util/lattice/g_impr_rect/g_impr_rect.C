@@ -3,19 +3,19 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Implementation of GimprRect class.
 
-  $Id: g_impr_rect.C,v 1.14 2013-04-05 17:51:14 chulwoo Exp $
+  $Id: g_impr_rect.C,v 1.12.96.1 2012/08/21 14:26:28 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-04-05 17:51:14 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/g_impr_rect/g_impr_rect.C,v 1.14 2013-04-05 17:51:14 chulwoo Exp $
-//  $Id: g_impr_rect.C,v 1.14 2013-04-05 17:51:14 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/08/21 14:26:28 $
+//  $Header: /space/cvs/cps/cps++/src/util/lattice/g_impr_rect/g_impr_rect.C,v 1.12.96.1 2012/08/21 14:26:28 yinnht Exp $
+//  $Id: g_impr_rect.C,v 1.12.96.1 2012/08/21 14:26:28 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.14 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/g_impr_rect/g_impr_rect.C,v $
+//  $Revision: 1.12.96.1 $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/g_impr_rect/g_impr_rect.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -29,7 +29,8 @@ CPS_END_NAMESPACE
 #include <util/gjp.h>
 #include <util/gw_hb.h>
 #include <util/time_cps.h>
-//#include <comms/nga_reg.h>
+#include <util/gauge_field.h>
+#include <comms/nga_reg.h>
 #include <comms/glb.h>
 #include <comms/cbuf.h>
 CPS_START_NAMESPACE
@@ -149,6 +150,36 @@ void GimprRect::GforceSite(Matrix& force, int *x, int mu)
 // Float GhamiltonNode(void):
 // The pure gauge Hamiltonian of the node sublattice.
 //------------------------------------------------------------------------------
+/*Float GimprRect::GhamiltonNode(void){
+  char *fname = "GhamiltonNode()";
+
+  printf("Starting GhamiltonNode()\n");
+
+  static bool initialized = false;
+  static Offsets offsets;
+  printf("About to create GaugeField\n");
+  cps::GaugeField gf(*this);
+  printf("About to create GaugeAction\n");
+  GaugeAction& ga = *(getGaugeAction(*this));
+  printf("about to resize GaugeField\n");
+  gf.resize(gaInteractionRange(ga));
+  if (!initialized) {
+    printf("About to refresh GaugeField\n");
+    gf.refresh();
+    printf("About to recordOffsetStart\n");
+    gf.recordOffsetStart(false, true);
+  } else {
+    gf.refresh(offsets);
+  }
+  Float ret = gfGhamiltonNode(gf, ga);
+  if (!initialized) {
+    offsets = gf.getRecordedOffsets();
+    gf.recordOffsetEnd();
+    initialized = true;
+  }
+  delete &ga;
+  return ret;
+}*/
 Float GimprRect::GhamiltonNode(void){
   char *fname = "GhamiltonNode()";
   VRB.Func(cname,fname);

@@ -1,4 +1,4 @@
-#include <util/omp_wrapper.h>
+#include "fake_omp.h"
 void wilson_dslash_blk_dag1(IFloat *chi_p_f, 
 			    IFloat *u_p_f, 
 			    IFloat *psi_p_f, 

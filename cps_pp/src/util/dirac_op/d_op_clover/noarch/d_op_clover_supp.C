@@ -3,7 +3,7 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_clover/noarch/d_op_clover_supp.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_clover/noarch/d_op_clover_supp.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -275,7 +275,8 @@ static void iDotM(Matrix &m, int num_complex)
     Complex & c = m[i];
     IFloat new_im = c.real();
     IFloat new_re = - c.imag();
-    c=Complex(new_re, new_im);
+    c.real(new_re);
+    c.imag(new_im);
   }
 }
 

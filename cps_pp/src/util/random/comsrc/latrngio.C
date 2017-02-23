@@ -8,12 +8,15 @@
 #include <util/intconv.h>
 #include <util/random.h>
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <util/time_cps.h>
 #include <unistd.h>
+
+#if TARGET != NOARCH
+#include <qmp.h>
+#endif
 
 CPS_START_NAMESPACE
 using namespace std;
@@ -59,10 +62,10 @@ void LatRngRead::read(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
   if(synchronize(error) != 0)   
     ERR.FileR(cname, fname, rd_arg.FileName);
   log();
-  int temp_start=(int)hd.data_start;
-  broadcastInt(&temp_start);
-  hd.data_start=temp_start;
 
+#if TARGET != NOARCH
+  QMP_broadcast(&hd.data_start, sizeof(long));
+#endif
 
   if(isRoot()) {
     if(hd.datatype != "LATTICE_RNG_5D_4D"){  // need both 5d & 4d
@@ -145,9 +148,8 @@ void LatRngRead::read(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
 //    printf("Node %d - 5D: csum=%x, order_csum=%x\n",
 //	       UniqueID(),csum[0],pos_dep_csum[0]);
 
-	streamoff total = (streamoff) size_rng_chars * (streamoff) rng_arg.VolSites() * 
-                     (streamoff) rng_arg.Snodes() * (streamoff) rng_arg.SnodeSites();
-    hd.data_start +=  total;
+    hd.data_start += (long)size_rng_chars * (long)rng_arg.VolSites() * 
+                     (long)rng_arg.Snodes() * (long)rng_arg.SnodeSites();
  
     VRB.Flow(cname,fname, "Start Loading 4-D RNGs\n");
     if(! pario.load((char*)ugran_4d, size_rng_ints, sizeof(UGrandomGenerator),
@@ -163,7 +165,7 @@ void LatRngRead::read(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
   }
 #if 1
   else {
-    VRB.Result(cname,fname, "Start Loading 5-D RNGs\n");
+    VRB.Flow(cname,fname, "Start Loading 5-D RNGs\n");
 
     SerialIO serio(rng_arg);
     if(! serio.load((char*)ugran, size_rng_ints, sizeof(UGrandomGenerator),
@@ -171,12 +173,10 @@ void LatRngRead::read(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
 		    &csum[0], &pos_dep_csum[0], &RandSum[0], &Rand2Sum[0]))
       ERR.General(cname, fname, "Loading failed\n");
 
-	streamoff total = (streamoff) size_rng_chars * (streamoff) rng_arg.VolSites() * 
-                     (streamoff) rng_arg.Snodes() * (streamoff) rng_arg.SnodeSites();
-    hd.data_start +=  total;
-
+    hd.data_start += (long)size_rng_chars * (long)rng_arg.VolSites() * 
+        (long)rng_arg.Snodes() * (long)rng_arg.SnodeSites();
     
-    VRB.Result(cname,fname, "Start Loading 4-D RNGs\n");
+    VRB.Flow(cname,fname, "Start Loading 4-D RNGs\n");
 
     if(! serio.load((char*)ugran_4d, size_rng_ints, sizeof(UGrandomGenerator),
 		    hd, intconv, 4,
@@ -243,8 +243,8 @@ void LatRngRead::read(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
   // STEP 3: Verify Rand Average and Variance
   RandSum[0] += RandSum[1];
   Rand2Sum[0] += Rand2Sum[1];
-  uint64_t total_rngs_4d = rng_arg.VolSites();
-  uint64_t total_rngs_5d = total_rngs_4d * (uint64_t)(rng_arg.Snodes() * rng_arg.SnodeSites()); 
+  int total_rngs_4d = rng_arg.VolSites();
+  int total_rngs_5d = total_rngs_4d * rng_arg.Snodes() * rng_arg.SnodeSites(); 
   Float RandAvg = globalSumFloat(RandSum[0]) / (total_rngs_5d + total_rngs_4d);
   Float RandVar = globalSumFloat(Rand2Sum[0]) / (total_rngs_5d + total_rngs_4d)
                   - RandAvg * RandAvg;
@@ -322,8 +322,6 @@ void LatRngWrite::write(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
 
   // start writing file
   fstream output;
-//  string name_4d(wt_arg.FileName);
-//  name_4d += ".4d";
 
   if(parIO()) {
     FILE *fp = Fopen(wt_arg.FileName,"w");
@@ -340,11 +338,8 @@ void LatRngWrite::write(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
     if(isRoot()) {
       FILE *fp = Fopen(wt_arg.FileName,"w");
       Fclose(fp);
-//      fp = Fopen(name_4d.c_str(),"w");
-//      Fclose(fp);
 	  
       output.open(wt_arg.FileName);
-//    output_4d.open(name_4d.c_str());
       if(!output.good()) {
 	//	VRB.Flow(cname,fname,"Could not open file: [%s] for output.\n",wt_arg.FileName);
       printf("Node %d:Could not open file: [%s] for output.\n",UniqueID(),wt_arg.FileName);
@@ -362,15 +357,11 @@ void LatRngWrite::write(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
   // write header
   if(isRoot()) {
     hd.init(wt_arg, intconv.fileFormat);
-	VRB.Result(cname,fname,"Writing header for %s\n",wt_arg.FileName);
     hd.write(output);
-//	VRB.Result(cname,fname,"Writing header for %s\n",name_4d.c_str());
-//    hd.write(output_4d);
-	VRB.Result(cname,fname,"Done\n");
   }
-  int temp_start=(int)hd.data_start;
-  broadcastInt(&temp_start); // from 0 to all
-  hd.data_start=temp_start;
+#if TARGET != NOARCH
+  QMP_broadcast(&hd.data_start, sizeof(long));
+#endif
   log();
 
   unsigned int csum[2]={0}, pos_dep_csum[2] = {0};
@@ -394,9 +385,8 @@ void LatRngWrite::write(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
     //	       UniqueID(),csum[0],pos_dep_csum[0]);
 
 
-	streamoff total = (streamoff) size_rng_chars * (streamoff) rng_arg.VolSites() * 
-                     (streamoff) rng_arg.Snodes() * (streamoff) rng_arg.SnodeSites();
-    hd.data_start +=  total;
+    hd.data_start += (long)size_rng_chars * (long)rng_arg.VolSites() * 
+        (long)rng_arg.Snodes() * (long)rng_arg.SnodeSites();
  
     VRB.Flow(cname,fname,"Start Unloading 4-D RNGs\n");
     
@@ -419,9 +409,8 @@ void LatRngWrite::write(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
 		     &csum[0], &pos_dep_csum[0], &RandSum[0], &Rand2Sum[0]))
       ERR.General(cname, fname, "Unloading Failed\n");
 
-//    hd.data_start += size_rng_chars * rng_arg.VolSites() * 
-//                    rng_arg.Snodes() * rng_arg.SnodeSites();
-	hd.data_start = -1;
+    hd.data_start += (long)size_rng_chars * (long)rng_arg.VolSites() * 
+                     (long)rng_arg.Snodes() * (long)rng_arg.SnodeSites();
 
     VRB.Flow(cname,fname,"Start Unloading 4-D RNGs\n");
 
@@ -456,14 +445,10 @@ void LatRngWrite::write(UGrandomGenerator * ugran, UGrandomGenerator * ugran_4d,
     ERR.General(cname, fname, "Writing checksum and other info failed\n");
   log();
 
-  if(parIO()) {
+  if(parIO()) 
     output.close();
-//	output_4d.close();
-  } else
-    if(isRoot()){
-	  output.close();
-//	  output_4d.close();
-	}
+  else
+    if(isRoot())  output.close();
   
   io_good = true;
 

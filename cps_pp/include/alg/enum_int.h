@@ -19,8 +19,6 @@ typedef double Float;
 
 typedef double IFloat;
 
-typedef uint64_t Pointer;
-
 enum DirType {
 	DIR_X = 0,
 	DIR_Y = 1,
@@ -30,13 +28,6 @@ enum DirType {
 };
 typedef enum DirType DirType;
 extern struct vml_enum_map DirType_map[];
-
-enum ChiralProj {
-	PL = -6,
-	PR = -7,
-};
-typedef enum ChiralProj ChiralProj;
-extern struct vml_enum_map ChiralProj_map[];
 
 enum FclassType {
 	F_CLASS_NONE = 0,
@@ -49,8 +40,6 @@ enum FclassType {
 	F_CLASS_WILSON_TM = 7,
 	F_CLASS_MDWF = 8,
 	F_CLASS_BFM = 9,
-	F_CLASS_MOBIUS = 10,
-	F_CLASS_NAIVE = 11,
 };
 typedef enum FclassType FclassType;
 extern struct vml_enum_map FclassType_map[];
@@ -73,9 +62,6 @@ enum StrOrdType {
 	WILSON = 2,
 	G_WILSON_HB = 3,
 	STAG_BLOCK = 4,
-	DWF_5D_EOPREC = WILSON,
-	DWF_4D_EOPREC = 5,
-	DWF_4D_EOPREC_EE = 6,
 };
 typedef enum StrOrdType StrOrdType;
 extern struct vml_enum_map StrOrdType_map[];
@@ -196,8 +182,6 @@ enum RitzMatType {
 	NEG_MATDAG_MAT = 6,
 	MATDAG_MAT_NORM = 7,
 	NEG_MATDAG_MAT_NORM = 8,
-	MATPCDAG_MATPC_SHIFT = 9,
-	RitzMatType_LAST = 10,
 };
 typedef enum RitzMatType RitzMatType;
 extern struct vml_enum_map RitzMatType_map[];
@@ -677,7 +661,7 @@ extern struct vml_enum_map RhmcPolesAction_map[];
 
 enum HmdLimits {
 	MAX_HMD_MASSES = 200,
-	MAX_RAT_DEGREE = 30,
+	MAX_RAT_DEGREE = 20,
 };
 typedef enum HmdLimits HmdLimits;
 extern struct vml_enum_map HmdLimits_map[];
@@ -686,9 +670,6 @@ enum InverterType {
 	CG = 0,
 	BICGSTAB = 1,
 	EIGCG = 2,
-	LOWMODEAPPROX = 3,
-	CG_LOWMODE_DEFL = 4,
-	HDCG = 5,
 };
 typedef enum InverterType InverterType;
 extern struct vml_enum_map InverterType_map[];
@@ -741,9 +722,6 @@ enum CalcSeqType {
 	READ_SEQ = 0,
 	NOIO_SEQ = 1,
 	WRITE_SEQ = 2,
-	MULT_SEQ = 3,
-	READ_MULT_SEQ = 4,
-	WRITE_MULT_SEQ = 5,
 };
 typedef enum CalcSeqType CalcSeqType;
 extern struct vml_enum_map CalcSeqType_map[];
@@ -771,6 +749,15 @@ enum BfmSolverType {
 typedef enum BfmSolverType BfmSolverType;
 extern struct vml_enum_map BfmSolverType_map[];
 
+enum LinkBufferShape {
+	BUFFER_SHAPE_LOCAL = 0,
+	BUFFER_SHAPE_LOCAL_AND_FACES = 1,
+	BUFFER_SHAPE_LOCAL_AND_FACES_AND_1ST_CORNERS = 2,
+	BUFFER_SHAPE_HYPERCUBE = 3,
+};
+typedef enum LinkBufferShape LinkBufferShape;
+extern struct vml_enum_map LinkBufferShape_map[];
+
 /* the xdr functions */
 
 #ifdef __cplusplus
@@ -781,9 +768,7 @@ extern "C" {
 extern  bool_t vml_pooh (VML *, char *instance, pooh*);
 extern  bool_t vml_Float (VML *, char *instance, Float*);
 extern  bool_t vml_IFloat (VML *, char *instance, IFloat*);
-extern  bool_t vml_Pointer (VML *, char *instance, Pointer*);
 extern  bool_t vml_DirType (VML *, char *instance, DirType*);
-extern  bool_t vml_ChiralProj (VML *, char *instance, ChiralProj*);
 extern  bool_t vml_FclassType (VML *, char *instance, FclassType*);
 extern  bool_t vml_GclassType (VML *, char *instance, GclassType*);
 extern  bool_t vml_StrOrdType (VML *, char *instance, StrOrdType*);
@@ -838,14 +823,13 @@ extern  bool_t vml_GaussianKernelLinkSmearType (VML *, char *instance, GaussianK
 extern  bool_t vml_CalcQpropType (VML *, char *instance, CalcQpropType*);
 extern  bool_t vml_CalcSeqType (VML *, char *instance, CalcSeqType*);
 extern  bool_t vml_BfmSolverType (VML *, char *instance, BfmSolverType*);
+extern  bool_t vml_LinkBufferShape (VML *, char *instance, LinkBufferShape*);
 
 #else /* K&R C */
 extern  bool_t vml_pooh (VML *, char *instance, pooh*);
 extern  bool_t vml_Float (VML *, char *instance, Float*);
 extern  bool_t vml_IFloat (VML *, char *instance, IFloat*);
-extern  bool_t vml_Pointer (VML *, char *instance, Pointer*);
 extern  bool_t vml_DirType (VML *, char *instance, DirType*);
-extern  bool_t vml_ChiralProj (VML *, char *instance, ChiralProj*);
 extern  bool_t vml_FclassType (VML *, char *instance, FclassType*);
 extern  bool_t vml_GclassType (VML *, char *instance, GclassType*);
 extern  bool_t vml_StrOrdType (VML *, char *instance, StrOrdType*);
@@ -900,6 +884,7 @@ extern  bool_t vml_GaussianKernelLinkSmearType (VML *, char *instance, GaussianK
 extern  bool_t vml_CalcQpropType (VML *, char *instance, CalcQpropType*);
 extern  bool_t vml_CalcSeqType (VML *, char *instance, CalcSeqType*);
 extern  bool_t vml_BfmSolverType (VML *, char *instance, BfmSolverType*);
+extern  bool_t vml_LinkBufferShape (VML *, char *instance, LinkBufferShape*);
 
 #endif /* K&R C */
 

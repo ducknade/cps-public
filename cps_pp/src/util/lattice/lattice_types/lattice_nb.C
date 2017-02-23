@@ -7,7 +7,7 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Implementation of GnoneFasqtad class.
 
-  $Id: lattice_nb.C,v 1.3 2012-08-10 14:05:33 chulwoo Exp $
+  $Id: lattice_nb.C,v 1.1.2.2 2012/07/30 21:22:09 yinnht Exp $
 */
 //--------------------------------------------------------------------
 

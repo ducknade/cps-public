@@ -3,19 +3,19 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Utility routines for SU(3) matrices.
 
-  $Id: su3_util.C,v 1.6 2013-03-22 05:40:05 chulwoo Exp $
+  $Id: su3_util.C,v 1.4.12.2 2012/07/12 00:50:16 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-03-22 05:40:05 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/vector/bgl/su3_util.C,v 1.6 2013-03-22 05:40:05 chulwoo Exp $
-//  $Id: su3_util.C,v 1.6 2013-03-22 05:40:05 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/07/12 00:50:16 $
+//  $Header: /space/cvs/cps/cps++/src/util/vector/bgl/su3_util.C,v 1.4.12.2 2012/07/12 00:50:16 yinnht Exp $
+//  $Id: su3_util.C,v 1.4.12.2 2012/07/12 00:50:16 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.6 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/vector/bgl/su3_util.C,v $
+//  $Revision: 1.4.12.2 $
+//  $Source: /space/cvs/cps/cps++/src/util/vector/bgl/su3_util.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -29,7 +29,7 @@ CPS_START_NAMESPACE
 //---------------------------------------------------------------//
 // pre-calculated 1/3
 //---------------------------------------------------------------//
-IFloat Matrix::inv3 = 1./3.;
+static IFloat inv3 = 1./3.;
 
 
 //---------------------------------------------------------------//

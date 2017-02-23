@@ -3,7 +3,6 @@
 #include <util/pt.h>
 #include <util/gjp.h>
 #include <util/lattice.h>
-#include <util/error.h>
 //#include "pt_int.h"
 
 CPS_START_NAMESPACE
@@ -35,7 +34,6 @@ void pt_init(Lattice &Lat){
   pt_arg.gauge_field_addr = (IFloat *)Lat.GaugeField();
 
   StrOrdType str_ord = Lat.StrOrd();
-  printf("str_ord=%d\n",str_ord);
 
   switch(str_ord){
     case CANONICAL:
@@ -85,7 +83,6 @@ void pt_mat(int n, IFloat **mout, IFloat **min, int const *dir){
   ParTrans::PTflops +=198*n*PT::vol;
 }
 
-#if 1
 void pt_vvpd(IFloat **vect, int n_vect, const int *dir,
              int n_dir, int hop, IFloat **sum){
   StaticPT.vvpd(vect, n_vect, dir, n_dir, hop, sum);
@@ -97,7 +94,6 @@ void pt_vvpd(IFloat **vect2, IFloat ***vect, int n_vect, const int *dir,
   StaticPT.vvpd(vect2, vect, n_vect, dir, n_dir, hop, sum, overwrite);
   ParTrans::PTflops +=90*n_vect*n_dir*PT::vol;
 }
-#endif
 
 void pt_shift_link(IFloat **u, const int *dir, int n_dir){
   StaticPT.shift_link(u,dir,n_dir);

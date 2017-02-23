@@ -213,7 +213,6 @@ void convert2file(char *fsite, char *msite,
     }
 }
 
-
 // convert to memory format, csum and pdcsum are computed outside.
 //
 // Note: now we have data in fsite, need to fill msite.
@@ -700,8 +699,7 @@ int SerialIO::load(char *data, const int data_per_site, const int site_mem,
     delete[] rdata;
     delete[] temp;
 
-  VRB.FuncEnd(cname,fname);
-  return 1;
+    return 1;
 }
 
 // data_per_site : how many numbers (floating point numbers for gauge

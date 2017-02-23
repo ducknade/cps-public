@@ -2,20 +2,20 @@
 /*! \file
   \brief  Definition of parallel transport definitions for QCDOC.
   
-  $Id: pt_vec.C,v 1.8 2012-08-02 21:20:01 chulwoo Exp $
+  $Id: pt_vec.C,v 1.7 2011/02/26 00:19:27 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2012-08-02 21:20:01 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/parallel_transport/pt_base/qmp/pt_vec.C,v 1.8 2012-08-02 21:20:01 chulwoo Exp $
-//  $Id: pt_vec.C,v 1.8 2012-08-02 21:20:01 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2011/02/26 00:19:27 $
+//  $Header: /space/cvs/cps/cps++/src/util/parallel_transport/pt_base/qmp/pt_vec.C,v 1.7 2011/02/26 00:19:27 chulwoo Exp $
+//  $Id: pt_vec.C,v 1.7 2011/02/26 00:19:27 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: pt_vec.C,v $
-//  $Revision: 1.8 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/parallel_transport/pt_base/qmp/pt_vec.C,v $
+//  $Revision: 1.7 $
+//  $Source: /space/cvs/cps/cps++/src/util/parallel_transport/pt_base/qmp/pt_vec.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -78,7 +78,7 @@ parity, int pad, IFloat * new_gauge_field)
   vec_cb_pad(n,vout,vin,dir,parity,new_gauge_field);
 }
 
-#undef PROFILE
+#define PROFILE
 //inline double dclock(){return CPS_NAMESPACE::dclock();}
 inline double dclock(){return 0.;}
 void PT::vec_cb_norm(int n, IFloat **vout, IFloat **vin, const int *dir,int parity, IFloat * gauge)

@@ -3,21 +3,21 @@
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-04-19 20:34:59 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/alg/alg_s_spect/qmp/hadron_prop_s.C,v 1.4 2013-04-19 20:34:59 chulwoo Exp $
-//  $Id: hadron_prop_s.C,v 1.4 2013-04-19 20:34:59 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2008/02/08 18:35:05 $
+//  $Header: /space/cvs/cps/cps++/src/alg/alg_s_spect/qmp/hadron_prop_s.C,v 1.3 2008/02/08 18:35:05 chulwoo Exp $
+//  $Id: hadron_prop_s.C,v 1.3 2008/02/08 18:35:05 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: hadron_prop_s.C,v $
-//  $Revision: 1.4 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/alg/alg_s_spect/qmp/hadron_prop_s.C,v $
+//  $Revision: 1.3 $
+//  $Source: /space/cvs/cps/cps++/src/alg/alg_s_spect/qmp/hadron_prop_s.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
 // hadron_prop_s.C
 
 #ifndef lint
-static char vcid[] = "$Id: hadron_prop_s.C,v 1.4 2013-04-19 20:34:59 chulwoo Exp $";
+static char vcid[] = "$Id: hadron_prop_s.C,v 1.3 2008/02/08 18:35:05 chulwoo Exp $";
 #endif /* lint */
 
 #include <util/qcdio.h>
@@ -177,6 +177,9 @@ void HadronPropS::download_prop(HadronType type, Float *buf)
 // node 0 (origin of the lattice)
 //---------------------------------------------------------------------
 
+const SCUDir pos_dir[] = { SCU_XP, SCU_YP, SCU_ZP, SCU_TP };
+const SCUDir neg_dir[] = { SCU_XM, SCU_YM, SCU_ZM, SCU_TM };
+
 static int isNodeOrigin();
 static void storeData(IFloat *buf, const IFloat *term, int len);
 
@@ -216,10 +219,15 @@ void HadronPropS::collect_prop(HadronType type, Float *sum_buf,
   //--------------------------------------------------------------
   transmit_buf_p = (IFloat *)IFloat_p; 
 
+  #ifndef USE_QMP
+  SCUDirArg send(transmit_buf_p, neg_dir[direction], SCU_SEND, blcklength);
+  SCUDirArg recv(receive_buf_p, pos_dir[direction], SCU_REC, blcklength);
+  #else
   QMP_msgmem_t msgmem[2];
   QMP_msghandle_t msghandle[2];
   QMP_status_t status;
   QMP_msghandle_t multiple;
+  #endif
 
   //--------------------------------------------------------------
   // tranmit & receive Nx[direction] - 1 times in snd_dir[direction] direction
@@ -227,6 +235,22 @@ void HadronPropS::collect_prop(HadronType type, Float *sum_buf,
   for ( itmp = 1; itmp < Nx[direction]; itmp++) {
 
 
+    #ifndef USE_QMP
+	 //-----------------------------------------------------------
+         // do SCU transfers
+	 //-----------------------------------------------------------
+         send.StartTrans();
+         recv.StartTrans();
+         send.TransComplete();
+         recv.TransComplete();
+
+	 //-----------------------------------------------------------
+         // the received data will be sent out     
+	 // the free buffer will be used to receive      
+	 //-----------------------------------------------------------
+	 send.Addr(transmit_buf_p = receive_buf_p);
+	 recv.Addr(receive_buf_p += blcklength/sizeof(Float) );
+     #else
 	 msgmem[0] = QMP_declare_msgmem((void *)transmit_buf_p, blcklength);
 	 msgmem[1] = QMP_declare_msgmem((void *)receive_buf_p, blcklength);
 	 msghandle[0] = QMP_declare_send_relative(msgmem[0], direction, -1, 0);
@@ -242,6 +266,7 @@ void HadronPropS::collect_prop(HadronType type, Float *sum_buf,
 
 	 transmit_buf_p = receive_buf_p;
 	 receive_buf_p += blcklength/sizeof(Float);
+     #endif
   }
 
 

@@ -8,26 +8,26 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Definitions of communications routines
 
-  $Id: get_data.C,v 1.10 2012-03-26 13:50:11 chulwoo Exp $
+  $Id: get_data.C,v 1.10.12.4 2012/07/30 14:44:54 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2012-03-26 13:50:11 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/comms/qmp/scu/get_data.C,v 1.10 2012-03-26 13:50:11 chulwoo Exp $
-//  $Id: get_data.C,v 1.10 2012-03-26 13:50:11 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/07/30 14:44:54 $
+//  $Header: /space/cvs/cps/cps++/src/comms/qmp/scu/get_data.C,v 1.10.12.4 2012/07/30 14:44:54 yinnht Exp $
+//  $Id: get_data.C,v 1.10.12.4 2012/07/30 14:44:54 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: get_data.C,v $
-//  $Revision: 1.10 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/comms/qmp/scu/get_data.C,v $
+//  $Revision: 1.10.12.4 $
+//  $Source: /space/cvs/cps/cps++/src/comms/qmp/scu/get_data.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
 CPS_END_NAMESPACE
 #include<util/gjp.h>
-//#include<sysfunc_cps.h>
+#include<util/time_cps.h>
 CPS_START_NAMESPACE
 #ifndef USE_QMP
 #define USE_QMP
@@ -119,13 +119,15 @@ static void PassData(IFloat *rcv_noncache, IFloat *send_noncache, int len_i, int
   int dir = DIR(mu,sign);
 
   if (len != msglen[dir]){
-  if(!UniqueID())printf("PassData(%p %p %d %d %d)\n",rcv_noncache,send_noncache,len_i,mu,sign);
+//Following line commented out by Greg to speed up AlgApeSmear
+//  if(!UniqueID())printf("PassData(%p %p %d %d %d)\n",rcv_noncache,send_noncache,len_i,mu,sign);
     if (msglen[dir]>0){ 	// previously allocated
       QMP_free_msghandle(sndhandle[dir]);
       QMP_free_msghandle(rcvhandle[dir]);
       QMP_free_msgmem(sndmem[dir]);
       QMP_free_msgmem(rcvmem[dir]);
-      if(!UniqueID())printf("msglen[%d](%d) deleted\n",dir,msglen[dir]); 
+//Following line commented out by Greg to speed up AlgApeSmear
+//      if(!UniqueID())printf("msglen[%d](%d) deleted\n",dir,msglen[dir]); 
     }
     sndmem[dir] = QMP_declare_msgmem(send_noncache, len*sizeof(IFloat));
     rcvmem[dir] = QMP_declare_msgmem(rcv_noncache, len*sizeof(IFloat));
@@ -144,55 +146,29 @@ static void PassData(IFloat *rcv_noncache, IFloat *send_noncache, int len_i, int
 
 }
 
-#if 0
-static void getData(IFloat *rcv_buf, IFloat *send_buf, int len, int mu, int sign)
-{
+// static void getData(IFloat *rcv_buf, IFloat *send_buf, int len, int mu, int sign)
+// {
 
-  allocate_buffer();
-  int i = 0;
-//  printf("gjp_local_axis[%d]=%d\n",mu,gjp_local_axis[mu]);
-  if(gjp_local_axis[mu] == 0) {
-    check_length(len);
-//    for(i=0;i<len;i++) send_noncache[i] = send_buf[i];
-    memcpy(send_noncache,send_buf,len*sizeof(IFloat));
-    PassData(rcv_noncache,send_noncache,len,mu,sign);
-//    for(i=0;i<len;i++) rcv_buf[i] = rcv_noncache[i];
-    memcpy(rcv_buf,rcv_noncache,len*sizeof(IFloat));
-  }
-  else {
-//    for(int i = 0; i < len; ++i) *rcv_buf++ = *send_buf++;
-    memcpy(rcv_buf,send_buf,len*sizeof(IFloat));
-  }
-}
+//   allocate_buffer();
+//   int i = 0;
 
-void getPlusData(IFloat *rcv_buf, IFloat *send_buf, int len, int mu){
-  IFloat *rcv_p = rcv_buf;
-  IFloat *send_p = send_buf;
-  int  len_t = len;
-  while (len_t > MAX_LENGTH){
-    getData(rcv_p,send_p,MAX_LENGTH,mu,+1);
-    len_t -= MAX_LENGTH;
-    rcv_p += MAX_LENGTH;
-    send_p += MAX_LENGTH;
-  }
-  getData(rcv_p,send_p,len_t,mu,+1);
-}
+//   if(gjp_local_axis[mu] == 0) {
+//     check_length(len);
+// //    for(i=0;i<len;i++) send_noncache[i] = send_buf[i];
+//     memcpy(send_noncache,send_buf,len*sizeof(IFloat));
+//     PassData(rcv_noncache,send_noncache,len,mu,sign);
+// //    for(i=0;i<len;i++) rcv_buf[i] = rcv_noncache[i];
+//     memcpy(rcv_buf,rcv_noncache,len*sizeof(IFloat));
+//   }
+//   else {
+// //    for(int i = 0; i < len; ++i) *rcv_buf++ = *send_buf++;
+//     memcpy(rcv_buf,send_buf,len*sizeof(IFloat));
+//   }
+// }
 
-void getMinusData(IFloat *rcv_buf, IFloat *send_buf, int len, int mu){
-  IFloat *rcv_p = rcv_buf;
-  IFloat *send_p = send_buf;
-  int  len_t = len;
-  while (len_t > MAX_LENGTH){
-    getData(rcv_p,send_p,MAX_LENGTH,mu,-1);
-    len_t -= MAX_LENGTH;
-    rcv_p += MAX_LENGTH;
-    send_p += MAX_LENGTH;
-  }
-  getData(rcv_p,send_p,len_t,mu,-1);
-}
-#else
 static void getData(void *rcv_buf, void *snd_buf, size_t size, int mu, int sign)
 {
+//  VRB.Result("Global", "getData", "Entering. size=%d mu=%d sign=%d\n", size, mu, sign);
     if(gjp_local_axis[mu] == 1) {
         memcpy(rcv_buf, snd_buf, size);
         return;
@@ -219,6 +195,7 @@ static void getData(void *rcv_buf, void *snd_buf, size_t size, int mu, int sign)
     QMP_free_msghandle(rcv_hnd);
     QMP_free_msgmem(snd_msg);
     QMP_free_msgmem(rcv_msg);
+//  VRB.Result("Global", "getData", "Exiting. size=%d mu=%d sign=%d\n", size, mu, sign);
 }
 
 void getPlusData(IFloat *rcv_buf, IFloat *send_buf, int len, int mu)
@@ -252,7 +229,6 @@ void getMinusData(IFloat *rcv_buf, IFloat *send_buf, int len, int mu)
   // }
   // getData(rcv_p,send_p,len_t,mu,-1);
 }
-#endif
 
 //====================================================================
 //*  SUI

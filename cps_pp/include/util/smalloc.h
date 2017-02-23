@@ -7,20 +7,20 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Declaration of dynamic memory management routines.	
 
-  $Id: smalloc.h,v 1.14 2012-08-10 14:05:33 chulwoo Exp $
+  $Id: smalloc.h,v 1.13.12.1 2012/07/09 16:29:19 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2012-08-10 14:05:33 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/smalloc.h,v 1.14 2012-08-10 14:05:33 chulwoo Exp $
-//  $Id: smalloc.h,v 1.14 2012-08-10 14:05:33 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/07/09 16:29:19 $
+//  $Header: /space/cvs/cps/cps++/include/util/smalloc.h,v 1.13.12.1 2012/07/09 16:29:19 yinnht Exp $
+//  $Id: smalloc.h,v 1.13.12.1 2012/07/09 16:29:19 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: smalloc.h,v $
-//  $Revision: 1.14 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/smalloc.h,v $
+//  $Revision: 1.13.12.1 $
+//  $Source: /space/cvs/cps/cps++/include/util/smalloc.h,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------

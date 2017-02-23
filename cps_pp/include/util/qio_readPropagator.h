@@ -4,8 +4,6 @@
 #include <util/qio_general.h>
 
 CPS_START_NAMESPACE
-using namespace std;
-
 
 class qio_readPropagator: private qio_init {
 
@@ -113,7 +111,7 @@ class qio_readPropagator: private qio_init {
 
   virtual ~qio_readPropagator(){
     #ifdef DEBUG_Init
-    printf("finished qio_readPropagator\n");
+      std::printf("finished qio_readPropagator\n");
     #endif //DEBUG_Init
   }
 
@@ -177,11 +175,6 @@ class qio_readPropagator: private qio_init {
   int qio_readNextPropPairRecord(Float *rprop, int &readSpin, int &readColor);
 
   int qio_readTmpSourceRecord(const QIO_PROP_SOURCE_TYPES sType, Float *rsource);
-
-  public:
-  int hyper_n;
-  int hyper_lower[4];
-  int hyper_upper[4];
 
 };
 

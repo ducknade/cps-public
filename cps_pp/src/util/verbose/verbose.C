@@ -9,14 +9,14 @@ CPS_START_NAMESPACE
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2012-07-13 15:27:42 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/verbose/verbose.C,v 1.21 2012-07-13 15:27:42 chulwoo Exp $
-//  $Id: verbose.C,v 1.21 2012-07-13 15:27:42 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2011/05/14 06:12:35 $
+//  $Header: /space/cvs/cps/cps++/src/util/verbose/verbose.C,v 1.20 2011/05/14 06:12:35 chulwoo Exp $
+//  $Id: verbose.C,v 1.20 2011/05/14 06:12:35 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: verbose.C,v $
-//  $Revision: 1.21 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/verbose/verbose.C,v $
+//  $Revision: 1.20 $
+//  $Source: /space/cvs/cps/cps++/src/util/verbose/verbose.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -50,6 +50,7 @@ static void vrb_printf(const char *cname,const char *fname,const char *str){
   if (!UniqueID()) printf("Node %d: %s::%s: %s",UniqueID(),cname,fname,str);
 #else
   printf("%s::%s: %s",cname,fname,str);
+  fflush(stdout);
 #endif
 }
 
@@ -192,7 +193,7 @@ void Verbose::Func(const char *class_name, const char *func_name) {
 #endif
     }
     else {
-	if (!UniqueID()) printf("\n");
+//	printf("\n");
     }
     
 } 
@@ -226,7 +227,7 @@ void Verbose::FuncEnd(const char *class_name, const char *func_name){
 #endif
     }
     else {
-	if (!UniqueID()) printf("\n");
+//	printf("\n");
     }
     
 }

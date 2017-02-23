@@ -36,7 +36,6 @@ void QioArg::init(const char * file, const int concur_io_number, const Float chk
 //    bc[dir] = GJP.Bc(dir);
 
   StartConfLoadAddr = GJP.StartConfLoadAddr();
-  StartU1ConfLoadAddr = GJP.StartU1ConfLoadAddr();
 
   // user set params
   ConcurIONumber = concur_io_number;

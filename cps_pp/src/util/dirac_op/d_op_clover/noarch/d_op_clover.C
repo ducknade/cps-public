@@ -3,7 +3,7 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_clover/noarch/d_op_clover.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_clover/noarch/d_op_clover.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -29,7 +29,7 @@ CPS_END_NAMESPACE
 #include<util/verbose.h>
 #include<util/wilson.h>
 #include<util/clover.h>
-//#include<mem/p2v.h>
+#include<mem/p2v.h>
 CPS_START_NAMESPACE
 
 //----------------------------------------------------------------------
@@ -76,7 +76,7 @@ DiracOpClover::DiracOpClover(Lattice & latt,
 
   // Copy optimized code into its execution place (CRAM)
   //----------------------------------------------------------------
-//  p2vCloverLib();
+  p2vCloverLib();
 }
 
 

@@ -22,7 +22,7 @@
 #ifdef USE_QALLOC
 #include <qalloc.h>
 #else
-//#include <malloc.h>
+#include <malloc.h>
 #endif
 #ifdef USE_QMP
 #include <qmp.h>
@@ -72,19 +72,19 @@ class matrix{
 }
 };
 
-typedef Float PTvector;
+typedef Float vector;
 
-inline Float NormSqNode(PTvector *src,int size){
+inline Float NormSqNode(vector *src,int size){
   Float sum = 0.;
   for(int i = 0;i<size;i++) sum += src[i]*src[i];
   return sum;
 }
 
-inline void CopyVec(PTvector *dest,PTvector *src, int size){
+inline void CopyVec(vector *dest,vector *src, int size){
   for(int i = 0;i<size;i++) dest[i] = src[i];
 }
 
-inline void VecMinusEquVec(PTvector *dest,PTvector *src, int size){
+inline void VecMinusEquVec(vector *dest,vector *src, int size){
   for(int i = 0;i<size;i++) dest[i] -= src[i];
 }
 
@@ -145,7 +145,8 @@ class AsqD : public AsqDArg{
     int local_chi_3[2];
     int nflush;
     int odd_num;
-enum{VECT_LEN=6, VECT_LEN2=6, MATRIX_SIZE=18, SITE_LEN=72, NUM_DIR=8, N=4};
+enum{VECT_LEN=6, VECT_LEN2=8, MATRIX_SIZE=18, SITE_LEN=72, NUM_DIR=8,
+N=4};
 //---------------------------------------------------------------------
 //  uc_l[0] points to a cluster of matrices per even site for local 
 //  computations , arranged so that all parallel transport of spinors 

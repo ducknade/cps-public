@@ -31,14 +31,6 @@ vml_IFloat (VML *vmls, char *name,IFloat *objp)
 }
 
 bool_t
-vml_Pointer (VML *vmls, char *name,Pointer *objp)
-{
-	if (!vml_uint64_t (vmls,name,objp))
-		return FALSE;
-	return TRUE;
-}
-
-bool_t
 vml_DirType (VML *vmls, char *name,DirType *objp)
 {
 	if (!vml_enum (vmls,name,(enum_t *)objp,DirType_map))
@@ -51,19 +43,6 @@ struct vml_enum_map DirType_map[] = {
 	{"DirType","DIR_Z",DIR_Z},
 	{"DirType","DIR_T",DIR_T},
 	{"DirType","DIR_S",DIR_S},
-	{NULL,NULL,0}
-};
-
-bool_t
-vml_ChiralProj (VML *vmls, char *name,ChiralProj *objp)
-{
-	if (!vml_enum (vmls,name,(enum_t *)objp,ChiralProj_map))
-		return FALSE;
-	return TRUE;
-}
-struct vml_enum_map ChiralProj_map[] = {
-	{"ChiralProj","PL",PL},
-	{"ChiralProj","PR",PR},
 	{NULL,NULL,0}
 };
 
@@ -85,8 +64,6 @@ struct vml_enum_map FclassType_map[] = {
 	{"FclassType","F_CLASS_WILSON_TM",F_CLASS_WILSON_TM},
 	{"FclassType","F_CLASS_MDWF",F_CLASS_MDWF},
 	{"FclassType","F_CLASS_BFM",F_CLASS_BFM},
-	{"FclassType","F_CLASS_MOBIUS",F_CLASS_MOBIUS},
-	{"FclassType","F_CLASS_NAIVE",F_CLASS_NAIVE},
 	{NULL,NULL,0}
 };
 
@@ -121,9 +98,6 @@ struct vml_enum_map StrOrdType_map[] = {
 	{"StrOrdType","WILSON",WILSON},
 	{"StrOrdType","G_WILSON_HB",G_WILSON_HB},
 	{"StrOrdType","STAG_BLOCK",STAG_BLOCK},
-	{"StrOrdType","DWF_5D_EOPREC",DWF_5D_EOPREC},
-	{"StrOrdType","DWF_4D_EOPREC",DWF_4D_EOPREC},
-	{"StrOrdType","DWF_4D_EOPREC_EE",DWF_4D_EOPREC_EE},
 	{NULL,NULL,0}
 };
 
@@ -316,8 +290,6 @@ struct vml_enum_map RitzMatType_map[] = {
 	{"RitzMatType","NEG_MATDAG_MAT",NEG_MATDAG_MAT},
 	{"RitzMatType","MATDAG_MAT_NORM",MATDAG_MAT_NORM},
 	{"RitzMatType","NEG_MATDAG_MAT_NORM",NEG_MATDAG_MAT_NORM},
-	{"RitzMatType","MATPCDAG_MATPC_SHIFT",MATPCDAG_MATPC_SHIFT},
-	{"RitzMatType","RitzMatType_LAST",RitzMatType_LAST},
 	{NULL,NULL,0}
 };
 
@@ -998,9 +970,6 @@ struct vml_enum_map InverterType_map[] = {
 	{"InverterType","CG",CG},
 	{"InverterType","BICGSTAB",BICGSTAB},
 	{"InverterType","EIGCG",EIGCG},
-	{"InverterType","LOWMODEAPPROX",LOWMODEAPPROX},
-	{"InverterType","CG_LOWMODE_DEFL",CG_LOWMODE_DEFL},
-	{"InverterType","HDCG",HDCG},
 	{NULL,NULL,0}
 };
 
@@ -1089,9 +1058,6 @@ struct vml_enum_map CalcSeqType_map[] = {
 	{"CalcSeqType","READ_SEQ",READ_SEQ},
 	{"CalcSeqType","NOIO_SEQ",NOIO_SEQ},
 	{"CalcSeqType","WRITE_SEQ",WRITE_SEQ},
-	{"CalcSeqType","MULT_SEQ",MULT_SEQ},
-	{"CalcSeqType","READ_MULT_SEQ",READ_MULT_SEQ},
-	{"CalcSeqType","WRITE_MULT_SEQ",WRITE_MULT_SEQ},
 	{NULL,NULL,0}
 };
 
@@ -1121,6 +1087,21 @@ struct vml_enum_map BfmSolverType_map[] = {
 	{"BfmSolverType","BFM_DWFTransferInv",BFM_DWFTransferInv},
 	{"BfmSolverType","BFM_HtContFracTanh",BFM_HtContFracTanh},
 	{"BfmSolverType","BFM_HtContFracZolo",BFM_HtContFracZolo},
+	{NULL,NULL,0}
+};
+
+bool_t
+vml_LinkBufferShape (VML *vmls, char *name,LinkBufferShape *objp)
+{
+	if (!vml_enum (vmls,name,(enum_t *)objp,LinkBufferShape_map))
+		return FALSE;
+	return TRUE;
+}
+struct vml_enum_map LinkBufferShape_map[] = {
+	{"LinkBufferShape","BUFFER_SHAPE_LOCAL",BUFFER_SHAPE_LOCAL},
+	{"LinkBufferShape","BUFFER_SHAPE_LOCAL_AND_FACES",BUFFER_SHAPE_LOCAL_AND_FACES},
+	{"LinkBufferShape","BUFFER_SHAPE_LOCAL_AND_FACES_AND_1ST_CORNERS",BUFFER_SHAPE_LOCAL_AND_FACES_AND_1ST_CORNERS},
+	{"LinkBufferShape","BUFFER_SHAPE_HYPERCUBE",BUFFER_SHAPE_HYPERCUBE},
 	{NULL,NULL,0}
 };
 CPS_END_NAMESPACE

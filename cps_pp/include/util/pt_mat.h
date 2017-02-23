@@ -6,26 +6,26 @@
 /*! \file
   \brief  Generic parallel transport.
   
-  $Id: pt_mat.h,v 1.5 2013-03-18 19:33:13 chulwoo Exp $
+  $Id: pt_mat.h,v 1.1.2.8 2012/08/21 14:26:28 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-03-18 19:33:13 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/pt_mat.h,v 1.5 2013-03-18 19:33:13 chulwoo Exp $
-//  $Id: pt_mat.h,v 1.5 2013-03-18 19:33:13 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/08/21 14:26:28 $
+//  $Header: /space/cvs/cps/cps++/include/util/pt_mat.h,v 1.1.2.8 2012/08/21 14:26:28 yinnht Exp $
+//  $Id: pt_mat.h,v 1.1.2.8 2012/08/21 14:26:28 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: pt_mat.h,v $
-//  $Revision: 1.5 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/pt_mat.h,v $
+//  $Revision: 1.1.2.8 $
+//  $Source: /space/cvs/cps/cps++/include/util/pt_mat.h,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
 #include <util/gjp.h>
 #include <comms/scu.h>
-#include <util/omp_wrapper.h>
+#include <omp.h>
 #include <vector>
 #include <cstddef>
 
@@ -45,7 +45,8 @@ CPS_START_NAMESPACE
 // 2. For backward direction (dir = 1, 3, 5, 7 correspond to -X, -Y, -Z, -T),
 // out(x) = U_\mu(x-\mu)^\dag in(x-\mu) or out(x+\mu) = U_\mu(x)^\dag in(x)
 namespace pt_generic {
-    enum { NUM_DIR = 8 };
+
+    const int NUM_DIR = 8;
 
     static inline int idx_4d(const int x[4], const int lx[4]) {
         int ret = 0;

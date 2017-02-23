@@ -2,14 +2,13 @@
   \file
   \brief
   
-  $Id: fpconv.h,v 1.10 2012-08-10 14:05:33 chulwoo Exp $
+  $Id: fpconv.h,v 1.9.124.1 2012/07/09 16:29:19 yinnht Exp $
  */
 
 #ifndef __FP_CONV__
 #define __FP_CONV__
 
 #include <config.h>
-#include <stdint.h>
 
 
 CPS_START_NAMESPACE

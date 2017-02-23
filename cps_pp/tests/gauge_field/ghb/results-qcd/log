@@ -1,0 +1,79 @@
+GlobalJobParameter::Initialize(): nodes= 1 1 1 1 1
+GlobalJobParameter::Initialize(): start_conf_alloc_flag=6
+Verbose::Acitve(2,-1202)=1
+Verbose::Acitve(12,-1202)=1
+verbose_level =-1202
+checksum_level =0
+Node 0: Plaq:run(): 0.000000e+00 flops /1.598980e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.602910e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 0.0000000000000000e+00
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.664416e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.620841e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.635153e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.638581e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.045880e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.220642e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.240379e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.239440e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.228992e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.251485e+00 seconds = 0.000000e+00 MFlops
+Global::main(): 9.120239e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.794431e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.604211e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 1.4784650078652828e+05
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.289881e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.241844e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.230265e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.277766e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.242668e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.238226e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.165466e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.214407e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.191108e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.178618e+00 seconds = 0.000000e+00 MFlops
+Global::main(): 1.230863e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.781449e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.608369e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 1.5518187012229802e+05
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /5.101631e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /5.155842e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.767880e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.693630e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.654062e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.637806e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.642909e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.669554e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.779582e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.641361e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 4.812027e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.756020e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.565351e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 1.5679420026024317e+05
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.680862e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /5.122142e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.752164e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.664588e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.820867e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.640393e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.640944e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.636898e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.643581e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.637959e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 4.761682e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.760499e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.579180e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 1.5714167597753878e+05
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.784517e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.640775e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /5.163870e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.692860e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.654214e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.650321e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.781828e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.710479e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.637361e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.637411e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 4.772998e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.756330e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.613750e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 1.5741086869446770e+05

@@ -1,3 +1,6 @@
+#ifndef INCLUDED_QCDIO_QPRINTF_H_
+#define INCLUDED_QCDIO_QPRINTF_H_
+
 #include<config.h>
 
 /*----------------------------------------------------------*/
@@ -7,14 +10,10 @@
   Separated from the rest of qcdio.h to avoid troublesome
   header file interdependancies.
 
-  $Id: qcdio_qprintf.h,v 1.5 2004-08-18 11:57:37 zs Exp $  
+  $Id: qcdio_qprintf.h,v 1.5.464.1 2012/07/09 16:29:19 yinnht Exp $  
 */
 /*  A.N.Jackson: ajackson@epcc.ed.ac.uk                       */
 /*----------------------------------------------------------*/
-
-#ifndef INCLUDED_QCDIO_QPRINTF_H_
-#define INCLUDED_QCDIO_QPRINTF_H_
-
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -22,8 +21,7 @@
 
 #if TARGET == cpsMPI
 
-//namespace cps{
-CPS_START_NAMESPACE
+namespace cps{
 
 namespace MPISCU{
   //! Reimplementation of printf that prints from only a single node.
@@ -52,8 +50,7 @@ namespace MPISCU{
 } // namespace MPISCU
 
 
-//} // namespace cps
-CPS_END_NAMESPACE
+} // namespace cps
 
 #endif
 #endif

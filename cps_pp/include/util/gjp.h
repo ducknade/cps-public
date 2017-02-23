@@ -5,20 +5,20 @@
 /*!\file
   \brief  Definitions of global job parameters.
 
-  $Id: gjp.h,v 1.47 2013-06-25 12:51:12 chulwoo Exp $
+  $Id: gjp.h,v 1.40.12.2 2012/07/26 15:22:36 yinnht Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-06-25 12:51:12 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/gjp.h,v 1.47 2013-06-25 12:51:12 chulwoo Exp $
-//  $Id: gjp.h,v 1.47 2013-06-25 12:51:12 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: yinnht $
+//  $Date: 2012/07/26 15:22:36 $
+//  $Header: /space/cvs/cps/cps++/include/util/gjp.h,v 1.40.12.2 2012/07/26 15:22:36 yinnht Exp $
+//  $Id: gjp.h,v 1.40.12.2 2012/07/26 15:22:36 yinnht Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: gjp.h,v $
-//  $Revision: 1.47 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/gjp.h,v $
+//  $Revision: 1.40.12.2 $
+//  $Source: /space/cvs/cps/cps++/include/util/gjp.h,v $
 //  $State: Exp $
 //--------------------------------------------------------------------
 //
@@ -47,11 +47,6 @@
 #include <comms/sysfunc_cps.h>
 #include <alg/do_arg.h>
 #include <alg/cg_arg.h>
-
-#ifdef USE_QUDA
-#include <alg/quda_arg.h>
-#endif
-
 CPS_START_NAMESPACE
 
 #ifdef PARALLEL
@@ -63,8 +58,7 @@ extern int gjp_local_axis[];
      // It is set by GJP.Initialize.
      // {0,1,2,3,4} corresponds to {x,y,z,t,s}
 
-//#if TARGET==QCDOC
-#if 0
+#if TARGET==QCDOC
 extern SCUDir gjp_scu_dir[];
      // set to:  SCU_XP, SCU_XM, SCU_YP, SCU_YM,
      // SCU_ZP, SCU_ZM, SCU_TP, SCU_TM, s_p, s_m
@@ -126,25 +120,43 @@ class GlobalJobParameter
  private:
   const char *cname;    // Class name.
   DoArg doarg_int;
-  DoArgExt doext_int;
-  DoArgExt *doext_p;
 
   int* argc_int;
   char*** argv_int;
   int arg_set;
 
 
+#if 0
+  int bgl_machine_dir_x;
+  int bgl_machine_dir_y;
+  int bgl_machine_dir_z;
+  int bgl_machine_dir_t;
+     // For a given direction of the physics system 
+     // (x,y,z,t) it gives the direction of the processor 
+     // grid that it is "mapped" on. The processor grid has dir 0,1,2,3
+     // with 3 being the chip internal direction connecting the two
+     // cores. The hardware x,y,z,t are labeled 0,1,2,3.
+     // For example if the physics sytem direction y is mapped
+     // allong the processor grid direction t then 
+     // bgl_machine_dir_y = 3. These variables must be set before any 
+     // calls to bgl_sys routines are made. These variables are used 
+     // to "rotate" the physics system with respect to the 
+     // processor grid.
+
+#endif //TARGET == BGL
+
   int node_sites[5]; // sites of a single node along {X,Y,Z,T,S} direction
   int nodes[5];      // number of nodes along {X,Y,Z,T,S} direction
   BndCndType bc[5];       // sites of a single node along {X,Y,Z,T,S} direction
   BndCndType node_bc[5];  // sites of a single node along {X,Y,Z,T,S} direction
+  bool t_open_bc; //whether we are using open boundary conditions in the T direction
   int node_coor[5];  // sites of a single node along {X,Y,Z,T,S} direction
 
   int vol_node_sites;  // The number of sites (4-D) of a single node.
   int vol_sites;       // The number of sites (4-D) of the whole lattice
 
   void Initialize();
-
+      
 
   MdwfArg *mdwf_arg;
   MdwfTuning *mdwf_tuning;
@@ -374,21 +386,6 @@ public:
     \return The grid coordinate of this node in the 5th direction.
   */
 
-  Float TwistBc(int dir) const
-  { 
-    switch(dir){
-    case 0: return doext_p->twist_bc_x;
-    case 1: return doext_p->twist_bc_y;
-    case 2: return doext_p->twist_bc_z;
-    case 3: return doext_p->twist_bc_t;
-    default: printf("GJP::TwistBc(): Incorrect dir for twist\n"); 
-      exit(0);
-    }
-    return 0.;
-  }
-
-  int Traj(){ return doext_p->trajectory; }
-
   BndCndType Bc(int dir) const
       { return bc[dir];}
   //!< Gets the global lattice boundary condition in a given direction.
@@ -466,6 +463,10 @@ public:
     \return The type of local boundary condition along the T axis.
   */
 
+  bool TopenBc() const
+      { return t_open_bc; }
+  //!< Gets whether the boundary conditions in the T direction are open.
+
   int CGreprodFreq() const
       {return doarg_int.cg_reprod_freq;}
   //!< Gets the frequency for CG reproducibility test
@@ -476,22 +477,11 @@ public:
   /*!<
     \return The type of initial gauge configuration.
   */    
-  StartConfType StartU1ConfKind() const
-      {return doext_p->start_u1_conf_kind;}
-  //!< Gets the type of initial u1 gauge configuration.
-  /*!<
-    \return The type of initial u1 gauge configuration.
-  */
 
   Matrix *StartConfLoadAddr() const
       {return (Matrix *)doarg_int.start_conf_load_addr;}
   void StartConfLoadAddr( Matrix * addr) 
       { doarg_int.start_conf_load_addr = (unsigned long) addr;}
-  Float *StartU1ConfLoadAddr() const
-      { if (!doext_p) return NULL;
-        else return (Float *)doext_p->start_u1_conf_load_addr;}
-  void StartU1ConfLoadAddr( Float * addr)
-      { doext_p->start_u1_conf_load_addr = (unsigned long) addr;}
   //!< Gets the initial configuration.
   /*!<
     \return The address of the starting configuration
@@ -500,18 +490,12 @@ public:
 
   const char * StartConfFilename() const
       {return doarg_int.start_conf_filename;}
-  const char * StartU1ConfFilename() const
-      {return doext_p->start_u1_conf_filename;}
 
   const char * StartSeedFilename() const
       {return doarg_int.start_seed_filename;}
 
   const int StartConfAllocFlag() 
       {return doarg_int.start_conf_alloc_flag;}
-  const int StartU1ConfAllocFlag()
-      {return doext_p->start_u1_conf_alloc_flag;}
-  const int mult_u1()
-      {return doext_p->mult_u1_conf_flag;}
 
   const int WfmSendAllocFlag() 
       {return doarg_int.wfm_send_alloc_flag;}
@@ -544,11 +528,7 @@ public:
   Float Beta() const
       {return doarg_int.beta;}
   //!< Gets the "beta" parameter in the pure gauge action.
- 
-  int SaveStride() const
-      {return doext_p->save_stride;}
-  //!< Gets the stride (number) of eigenvectors to save at-a-time in Eigencontainer
- 
+  
   /*!
     \return The coefficient of the plaquette term in the pure gauge action. .
   */
@@ -586,10 +566,6 @@ public:
     Obviously, only relevant for Domain Wall Fermions.
     \return The inverse of the 5th direction lattice spacing.
   */
-  Float Mobius_b() const
-      {return doext_p->mobius_b_coeff;}
-  Float Mobius_c() const
-      {return doext_p->mobius_c_coeff;}
   
 
   //------------------------------------------------------------------
@@ -780,11 +756,6 @@ public:
   void Initialize(char *filename, char *instname);
   //! to be deprecated. Will point to the routine above
   void Initialize(const DoArg& do_arg);
-  void InitializeExt(const DoArgExt& do_ext);
-  int  ExtInitialized(){
-    if (!doext_p) return 0;
-    else return 1;
-  }
 
   //PAB... Need to serialise the do arg as a means of meta-data preservation
   DoArg *GetDoArg(void) { return &doarg_int;};
@@ -813,14 +784,11 @@ public:
   //! Sets the global lattice boundary condition in the T direction.
   void Tbc(BndCndType bc) { Bc(3,bc);}
 
+  //!< Sets whether the boundary conditions in the T direction are open.
+  bool TopenBc(bool bc) { t_open_bc = bc; }
+
   void StartConfKind(StartConfType sc)
       {doarg_int.start_conf_kind = sc;}
-  //!< Sets the type of initial  gauge configuration.
-  /*!<
-    \param sc The type of initial gauge configuration.
-  */
-  void StartU1ConfKind(StartConfType sc)
-      {doext_p->start_u1_conf_kind = sc;}
   //!< Sets the type of initial  gauge configuration.
   /*!<
     \param sc The type of initial gauge configuration.
@@ -886,21 +854,19 @@ public:
 extern GlobalJobParameter GJP;
 
 
-#ifdef USE_QUDA
-  extern QudaArg QudaParam;
-#endif
-
 /*! declaration for Start() and End() which should be called at the
 start and end of main()
 */
 
 #if TARGET == NOARCH && (!defined USE_QMP)
 inline void Start(){}
-#endif
-//inline void End(){}
-//inline void Start(int * argc, char ***argv){GJP.setArg(argc, argv);}
+inline void End(){}
+inline void Start(int * argc, char ***argv){GJP.setArg(argc, argv);}
+#else
+//void Start();
 void End();
 void Start(int * argc, char ***argv);
+#endif
 
 #if TARGET == QCDOC 
 extern "C" {

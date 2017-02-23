@@ -2,26 +2,25 @@
 typedef float pooh;
 
 #ifndef VMLH
-#include "conf.h"
 #include "precision.h"
 #endif
 /*!\file
   \brief  Magic numbers.
 
-  $Id: enum.x,v 1.27 2013-06-07 19:26:34 chulwoo Exp $
+  $Id: enum.x,v 1.23.16.2.6.1 2012/11/20 16:11:33 yinnht Exp $
 */
 /*--------------------------------------------------------------------*/
 /*  CVS keywords*/
 /**/
-/*  $Author: chulwoo $*/
-/*  $Date: 2013-06-07 19:26:34 $*/
-/*  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/input/enum.x,v 1.27 2013-06-07 19:26:34 chulwoo Exp $*/
-/*  $Id: enum.x,v 1.27 2013-06-07 19:26:34 chulwoo Exp $*/
-/*  $Name: not supported by cvs2svn $*/
+/*  $Author: yinnht $*/
+/*  $Date: 2012/11/20 16:11:33 $*/
+/*  $Header: /space/cvs/cps/cps++/include/input/enum.x,v 1.23.16.2.6.1 2012/11/20 16:11:33 yinnht Exp $*/
+/*  $Id: enum.x,v 1.23.16.2.6.1 2012/11/20 16:11:33 yinnht Exp $*/
+/*  $Name: v5_0_16_hantao_io_test_v7 $*/
 /*  $Locker:  $*/
 /*  $RCSfile: enum.x,v $*/
-/*  $Revision: 1.27 $*/
-/*  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/input/enum.x,v $*/
+/*  $Revision: 1.23.16.2.6.1 $*/
+/*  $Source: /space/cvs/cps/cps++/include/input/enum.x,v $*/
 /*  $State: Exp $*/
 /**/
 /*--------------------------------------------------------------------*/
@@ -37,8 +36,6 @@ enum DirType {DIR_X,
 	      DIR_Z,
 	      DIR_T,
 	      DIR_S};
-// chiral projectors 1+-g5
-enum ChiralProj{PL=-6,PR=-7};
 
 /*------------------------------------------------------------------*/
 /*! The types of fermion action*/
@@ -54,9 +51,7 @@ enum FclassType {
     F_CLASS_P4,
     F_CLASS_WILSON_TM,
     F_CLASS_MDWF,
-    F_CLASS_BFM,
-    F_CLASS_MOBIUS,
-    F_CLASS_NAIVE
+    F_CLASS_BFM
 };
 
 
@@ -153,10 +148,7 @@ enum StrOrdType {
 		       are 0, 1, 2 or 3  for direction T, X, Y and Z
 		       respectively.
 		       This order is expected by all QncWilsonHb functions.*/
-    STAG_BLOCK = 4,
-    DWF_5D_EOPREC = WILSON,  /*!< DWF with 5 dimensional even/odd precondition, it's actually same as WILSON. */
-    DWF_4D_EOPREC = 5, /*!<  DWF with 4 dimensional even/odd precondition, for odd-odd preconditioning. This should work for Mobius as well. */
-    DWF_4D_EOPREC_EE = 6  /*!<  DWF with 4 dimensional even/odd precondition, for even-even preconditioning. This should work for Mobius as well. */
+    STAG_BLOCK = 4
 };
 
 
@@ -325,21 +317,15 @@ enum SigmaprojType {
 enum RitzMatType {
     NONE,            /*!< No eigenvalues requested */
     MAT_HERM,        /*!< The hermitian matrix on the full lattice */
-    MATPC_HERM,      /*!< The preconditioned hermitian matrix on a single parity.  For Wilson case, it's the gamma_5 D_oo.  For DWF, it's the gamma_5  R   D4_eo, where D4_ee is the 4dim even/odd preconditioned matrix */
+    MATPC_HERM,      /*!< The preconditioned hermitian matrix on a single parity. */
     MATPCDAG_MATPC,  /*!< The preconditioned \f$M^\dagger M\f$
 		          on a single parity */
     NEG_MATPCDAG_MATPC,  /*!< The preconditioned \f$-M^\dagger M\f$
 		          on a single parity */
     MATDAG_MAT,      /*!< \f$M^\dagger M\f$ on the full lattice */
     NEG_MATDAG_MAT,   /*!< \f$-M^\dagger M\f$ on the full lattice*/
-    MATDAG_MAT_NORM,      /*!< \f$cM^\dagger M\f$ on the full lattice (normalised)*/
-    NEG_MATDAG_MAT_NORM,  /*!< \f$-cM^\dagger M\f$ on the full lattice (normalised)*/
-    MATPCDAG_MATPC_SHIFT,  /*!< The preconditioned \f$M^\dagger M\f$
-		           on a single parity, Shift for eigen spectrum will be applied, currently DWF only. When
-                           the original (unshifted) opertor is \f$M^\dagger M = H^2, H = \Gamma_5 M$\f, 
-                           the shifted operator will be \f (H-\mu)(H-\mu)\f, here \f$M$\f is 
-                           the 4d-even/odd precondition operator. For Wilson types, it's easy to extend, I don't know for staggered.*/
-  RitzMatType_LAST  	   /* sentinel */			   
+    MATDAG_MAT_NORM,  /*!< \f$cM^\dagger M\f$ on the full lattice (normalised)*/
+    NEG_MATDAG_MAT_NORM  /*!< \f$-cM^\dagger M\f$ on the full lattice (normalised)*/
 };
 
 /*------------------------------------------------------------------*/
@@ -800,17 +786,14 @@ enum RhmcPolesAction { 	RHMC_POLES_CALC = 0,
 
 enum HmdLimits { 
   MAX_HMD_MASSES=200 ,   /* The maximum number of dynamical masses.*/
-  MAX_RAT_DEGREE=30 /* The maximum degree of the rational approximation.*/
+  MAX_RAT_DEGREE=20 /* The maximum degree of the rational approximation.*/
 }; 
 
 /* Which type of solver to use? */
 enum InverterType {
   CG = 0,       /* Conjugate Gradients. */
   BICGSTAB = 1,  /* BiCGstab(n). */
-  EIGCG   = 2,  /* EigCG */
-  LOWMODEAPPROX    = 3,  /* Low Mode Approximation */
-  CG_LOWMODE_DEFL  = 4,  /* CG accelerated using low-mode deflation */
-  HDCG  = 5  /* HDCG */
+  EIGCG = 2  /* EigCG */
 };
 
 /* Which type of approximation to use? */
@@ -849,18 +832,15 @@ enum GaussianKernelLinkSmearType {
 /*! IO type for the quark propagator calculations in AlgNuc3pt. */
 
 enum CalcQpropType {
- READ_QPROP, // load quark propagator
- NOIO_QPROP, // calculate quark propagator without IO
- WRITE_QPROP // calculate quark propagator and write it to disk
+ READ_QPROP,
+ NOIO_QPROP,
+ WRITE_QPROP
 };
 
 enum CalcSeqType {
- READ_SEQ,  // load sequential propagator
- NOIO_SEQ,  // calculate sequential propagator for each quark propagator without IO
- WRITE_SEQ, // calculate sequential propagator and write it to disk
- MULT_SEQ,  // calculate multiple sequential propagators without IO
- READ_MULT_SEQ, // read a sequential propagators calculated using multiple-sink method
- WRITE_MULT_SEQ // calculate multiple sequential propagators and write to disk
+ READ_SEQ,
+ NOIO_SEQ,
+ WRITE_SEQ
 } ;
 
 /* we have to add a prefix (here I choose it to be BFM_) to all names to avoid naming collision. */
@@ -884,4 +864,14 @@ enum BfmSolverType {
  BFM_DWFTransferInv, 
  BFM_HtContFracTanh, 
  BFM_HtContFracZolo
+};
+
+/* Used to specify which links the LinkBuffer should buffer */
+enum LinkBufferShape {
+  BUFFER_SHAPE_LOCAL = 0, /* Buffer only the local volume */
+  BUFFER_SHAPE_LOCAL_AND_FACES = 1, /* Buffer the local volume plus some links along each face */
+  BUFFER_SHAPE_LOCAL_AND_FACES_AND_1ST_CORNERS = 2, /* Buffer the local volume plus some links
+                                       along each face, plus some links in the "corners" that are
+                                       two hops from this node */
+  BUFFER_SHAPE_HYPERCUBE = 3 /* Buffer a full expanded hypercube of links */
 };

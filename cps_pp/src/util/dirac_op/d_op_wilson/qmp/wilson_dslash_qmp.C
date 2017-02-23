@@ -4,8 +4,7 @@
 #include <omp.h>
 #include <qmp.h>
 
-//#ifdef USE_BFM
-#if 0
+#ifdef USE_BFM
 #include "/bgsys/drivers/ppcfloor/hwi/include/bqc/nd_rese_dcr.h"
 #endif
 
@@ -13,19 +12,19 @@ CPS_START_NAMESPACE
 /*! \file
   \brief  Routine used internally in the DiracOpWilson class.
 
-  $Id: wilson_dslash_qmp.C,v 1.3 2013-04-24 21:16:13 chulwoo Exp $
+  $Id: wilson_dslash_qmp.C,v 1.2 2012/03/26 13:50:12 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-04-24 21:16:13 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_qmp.C,v 1.3 2013-04-24 21:16:13 chulwoo Exp $
-//  $Id: wilson_dslash_qmp.C,v 1.3 2013-04-24 21:16:13 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/26 13:50:12 $
+//  $Header: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_qmp.C,v 1.2 2012/03/26 13:50:12 chulwoo Exp $
+//  $Id: wilson_dslash_qmp.C,v 1.2 2012/03/26 13:50:12 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.3 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_qmp.C,v $
+//  $Revision: 1.2 $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_qmp.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -558,7 +557,7 @@ Printf("getMinusData((IFloat *)fbuf, (IFloat *)tmp6, SPINOR_SIZE, 1);\n");
 /* Loop over sites                                                          */
 /*--------------------------------------------------------------------------*/
 	for(int i=0;i<SPINOR_SIZE;i++) fbuf[i]=0.;
-//	omp_set_num_threads(64);
+	omp_set_num_threads(64);
 	int index=0;
 #pragma omp parallel for default(shared) private(mu)
 	for(index = 0; index<vol*2;index++){
@@ -1500,8 +1499,7 @@ Printf("PSI_zp(%d %d %d %d) (%d %d %d) = %e\n",
 		print_flops("wilson_dslash()","qmp*100",0,qmp);
 		print_flops("wilson_dslash()","setup*100",0,setup);
 		local=nonlocal=qmp=setup=0.;
-//#ifdef USE_BFM
-#if 0 
+#ifdef USE_BFM
 {
 	 char link_name[ND_RESE_DCR_num][10] = { "A-", "A+", "B-", "B+", "C-", "C+", "D-", "D+", "E-", "E+", "IO" };
     uint32_t i;

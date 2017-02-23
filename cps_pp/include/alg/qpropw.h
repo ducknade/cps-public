@@ -18,7 +18,6 @@
 #ifndef INCLUDED_QPROPW_H
 #define INCLUDED_QPROPW_H
 
-#include <vector>
 #include <math.h>
 #include <string.h>
 #include <util/gjp.h>
@@ -27,7 +26,6 @@
 #include <util/rcomplex.h>
 #include <util/vector.h>
 #include <util/wilson.h>
-#include <util/qcdio.h>
 #include <alg/alg_base.h>
 #include <alg/common_arg.h>
 #include <alg/fermion_vector.h>
@@ -44,7 +42,6 @@
 
 #define MIDPROP 1
 #define PROP  0
-#define PROP5D  2
 
 CPS_START_NAMESPACE
 
@@ -69,37 +66,11 @@ protected:
   // Hueywen: move prop from private to protected
   //! pointer to 4d prop
   WilsonMatrix* prop;
-  //! pointer to 5d prop
-  WilsonMatrix* prop5d;
   
   QPropWArg qp_arg; 
   
   //! The class name
   char *cname; 
-
-  int src_hyper;
-  int hyper_lower[4];
-  int hyper_upper[4];
-
-  int CheckSCfile( char *infile){
-	char *fname = "CheckSCfile(*C)";
-	int sc_part_file_exist=0;
-    char file[256];
-    snprintf(file,256,"%ss%dc%d",infile,3,2);
-    if(FILE* ftmp=Fopen(file,"r")) {
-      sc_part_file_exist =1;
-      VRB.Result(cname,fname, "propagator file with  divided  spin/color sources found: %s", file);
-    } else {
-      sc_part_file_exist =0;
-      VRB.Result(cname,fname, "propagator file with  divided  spin/color sources NOT found: %s", file);
-    }
-	if(UniqueID()) sc_part_file_exist =0;
-    Float sum = sc_part_file_exist;
-    glb_sum(&sum);
-    sc_part_file_exist=sum;
-      VRB.Result(cname,fname, "sc_part_file_exist=%d",sc_part_file_exist);
-	return sc_part_file_exist;
-  } 
   
 public:
 
@@ -169,14 +140,11 @@ public:
 
   void eig_CG(Vector **V, const int vec_len, Float *M, const int nev, const int m, float **U, Rcomplex *invH, const int def_len, const Float *restart, const int restart_len, FermionVectorTp& source, FermionVectorTp& sol, FermionVectorTp& midsol, int& iter, Float& true_res); //by Qi Liu
   void CG(FermionVectorTp&, FermionVectorTp&, FermionVectorTp&, int&, Float&);
-  void CG(int, int, FermionVectorTp&, FermionVectorTp&, FermionVectorTp&, int&, Float&);
    // HueyWen: addtional CG definition
   void CG(Lattice &lat, CgArg *arg, FermionVectorTp& source,
         FermionVectorTp& sol , int& iter, Float& true_res);
   void FixSol(FermionVectorTp& sol);
-  void UnfixSol(FermionVectorTp& sol);
   void LoadRow(int spin, int color, FermionVectorTp&, FermionVectorTp&);
-  void SaveRow(int spin, int color, FermionVectorTp&, FermionVectorTp&);
   void SetFileName(char *nm);
   void ShiftPropForward(int n);
   void ShiftPropBackward(int n);
@@ -199,8 +167,8 @@ public:
   //! Comunicate Wilson Matrices...
   WilsonMatrix& GetMatrix(const int *, WilsonMatrix&) const;
 
-  virtual void RestoreQProp(char*, int mid=0);
-  virtual void SaveQProp(char*, int mid=0);
+  virtual void RestoreQProp(char*, int mid);
+  virtual void SaveQProp(char*, int mid);
 
   virtual void RestoreQPropLs(char*, int ls);
   virtual void SaveQPropLs(Vector* sol_5d, char*, int ls);
@@ -257,8 +225,6 @@ public:
 
   /*! Returns the prop */
   WilsonMatrix& operator[](int i){ return prop[i]; }
-  /*! Returns the 5d prop */
-  WilsonMatrix& operator()(int s,int site){ return prop5d[site+GJP.VolNodeSites()*s]; }
 
   /*! Returns the prop */
   const WilsonMatrix& operator[](int i)const{ return prop[i]; }
@@ -276,8 +242,6 @@ public:
   int PointSrcY()   const { return qp_arg.y; }        
   int PointSrcZ()   const { return qp_arg.z; }
   int siteOffset(const int lcl_site[], const int lcl_sites[]) const; 
-  // if we shfit the box source location by qpropw or not
-  virtual int BoxSrcUseXYZOffset() {return 0; }
 };
   
 
@@ -474,8 +438,6 @@ public:
   SourceType SrcType(){ return BOX; }
   int BoxSrcStart() const { return box_arg.box_start; } 
   int BoxSrcEnd()   const { return box_arg.box_end; }     
-
-  virtual int BoxSrcUseXYZOffset() const {return box_arg.use_xyz_offset; }
 };
 
 // Added by Hantao to handle 4D boxes (in fact it handles all uniform
@@ -496,30 +458,6 @@ public:
     int BoxSrcStart(int mu)const {
         return box_arg.box_start[mu];
     }
-
-    int BoxSrcSize(int mu)const {
-        return box_arg.box_size[mu];
-    }
-};
-
-// Added by Hantao
-//
-// wall filled with random Z3 box
-class QPropWZ3BWallSrc : public QPropW
-{
-private:
-    int rand_grid[3];
-    int rand_size;
-    std::vector<Rcomplex> rand_num;
-    QPropW4DBoxArg box_arg;
-public:
-  
-    QPropWZ3BWallSrc(Lattice& lat, QPropWArg* arg,
-                     QPropW4DBoxArg *b_arg, CommonArg* c_arg);
-  
-    void SetSource(FermionVectorTp& src, int spin, int color);
-
-    SourceType SrcType(){ return BOX_4D; }
 
     int BoxSrcSize(int mu)const {
         return box_arg.box_size[mu];
@@ -698,102 +636,6 @@ public:
   //QPropWSeq(const QPropWSeq& rhs);  //copy constructor not needed
   
   void SetSource(FermionVectorTp& src, int spin, int color);
-  SourceType SrcType() { return PROT_D_SEQ; }
-};
-
-//=== for multiple sequential sources ================================
-// Added by Meifeng Lin, 10/18/2010 
-//====================================================================
-
-
-/* A sister class of QPropWSeq, but with multiple sequential sources */
-/* added by Meifeng Lin, 10/18/2010 */
-class QPropWMultSeq : public QPropW {
-
-protected:
-  QPropW** quark;
-  ThreeMom mom;
-  Float quark_mass;
-  int n_mult;
-
-public:
-  
-  // CONSTRUCTORS
-  
-  QPropWMultSeq(Lattice& lat, int N, QPropW** q,  int *p, QPropWArg*, CommonArg*);
-  
-  //QPropWSeq(const QPropWSeq& rhs);  //copy constructor not needed
-  
-  ThreeMom Mom() { return mom; }
-
-  //assuming all the sequential sources are of the same type, 
-  //which should usually be the case. 
-  SourceType SeqSmearSource() const { 
-    return quark[0]->SeqSmearSink() ; 
-  }
-
-  //! Returns the quark mass of the source propagator  
-  Float SourceMass(){ return quark_mass; }
-};
-
-/* A sister class of QPropWSeqBar, but with multiple sequential sources */
-/* Added by Meifeng Lin, 10/18/2010 */
-
-class QPropWMultSeqBar : public QPropWMultSeq {
-
-protected:
-  
-  ProjectType proj;
-  
-public:
-  
-  // CONSTRUCTORS
-  
-  QPropWMultSeqBar(Lattice& lat, int N, QPropW** quark,  int *p, 
-			   ProjectType pp, QPropWArg*, CommonArg*);
-
-  ProjectType Projection() { return proj; }
-
-};
-
-/* A sister class of QPropWSeqProtUSrc but with multiple sequential sources */
-/* Added by Meifeng Lin, 10/18/2010 */
-class QPropWMultSeqProtUSrc : public QPropWMultSeqBar {
-
-private:
-  QPropWGaussArg gauss_arg;
-  int *time; //location of the sinks, only relevant for the source construction
-public:
-  
-  // CONSTRUCTORS
-
-  QPropWMultSeqProtUSrc(Lattice& lat, int N, QPropW** quark,  int *p, 
-		ProjectType pp, QPropWArg*, QPropWGaussArg *gauss_arg, CommonArg*, int *t);
-  QPropWMultSeqProtUSrc(Lattice& lat, int N, QPropW** quark,  int *p, 
-		ProjectType pp, QPropWArg*, QPropWGaussArg *gauss_arg, CommonArg*, char*);
-
-  void SetSource(FermionVectorTp& src, int spin, int color);
-  SourceType SrcType() { return PROT_U_SEQ; }
-};
-
-/* A sister class of QPropWSeqProtDSrc but with multiple sequential sources */
-/* Added by Meifeng Lin, 10/18/2010 */
-class QPropWMultSeqProtDSrc : public QPropWMultSeqBar {
-
-private:
-  QPropWGaussArg gauss_arg;
-  int *time; //location of the sinks, only relevant for the source construction.
-
-public:
-  
-  // CONSTRUCTORS
-
-  QPropWMultSeqProtDSrc(Lattice& lat, int N, QPropW** quark,  int *p, 
-		    ProjectType pp, QPropWArg*, QPropWGaussArg *gauss_arg, CommonArg*, int *t);
-  QPropWMultSeqProtDSrc(Lattice& lat, int N, QPropW** quark,  int *p, 
-		    ProjectType pp, QPropWArg*, QPropWGaussArg *gauss_arg, CommonArg*, char*);
-
-   void SetSource(FermionVectorTp& src, int spin, int color);
   SourceType SrcType() { return PROT_D_SEQ; }
 };
 

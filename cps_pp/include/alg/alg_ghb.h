@@ -3,7 +3,7 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Definitions of the AlgGheatBath class.
   
-  $Id: alg_ghb.h,v 1.3 2004-08-18 11:57:35 zs Exp $
+  $Id: alg_ghb.h,v 1.3 2004/08/18 11:57:35 zs Exp $
 */
 //------------------------------------------------------------------
 
@@ -17,6 +17,7 @@ CPS_END_NAMESPACE
 #include <alg/alg_base.h>
 #include <alg/common_arg.h>
 #include <alg/ghb_arg.h>
+#include <alg/ghb.h>
 CPS_START_NAMESPACE
 
 //-----------------------------------------------------------------------------
@@ -31,29 +32,29 @@ CPS_START_NAMESPACE
 class AlgGheatBath : public Alg
 {
  private:
-    char *cname;
+    const char *cname;
 
-    GhbArg *alg_ghb_arg;
-        // The argument structure for the GheatBath algorithm
-
-    void relocate();
-    void preserve_seed();
-    void UpdateLink(Matrix* mp, const Matrix & stap);
+    GheatBath ghb;
 
  public:
-    AlgGheatBath(Lattice & latt, CommonArg *c_arg, GhbArg *arg);
+    AlgGheatBath(Lattice & latt, CommonArg *c_arg, GhbArg *arg) : ghb(*arg), Alg(latt, c_arg) {
+      cname = "AlgGheatBath";
+    }
 
-    virtual ~AlgGheatBath();
+    virtual ~AlgGheatBath() {
+    }
 
-    void run(void);
-    void NoCheckerBoardRun();
-    void NodeCheckerBoardRun();
+    void run() {
+      Lattice& lat = AlgLattice();
+      GaugeField gf(lat);
+      GaugeAction& ga = *getGaugeAction(lat);
+      gf.resize(gaInteractionRange(ga));
+      ghb.run(gf, ga);
+      delete &ga;
+      gf.setLattice(lat);
+    }
 };
 
+CPS_END_NAMESPACE
 #endif
 
-
-
-
-
-CPS_END_NAMESPACE

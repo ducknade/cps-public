@@ -108,35 +108,6 @@ class GnoneFwilson
     virtual ~GnoneFwilson();
 };
 
-//------------------------------------------------------------------
-//! Trivial gauge action with wilson fermion action
-/*! \ingroup latactions */
-//------------------------------------------------------------------
-class GnoneFnaive 
-    : public virtual Lattice, 
-    public virtual FwilsonTypes, 
-    public Gnone, 
-    public Fnaive
-{
- private:
-    char *cname;    // Class name.
-
- public:
-    GnoneFnaive(){
-      cname = "GnoneFnaive";
-      const char *fname = "GnoneFnaive()";
-      VRB.Func(cname,fname);
-    }
-
-//    virtual ~GnoneFnaive();
-    virtual ~GnoneFnaive() {
-      const char *fname = "~GnoneFnaive()";
-      VRB.Func(cname,fname);
-    }
-
-
-};
-
 
 //------------------------------------------------------------------
 //! Trivial gauge action with clover Wilson fermion action
@@ -173,33 +144,6 @@ class GnoneFdwf
  public:
     GnoneFdwf();
     virtual ~GnoneFdwf();
-};
-class GnoneFmobius 
-    : public virtual Lattice, 
-    public virtual FwilsonTypes, 
-    public Gnone, 
-    public Fmobius
-{
- private:
-    char *cname;    // Class name.
-
- public:
-    GnoneFmobius()
-{
-  cname = "GnoneFmobius";
-  char *fname = "GnoneFmobius()";
-  VRB.Func(cname,fname);
-
-  //???
-}
-    virtual ~GnoneFmobius()
-{
-  char *fname = "~GnoneFmobius()";
-  VRB.Func(cname,fname);
-
-  //???
-}
-
 };
 
 //------------------------------------------------------------------
@@ -347,36 +291,6 @@ class GwilsonFdwf
  public:
     GwilsonFdwf();
     virtual ~GwilsonFdwf();
-};
-//------------------------------------------------------------------
-//! Wilson gauge action with domain wall fermion action
-/*! \ingroup latactions */
-//------------------------------------------------------------------
-class GwilsonFmobius 
-    : public virtual Lattice, 
-    public virtual FwilsonTypes, 
-    public Gwilson, 
-    public Fmobius
-{
- private:
-    char *cname;    // Class name.
-
- public:
-    GwilsonFmobius()
-{
-  cname = "GwilsonFmobius";
-  char *fname = "GwilsonFmobius()";
-  VRB.Func(cname,fname);
-
-  //???
-}
-    virtual ~GwilsonFmobius()
-{
-  char *fname = "~GwilsonFmobius()";
-  VRB.Func(cname,fname);
-
-  //???
-}
 };
 
 //------------------------------------------------------------------
@@ -595,36 +509,6 @@ class GimprRectFdwf
  public:
     GimprRectFdwf();
     virtual ~GimprRectFdwf();
-};
-//------------------------------------------------------------------
-//! Improved rectangle gauge action with domain wall fermion action
-/*! \ingroup latactions */
-//------------------------------------------------------------------
-class GimprRectFmobius
-    : public virtual Lattice,
-    public virtual FwilsonTypes,
-    public GimprRect,
-    public Fmobius
-{
- private:
-    char *cname;    // Class name.
-
- public:
-    GimprRectFmobius()
-{
-  cname = "GimprRectFmobius";
-  char *fname = "GimprRectFmobius()";
-  VRB.Func(cname,fname);
-
-  //???
-}
-    virtual ~GimprRectFmobius()
-{
-  char *fname = "~GimprRectFmobius()";
-  VRB.Func(cname,fname);
-
-  //???
-}
 };
 
 //------------------------------------------------------------------

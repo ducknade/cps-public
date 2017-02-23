@@ -1,0 +1,984 @@
+
+Find available block: R01-M1-N12-128
+bfmcommspi: Printing all sorts of ugly stuff to convince you this is hard
+bfmcommspi: SPI device memory pool 268435456 bytes
+bfmcommspi: allocated SPI device memory pool in virtual memory space 0x0000001ed0000000 - 0x0000001ee0000000 
+bfmcommspi: called Kernel_CreateMemoryRegion to pin this in contiguous physical region
+bfmcommspi: Memory translation is as follows:
+bfmcommspi: SPI device memory Base Physical Address 0000000005000000
+bfmcommspi: SPI device memory Base Virtual  Address 0000001ec5000000
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 0
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 4
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 8
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 12
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 16
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 20
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 24
+bfmcommspi: allocating Block Address Translation (BAT) id 0 Group 28
+bfmcommspi: preallocating reception counters, buffers, descriptors in this device memory pool
+bfmcommspi: Injection FIFO setup
+bfmcommspi: Global Interrupt Barriers initialised
+bfmcommspi: preallocated section of device heap state for reinitialisation
+bfmcommspi: SPI setup is complete
+bfmcommspi: End of scary messages
+*********************************
+* QMP BlueGene/Q Native topology
+*********************************
+* Torus: 2 x 2 x 4 x 4 x2 
+* SMP: 1 tasks per node
+* MPI: 128 tasks
+* Physical XxYxZxT = 2x4x4x4
+* Logical  XxYxZxT = 2x4x4x4
+*********************************
+QMP_init_msg_passing returned 0
+QMP thread level = QMP_THREAD_SINGLE
+argv[0])(after)=../binaries/BGQ.x
+Node 0: GlobalJobParameter::Initialize(): nodes= 2 4 4 4 1
+Node 0: GlobalJobParameter::Initialize(): node_sites= 8 4 4 4 32
+Node 0: GlobalJobParameter::Initialize(): coor= 0 0 0 0 0
+dim 0: nodes=2 gjp_local_axis=0
+dim 1: nodes=4 gjp_local_axis=0
+dim 2: nodes=4 gjp_local_axis=0
+dim 3: nodes=4 gjp_local_axis=0
+Node 0: GlobalJobParameter::Initialize(): start_conf_alloc_flag=6
+Verbose::Acitve(2,-1202)=1
+Verbose::Acitve(12,-1202)=1
+verbose_level =-1202
+checksum_level =0
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.221367e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.975080e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063609e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.210999e-02 seconds = 0.000000e+00 MFlops
+glb_sum:five_dim=1
+Node 0: Plaq:run(): 0.000000e+00 flops /4.854083e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.059580e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.216816e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.300905e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 0.0000000000000000e+00 ; Traj = 0
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.209446e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /9.468794e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.732421e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /5.187011e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.958895e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.192683e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.960397e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.203078e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.960707e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.200289e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.961994e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.202697e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.961803e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.208610e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.962590e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.219005e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.962709e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.212687e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.963401e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.225990e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.961684e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.213593e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.963091e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.216692e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.962090e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.217598e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.962399e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.210803e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.962399e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.202721e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.963401e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.218981e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.964593e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.223392e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966691e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.229519e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.967192e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.231307e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.962781e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.240009e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966095e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.220197e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966500e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.226586e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966310e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.222104e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966190e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.227302e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969600e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.226801e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968718e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.238889e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.964903e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.231307e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.964188e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.216501e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.967192e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.227802e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968098e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.222104e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.970410e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.236409e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969123e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.229900e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968503e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.225013e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.742010e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.557206e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.565408e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.568245e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.571225e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.567506e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.570820e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.582908e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.570033e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.600956e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 4.132076e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.061005e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.255989e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.952504e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.291795e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.257110e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.957010e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.537892e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.4784650078652857e+05 ; Traj = 1
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.227999e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.574158e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.574944e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.572393e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.570891e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.572107e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.572680e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.573419e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.579379e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.571201e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.571130e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.482987e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.057905e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.256108e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.957916e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.348801e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.257205e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.956605e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.537797e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5518187012229284e+05 ; Traj = 2
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.228499e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.572870e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.571177e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.570319e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.584386e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.565551e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.575374e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.567482e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.573347e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.566028e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.571130e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.483356e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.061958e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.257014e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.966285e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.271696e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.255798e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.965808e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.546404e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5679420026024623e+05 ; Traj = 3
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.228499e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.570677e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.573800e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.569008e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.574849e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.568150e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.569938e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.572584e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.573538e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.574992e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.575135e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.482862e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.060051e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.258302e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.958107e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.313801e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.257420e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.957201e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.538512e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5714167597753907e+05 ; Traj = 4
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.227784e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.580190e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.570868e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.573538e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.574348e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.571297e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.579927e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.575660e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.583671e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.581143e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.568269e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.484659e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.100105e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.257300e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.955985e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.225610e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.257515e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.961016e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.542398e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5741086869446875e+05 ; Traj = 5
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.931211e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): shifts=0 0 0
+Node 0: AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /1.179099e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /2.150536e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /3.878040e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.317905e-03 seconds = 1.738839e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968408e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.216287e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.957539e-01 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226616e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323793e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.064062e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226306e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.326702e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226497e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.321195e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225710e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327012e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226497e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.340006e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.994061e-03 seconds = 1.346153e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327584e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226783e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322101e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225781e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.328586e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226211e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.327394e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990007e-03 seconds = 1.347978e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.233411e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332806e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.321815e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.346395e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226497e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.320599e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993822e-03 seconds = 1.346260e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.328586e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226592e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.327894e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327894e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226306e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322411e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.995014e-03 seconds = 1.345725e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327918e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226521e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.320599e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.322101e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225686e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.321004e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.994061e-03 seconds = 1.346153e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.064062e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.330016e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.234698e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.329086e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /2.119541e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /4.106450e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): hmc_arg->metropolis=1
+Node 0: AlgHmc::run(): Metropolis step -> Accepted
+Node 0: AlgHmc::run(): Hmc steps = 6, Delta_hamilton = -1.97917275002509995829e-01, accept = 1, dev = 2.640728e-12, max_diff = -1.884066e-10
+Node 0: AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+Node 0: AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+Node 0: AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+Node 0: AlgHmc::run(): Configuration number = 1
+Global::main(): 2.097285e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.966021e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.067686e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.224898e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /4.896784e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066685e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.222800e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.319883e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5748415621286392e+05 ; Traj = 6
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.209446e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /3.119946e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): shifts=0 0 0
+Node 0: AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /8.213043e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /1.859665e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /3.814120e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.315998e-03 seconds = 1.740271e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226401e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.333592e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226807e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.325486e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.989054e-03 seconds = 1.348408e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332901e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.341007e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.995014e-03 seconds = 1.345725e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.402901e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.324890e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990007e-03 seconds = 1.347978e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.331210e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.456283e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322101e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.227689e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.334403e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323102e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226187e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.346992e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226187e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.324294e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993822e-03 seconds = 1.346260e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.325915e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226211e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322911e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226401e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.333879e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.064062e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322816e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992153e-03 seconds = 1.347011e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327703e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.243997e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.340602e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.994061e-03 seconds = 1.346153e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063824e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226616e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.333282e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.059055e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225686e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.324103e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.994061e-03 seconds = 1.346153e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327394e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.232600e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.330207e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225519e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.334785e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323889e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /2.110004e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /4.107270e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): hmc_arg->metropolis=1
+Node 0: AlgHmc::run(): Metropolis step -> Rejected
+Node 0: AlgHmc::run(): Hmc steps = 6, Delta_hamilton = 9.42468096759512263816e-01, accept = 0, dev = 1.499246e-12, max_diff = 6.994610e-11
+Node 0: AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+Node 0: AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+Node 0: AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+Node 0: AlgHmc::run(): Configuration number = 1
+Global::main(): 1.710746e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.961014e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.065397e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.220893e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /4.828382e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066089e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.224207e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.327513e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5748415621286392e+05 ; Traj = 7
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.209446e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /3.120899e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): shifts=0 0 0
+Node 0: AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /8.229017e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /1.869202e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /3.805928e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.314091e-03 seconds = 1.741705e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.339005e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225686e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322983e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.994061e-03 seconds = 1.346153e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225710e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.331494e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322411e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.343201e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.321695e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.991915e-03 seconds = 1.347119e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327513e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323603e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.991915e-03 seconds = 1.347119e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332710e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225495e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.328991e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.995014e-03 seconds = 1.345725e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.326201e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.244116e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.339410e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992153e-03 seconds = 1.347011e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.326917e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323197e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992153e-03 seconds = 1.347011e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.331780e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225710e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322792e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.330994e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225710e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.321886e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.994061e-03 seconds = 1.346153e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.251507e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.359008e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225519e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322101e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993822e-03 seconds = 1.346260e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226211e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.326392e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323197e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993822e-03 seconds = 1.346260e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225495e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.324699e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226020e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.328419e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /2.119541e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /4.113810e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): hmc_arg->metropolis=1
+Node 0: AlgHmc::run(): Metropolis step -> Accepted
+Node 0: AlgHmc::run(): Hmc steps = 6, Delta_hamilton = -1.93532373344169172924e-01, accept = 1, dev = 1.357547e-12, max_diff = -7.232470e-11
+Node 0: AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+Node 0: AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+Node 0: AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+Node 0: AlgHmc::run(): Configuration number = 2
+Global::main(): 1.708562e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.967928e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066494e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.222800e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /4.868102e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066303e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.222991e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.307915e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5755446247251748e+05 ; Traj = 8
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /3.120899e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): shifts=0 0 0
+Node 0: AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /8.214951e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /1.859665e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /3.813391e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.312899e-03 seconds = 1.742603e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225591e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.339505e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322506e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332210e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225615e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323388e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990007e-03 seconds = 1.347978e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226401e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332305e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.243997e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.342199e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992153e-03 seconds = 1.347011e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226497e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332901e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.064062e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226211e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323507e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225710e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.324199e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226282e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.321791e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.333402e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323984e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.244187e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.351116e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225305e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323293e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992153e-03 seconds = 1.347011e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.325605e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323889e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225400e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.331494e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322196e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226282e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332686e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226497e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.342199e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226282e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.326416e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225781e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.324294e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.991915e-03 seconds = 1.347119e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.334999e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.343010e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992868e-03 seconds = 1.346689e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /2.121925e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /4.109650e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): hmc_arg->metropolis=1
+Node 0: AlgHmc::run(): Metropolis step -> Accepted
+Node 0: AlgHmc::run(): Hmc steps = 6, Delta_hamilton = -1.36956750196077337023e-01, accept = 1, dev = 1.722563e-12, max_diff = -1.233169e-10
+Node 0: AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+Node 0: AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+Node 0: AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+Node 0: AlgHmc::run(): Configuration number = 3
+Global::main(): 1.709145e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /5.103111e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.065993e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.224302e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /4.860210e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066899e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.226996e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.303790e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5741231070770122e+05 ; Traj = 9
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /3.132820e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): shifts=0 0 0
+Node 0: AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /8.190155e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /1.871586e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /3.808870e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.313852e-03 seconds = 1.741885e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226807e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.335404e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226187e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.325200e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226211e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.328609e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226306e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.324819e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.325891e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323197e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.244497e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.343701e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225400e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323412e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.992153e-03 seconds = 1.347011e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226401e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.342986e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323388e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.332591e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226401e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323102e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.993107e-03 seconds = 1.346582e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.327298e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060009e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226187e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.342295e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990007e-03 seconds = 1.347978e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061201e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225805e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.326392e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226687e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323698e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.991199e-03 seconds = 1.347441e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.060963e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226616e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.333092e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062870e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225686e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.348207e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.991915e-03 seconds = 1.347119e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225996e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.338504e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.062155e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226091e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.322411e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225901e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.352904e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225781e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.323197e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990961e-03 seconds = 1.347548e+03 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.063108e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226783e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.325987e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.061916e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226187e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.324318e-02 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 4.030464e+06 flops /2.990007e-03 seconds = 1.347978e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /2.119541e-04 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /4.112909e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgHmc::run(): hmc_arg->metropolis=1
+Node 0: AlgHmc::run(): Metropolis step -> Accepted
+Node 0: AlgHmc::run(): Hmc steps = 6, Delta_hamilton = 1.43395595777292328421e-01, accept = 1, dev = 1.700120e-12, max_diff = 9.308343e-11
+Node 0: AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+Node 0: AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+Node 0: AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+Node 0: AlgHmc::run(): Configuration number = 4
+Global::main(): 1.709386e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.199909e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.961967e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066089e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.222705e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /4.787397e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.066804e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.225184e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.306890e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): plaq.smartGetPlaqSum = 1.5759439633920335e+05 ; Traj = 10

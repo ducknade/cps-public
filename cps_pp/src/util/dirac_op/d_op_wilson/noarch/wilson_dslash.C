@@ -1,6 +1,5 @@
 #include <config.h>
-//#ifdef USE_SSE
-#if 0
+#ifdef USE_SSE
 #include "../sse/sse-wilson_dslash.C"
 #else
 #include <stdio.h>
@@ -8,19 +7,19 @@
 /*! \file
   \brief  Routine used internally in the DiracOpWilson class.
 
-  $Id: wilson_dslash.C,v 1.10 2013-04-24 21:16:13 chulwoo Exp $
+  $Id: wilson_dslash.C,v 1.9 2012/03/26 13:50:12 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-04-24 21:16:13 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/noarch/wilson_dslash.C,v 1.10 2013-04-24 21:16:13 chulwoo Exp $
-//  $Id: wilson_dslash.C,v 1.10 2013-04-24 21:16:13 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/26 13:50:12 $
+//  $Header: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/noarch/wilson_dslash.C,v 1.9 2012/03/26 13:50:12 chulwoo Exp $
+//  $Id: wilson_dslash.C,v 1.9 2012/03/26 13:50:12 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.10 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/noarch/wilson_dslash.C,v $
+//  $Revision: 1.9 $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/noarch/wilson_dslash.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -590,24 +589,13 @@ void wilson_dslash(IFloat *chi_p_f,
 }
 CPS_END_NAMESPACE
 #else //USE_QMP
-#if 1 
+//#ifdef USE_TEST
+#if 1
 #include "../qmp/wilson_dslash_vec.C"
-CPS_START_NAMESPACE
-void wilson_dslash(IFloat *chi_p_f, 
-			IFloat *u_p_f, 
-			IFloat *psi_p_f, 
-			int cb,
-			int dag,
-			Wilson *wilson_p)
-{
-	wilson_dslash_vec(chi_p_f,u_p_f,psi_p_f,cb,dag,wilson_p,1,0);
-}
-CPS_END_NAMESPACE
 #else
 // older version
 #include "../qmp/wilson_dslash_qmp.C"
 #endif
-#endif //USE_QMP
 #endif
 
 CPS_START_NAMESPACE
@@ -623,3 +611,4 @@ void wilson_dslash_two(Float *chi0, Float *chi1,
 }
 
 CPS_END_NAMESPACE
+#endif

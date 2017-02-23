@@ -4,6 +4,10 @@
 #include <util/qcdio.h>
 #include <util/time_cps.h>
 
+#if TARGET != NOARCH
+#include <qmp.h>
+#endif
+
 using namespace std;
 CPS_START_NAMESPACE
 
@@ -113,9 +117,10 @@ void WriteLatticeParallel::write(Lattice & lat, const QioArg & wt_arg)
 //  if(synchronize(error) > 0) 
 //    ERR.General(cname,fname,"Writing header failed\n");
   log();
-  int temp_start = hd.data_start;
-  broadcastInt(&temp_start);
-  hd.data_start = temp_start;
+
+#if TARGET != NOARCH
+  QMP_broadcast(&hd.data_start, sizeof(long));
+#endif
 
   if(parIO()) {
     ParallelIO pario(wt_arg);

@@ -7,7 +7,7 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/f_dwf/f_dwf.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/f_dwf/f_dwf.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -22,6 +22,19 @@ CPS_START_NAMESPACE
 
 CPS_END_NAMESPACE
 #include <config.h>
+#if 0
+#include <util/qcdio.h>
+#include <math.h>
+#include <util/dirac_op.h>
+#include <util/dwf.h>
+#include <util/gjp.h>
+#include <util/verbose.h>
+#include <util/vector.h>
+#include <util/random.h>
+#include <util/error.h>
+#include <comms/scu.h>
+#include <comms/glb.h>
+#endif
 #include <util/lattice.h>
 #include <util/time_cps.h>
 USING_NAMESPACE_CPS

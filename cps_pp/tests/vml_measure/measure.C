@@ -30,6 +30,10 @@
 #include<util/ReadLatticePar.h>
 #include<util/qioarg.h>
 
+#define USE_SCU_CHECKSUMS
+#ifdef USE_SCU_CHECKSUMS
+#include <qcdocos/scu_checksum.h>
+#endif
 //--------------------------------------------------------------
 
 USING_NAMESPACE_CPS

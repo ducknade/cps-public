@@ -3,20 +3,20 @@ CPS_START_NAMESPACE
 /*!\file
   \brief   Methods for the Random Number Generator classes.
 
-  $Id: random.C,v 1.34 2012-05-15 05:50:09 chulwoo Exp $
+  $Id: random.C,v 1.32 2012/03/26 13:50:12 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2012-05-15 05:50:09 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/random/comsrc/random.C,v 1.34 2012-05-15 05:50:09 chulwoo Exp $
-//  $Id: random.C,v 1.34 2012-05-15 05:50:09 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/26 13:50:12 $
+//  $Header: /space/cvs/cps/cps++/src/util/random/comsrc/random.C,v 1.32 2012/03/26 13:50:12 chulwoo Exp $
+//  $Id: random.C,v 1.32 2012/03/26 13:50:12 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: random.C,v $
-//  $Revision: 1.34 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/random/comsrc/random.C,v $
+//  $Revision: 1.32 $
+//  $Source: /space/cvs/cps/cps++/src/util/random/comsrc/random.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -182,10 +182,6 @@ void LatRanGen::Initialize()
     n_rgen = GJP.VolNodeSites()*GJP.SnodeSites() / 32;
 //  VRB.Flow(cname,fname,"n_rgen=%d\n",n_rgen);
 
-  int default_concur=0;
-#if TARGET==BGQ
-	default_concur=1;
-#endif
   
 
   is_initialized = 1;
@@ -193,7 +189,7 @@ void LatRanGen::Initialize()
   ugran = new UGrandomGenerator[n_rgen];
   if(!ugran) ERR.Pointer(cname, fname, "ugran"); 
   ugran_4d = new UGrandomGenerator[n_rgen_4d];
-  if(!ugran) ERR.Pointer(cname, fname, "ugran_4d"); 
+  if(!ugran_4d) ERR.Pointer(cname, fname, "ugran_4d");
 
   // Lower bounds of global lattice coordinates on this node
   int x_o[5];
@@ -259,7 +255,7 @@ void LatRanGen::Initialize()
     }
     }
     return;
-  }
+  } // }
 
 
 
@@ -270,7 +266,7 @@ void LatRanGen::Initialize()
 
   switch(GJP.StartSeedKind()){
   case START_SEED_FILE:
-	if ( !LatRanGen::Read(GJP.StartSeedFilename(),default_concur) ) {
+	if ( !LatRanGen::Read(GJP.StartSeedFilename()) ) {
 	      ERR.General(cname, fname,
 		  "Reading file %s",GJP.StartSeedFilename());
 	} 
@@ -328,10 +324,10 @@ for(x[4] = x_o[4]; x[4] <= x_f[4]; x[4]+=2) {
 				 (x[2]/2 + vx[2]*(x[3]/2) )));
 		  }
 //		  Fprintf(stderr,"%d %d %d %d %d",x[0],x[1],x[2],x[3],x[4]);
-		  VRB.Debug(cname,fname,"index=%d start_seed= %d\n",index,start_seed);
+//		  VRB.Result(cname,fname,"index=%d start_seed= %d\n",index,start_seed);
 		  ugran[index++].Reset(start_seed);
 		  if(x[4]==x_o[4]){
-		  	VRB.Debug(cname,fname,"index_4d=%d start_seed= %d\n",index_4d,start_seed_4d);
+//		  	VRB.Result(cname,fname,"index_4d=%d start_seed= %d\n",index_4d,start_seed_4d);
  			ugran_4d[index_4d++].Reset(start_seed_4d);
 		  }
 	      }
@@ -363,6 +359,11 @@ IFloat LatRanGen::Urand(Float hi, Float lo, FermionFieldDimension frm_dim)
     return ugran[rgen_pos].Urand(hi,lo);
   else
     return ugran_4d[rgen_pos_4d].Urand(hi,lo);
+}
+
+IFloat LatRanGen::Urand_threadsafe(int rgen_pos_4d_arg) {
+  char *fname = "Urand_threadsafe(rgen_pos_4d)";
+  return ugran_4d[rgen_pos_4d_arg].Urand();
 }
 
 //---------------------------------------------------------
@@ -405,6 +406,41 @@ void LatRanGen::SetSigma(IFloat sigma)
 {
 //  ugran[0].SetSigma(sigma);
     GaussianRandomGenerator::SetSigma(sigma);
+}
+
+//---------------------------------------------------------
+/*!
+  For a given lattice site, this identifies and return the corresponding
+  hypercube RNG rgen_pos_4d.
+  \param x The x coordinate of the lattice site.
+  \param y The y coordinate of the lattice site.
+  \param z The z coordinate of the lattice site.
+  \param t The t coordinate of the lattice site.
+  \post  Subsequent calls to \e e.g. Urand will return results from this
+  particular hypercubic RNG.
+ */
+//----------------------------------------------------------------------
+int LatRanGen::getGeneratorPos4d(int x, int y, int z, int t)
+{
+  x = x % GJP.XnodeSites();
+  y = y % GJP.YnodeSites();
+  z = z % GJP.ZnodeSites();
+  t = t % GJP.TnodeSites();
+
+  x/=2;
+  y/=2;
+  z/=2;
+  t/=2;
+
+  return x + hx[0] * (y + hx[1] * (z + hx[2] * t ));
+}
+
+int LatRanGen::getGeneratorPos4d(const int * x) {
+	return getGeneratorPos4d(x[0], x[1], x[2], x[3]);
+}
+
+int LatRanGen::getGeneratorPos4d() {
+	return rgen_pos_4d;
 }
 
 //---------------------------------------------------------

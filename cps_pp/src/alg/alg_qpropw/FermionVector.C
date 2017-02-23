@@ -6,9 +6,6 @@
 //------------------------------------------------------------------
 #include <stdlib.h>
 #include <stdio.h>
-#include <cmath>
-#include <vector>
-
 #include <alg/common_arg.h>
 #include <comms/glb.h>
 #include <comms/scu.h>
@@ -16,8 +13,9 @@
 #include <util/momentum.h>
 #include <comms/sysfunc_cps.h>
 #include <alg/fermion_vector.h>
-#include <util/omp_wrapper.h>
 
+#include <cmath>
+#include <omp.h>
 
 CPS_START_NAMESPACE
 
@@ -34,7 +32,9 @@ FermionVectorTp::FermionVectorTp() {
 
   // allocate space for source
   int fv_size = GJP.VolNodeSites() * GJP.Colors() * 8;
-  fv = (Float*)smalloc(cname,fname, "fv", fv_size * sizeof(Float));
+  fv = (Float*)smalloc(fv_size * sizeof(Float));
+  if(fv == 0) ERR.Pointer(cname, fname, "fv");
+  VRB.Smalloc(cname,fname, "fv", fv, fv_size * sizeof(Float));
 
 }
 
@@ -145,12 +145,11 @@ void FermionVectorTp::SetWallSource(int color, int spin, int source_time) {
 }
 
 void FermionVectorTp::SetBoxSource(int color, 
-				   int spin,
-				   int start,
-				   int end,
-				   int source_time,
-				   int* src_offset ) {
-  
+								   int spin,
+								   int start,
+								   int end,
+								   int source_time) {
+
   char *fname = "SetBoxSource(color,spin,start,end,source_time)";
   
 //  VRB.Func(cname, fname);
@@ -182,18 +181,6 @@ void FermionVectorTp::SetBoxSource(int color,
   int zsites = GJP.ZnodeSites()*GJP.Znodes();
   VRB.Result(cname,fname,"sites = %d %d %d\n",xsites,ysites,zsites);
   
-  // TIZB offset the start/end locations
-  int gsize[3] = { xsize*GJP.Xnodes(), ysize*GJP.Ynodes(), zsize*GJP.Znodes()};
-  int src_start[3] = {start,start,start};
-  int src_end[3] = {end,end,end};
-
-  if(src_offset){
-    for(int i=0;i<3;++i){
-      src_start[i] += src_offset[i] + gsize[i]; src_start[i] %= gsize[i];
-      src_end[i] += src_offset[i] +gsize[i];  src_end[i] %= gsize[i];
-    }
-  }
-  
   //zero source on all nodes
   for (int i = 0; i < fv_size; i++) {
      fv[i] = 0.0;
@@ -207,15 +194,16 @@ void FermionVectorTp::SetBoxSource(int color,
 		  int i = j + GJP.Colors()*8*(x + xsize*(y+ysize*(z+zsize*(t))));
 		  //#ifdef PARALLEL
 		  if(tnode != ts_node)continue;
-		  else if( (src_end[0] < xsites) && ( (x + xnode*xsize < src_start[0]) || (x + xnode*xsize > src_end[0]) )) continue;
-		  else if( (src_end[1] < ysites) && ( (y + ynode*ysize < src_start[1]) || (y + ynode*ysize > src_end[1]) )) continue;
-		  else if( (src_end[2] < zsites) && ( (z + znode*zsize < src_start[2]) || (z + znode*zsize > src_end[2]) )) continue;
-		  else if( (src_end[0] >=xsites) && ( (x + xnode*xsize < src_start[0]) && (x + xnode*xsize > src_end[0] - xsites) )) continue;
-		  else if( (src_end[1] >=ysites) && ( (y + ynode*ysize < src_start[1]) && (y + ynode*ysize > src_end[1] - ysites) )) continue;
-		  else if( (src_end[2] >=zsites) && ( (z + znode*zsize < src_start[2]) && (z + znode*zsize > src_end[2] - zsites) )) continue;
+		  else if( (end < xsites) && ( (x + xnode*xsize < start) || (x + xnode*xsize > end) )) continue;
+		  else if( (end < ysites) && ( (y + ynode*ysize < start) || (y + ynode*ysize > end) )) continue;
+		  else if( (end < zsites) && ( (z + znode*zsize < start) || (z + znode*zsize > end) )) continue;
+		  else if( (end >=xsites) && ( (x + xnode*xsize < start) && (x + xnode*xsize > end - xsites) )) continue;
+		  else if( (end >=ysites) && ( (y + ynode*ysize < start) && (y + ynode*ysize > end - ysites) )) continue;
+		  else if( (end >=zsites) && ( (z + znode*zsize < start) && (z + znode*zsize > end - zsites) )) continue;
+//		  else if(y + ynode*ysize < start || y + ynode*ysize > end) continue;
+//		  else if(z + znode*zsize < start || z + znode*zsize > end) continue;
 		  //#endif
 		  if(i%SPINOR_SIZE != 2*(color + COLORS*spin))continue;
-		  //printf("BOXSRC %d %d %d %d %d %d\n", x,y,z,t, spin,color);
 		  fv[i] = 1.0;
 		  src_vol++;
 		}
@@ -247,7 +235,6 @@ void FermionVectorTp::Set4DBoxSource(int color,
                                      const Float mom[4]) // momentum
 {
     const char *fname = "Set4DBoxSource()";
-    VRB.Func(cname,fname);
 
     if (color < 0 || color >= GJP.Colors())
         ERR.General(cname, fname, "Color index out of range: color = %d\n", color);
@@ -314,88 +301,7 @@ void FermionVectorTp::Set4DBoxSource(int color,
 
     glb_sum(&src_vol);
     VRB.Result(cname, fname, "src_vol = %f\n", src_vol);
-    VRB.FuncEnd(cname,fname);
 }
-
-
-// Note: The following code sets a Z3 boxed wall source.
-void FermionVectorTp::SetZ3BWall(int color, int spin, int t, const int size[3],
-                                 const std::vector<Rcomplex> &rand_num)
-{
-    const char *fname = "SetZ3BWall()";
-
-    if (color < 0 || color >= GJP.Colors())
-        ERR.General(cname, fname, "Color index out of range: color = %d\n", color);
-  
-    if (spin < 0 || spin > 3)
-        ERR.General(cname, fname, "Spin index out of range: spin = %d\n", spin);
-
-    for(int mu = 0; mu < 3; ++mu) {
-        if(size[mu] > 0) continue;
-        ERR.General(cname, fname, "Invalid box size in %d direction: %d\n", mu, size[mu]);
-    }
-  
-    ZeroSource();
-
-    const int lcl[4] = {
-        GJP.XnodeSites(), GJP.YnodeSites(),
-        GJP.ZnodeSites(), GJP.TnodeSites(),
-    };
-
-    const int shift[4] = {
-        GJP.XnodeSites() * GJP.XnodeCoor(), GJP.YnodeSites() * GJP.YnodeCoor(),
-        GJP.ZnodeSites() * GJP.ZnodeCoor(), GJP.TnodeSites() * GJP.TnodeCoor(),
-    };
-
-    const int glb[4] = {
-        GJP.XnodeSites() * GJP.Xnodes(), GJP.YnodeSites() * GJP.Ynodes(),
-        GJP.ZnodeSites() * GJP.Znodes(), GJP.TnodeSites() * GJP.Tnodes(),
-    };
-
-
-
-
-// Changed from Hantao's version to avoid putting sources in remainder portion of the 3D slices when size[] does not divide glb[]
-
-    const int rand_grid[3] = {
-        (glb[0] ) / size[0], 
-        (glb[1] ) / size[1], 
-        (glb[2] ) / size[2]
-    };
-
-    const int sites = lcl[0] * lcl[1] * lcl[2] * lcl[3];
-
-#pragma omp parallel for
-    for(int i = 0; i < sites; ++i) {
-        int glb_x[4];
-        compute_coord(glb_x, lcl, shift, i);
-
-        if(glb_x[3] != t) continue;
-    for(int mu = 0; mu < 3; ++mu) 
-        if(glb_x[mu] >= (size[mu]*rand_grid[mu]) ) continue;
-
-        int id = 0;
-        for(int k = 0; k < 3; ++k) {
-            id = id * rand_grid[k] + glb_x[k] / size[k];
-        }
-
-        fv[i * SPINOR_SIZE + 2 * (color + COLORS * spin)    ] = std::real(rand_num[id]);
-        fv[i * SPINOR_SIZE + 2 * (color + COLORS * spin) + 1] = std::imag(rand_num[id]);
-    }
-
-    // debug code, check the source by printing it.
-    // for(int i = 0; i < sites; ++i) {
-    //     int glb_x[4];
-    //     compute_coord(glb_x, lcl, shift, i);
-    //     if(glb_x[3] != t) continue;
-
-    //     printf("Z3B Source: %d %d %d %d = %17.10e %17.10e\n",
-    //            glb_x[0], glb_x[1], glb_x[2], glb_x[3],
-    //            fv[i * SPINOR_SIZE + 2 * (color + COLORS * spin)    ],
-    //            fv[i * SPINOR_SIZE + 2 * (color + COLORS * spin) + 1]);
-    // }
-}
-
 
 // Set source from previously defined source
 // Does not zero the rest of the  time slices
@@ -443,7 +349,6 @@ void FermionVectorTp::GFWallSource(Lattice &lat, int spin, int dir, int where)
 {
     char *fname = "GFWallSource()";
     VRB.Func(cname, fname);
-    VRB.Result(cname,fname,"lat=%p spin=%d dir=%d  where=%d\n",&lat,spin,dir,where);
 
     if(dir != 3) {
         ERR.NotImplemented(cname, fname);
@@ -457,11 +362,8 @@ void FermionVectorTp::GFWallSource(Lattice &lat, int spin, int dir, int where)
     if(nc != GJP.TnodeCoor()) return; // nothing to do here.
 
     Matrix **gm = lat.FixGaugePtr();
-    if (!gm) ERR.Pointer(cname,fname,"fix_gauge_ptr");
-//    printf("gm(%d)=%p\n",UniqueID(),gm);
-#ifdef USE_OMP
     Matrix *pM = gm[lc];
-    VRB.Debug(cname,fname,"pM=%p\n",pM);
+
     int vol_3d = GJP.XnodeSites() * GJP.YnodeSites() * GJP.ZnodeSites();
 #pragma omp parallel for
     for(int i = 0; i < vol_3d; ++i) {
@@ -475,52 +377,14 @@ void FermionVectorTp::GFWallSource(Lattice &lat, int spin, int dir, int where)
         mt.Dagger(pM[mid]);
 
         v->DotXEqual(mt, vt);
-   }
-#else
-  Vector temp;
-  Matrix tempmat; 
-    int len;     //the local (on processor) length in "dir" direction
-  int lproc;   // local processor coordinate in d_ direction
-               // 0 <= lproc <= nproc
-  // find out if this node overlaps with the hyperplane
-  // in which the wall source sits
-  int has_overlap = 0;
-  if (lproc * len <= where && where < (lproc + 1) * len)
-    has_overlap = 1;
- 
-  if (has_overlap) {
-    int local = where % len; // on processor coordinate of
-                             // source hyperplane
-    Matrix *pM = gm[local];
-
-    for (int z = 0; z < GJP.ZnodeSites(); z++)
-    for (int y = 0; y < GJP.YnodeSites(); y++) 
-    for (int x = 0; x < GJP.XnodeSites(); x++)
-    {
-      // the matrix offset
-      int j =  x + GJP.XnodeSites() * ( y + GJP.YnodeSites() * z);
-      // the vector offset
-      int i = 2 * GJP.Colors() * ( spin + 4 * (
-              x + GJP.XnodeSites() * (
-              y + GJP.YnodeSites() * (
-              z + GJP.ZnodeSites() * local))));
-      temp.CopyVec((Vector*)&fv[i], 6);
-      tempmat.Dagger((IFloat*)&pM[j]);
-      uDotXEqual((IFloat*)&fv[i], (const IFloat*)&tempmat, (const IFloat*)&temp);
-
-      //printf("FT:GFWALL %d %d %d %d : ",x,y,z,spin);
-      //for(int col=0;col<6;++col){ printf("%e ", *(col+(Float*)&(fv[i]))); }
-      //printf("\n");
     }
-  }
-#endif
 }
 
 // COULOMB GAUGE ONLY!
-void FermionVectorTp::GaugeFixSink(Lattice &lat, int dir, int unfix) {
-  
-  char *fname = "GaugeFixSink()";
-  VRB.Func(cname, fname);
+void FermionVectorTp::GaugeFixSink(Lattice &lat, int dir)
+{
+    char *fname = "GaugeFixSink()";
+    VRB.Func(cname, fname);
 
     if(dir!=3) {
         ERR.General(cname,fname,"Works only for dir=3\n");
@@ -544,12 +408,8 @@ void FermionVectorTp::GaugeFixSink(Lattice &lat, int dir, int unfix) {
                 int i= 6 * (spin + 4 * site);
                 Vector *v = (Vector *)(fv + i);
                 Vector vt(*v);
-		if(unfix)
-		uDagDotXEqual((IFloat*)&fv[i],(const IFloat*)&pM[j],
-			     (const IFloat*)&vt);
-		else
-		uDotXEqual((IFloat*)&fv[i],(const IFloat*)&pM[j],
-			     (const IFloat*)&vt);
+                uDotXEqual((IFloat*)&fv[i],(const IFloat*)&pM[j],
+                           (const IFloat*)&vt);
             }
         }
     }
@@ -782,8 +642,12 @@ void FermionVectorTp::GaussianSmearVector(Lattice& lat,
   // working vector for the smeared source
   Vector* chi;
  
-  src = (Vector*) smalloc(cname,fname, "src", sizeof(Vector)*nx[0]*nx[1]*nx[2]);
-  chi = (Vector*) smalloc(cname,fname, "chi", sizeof(Vector)*nx[0]*nx[1]*nx[2]);
+  src = (Vector*) smalloc(sizeof(Vector)*nx[0]*nx[1]*nx[2]);
+  if(src == 0) ERR.Pointer(cname, fname, "src");
+  VRB.Smalloc(cname,fname, "src", src, nx[0]*nx[1]*nx[2]*sizeof(Vector));
+  chi = (Vector*) smalloc(sizeof(Vector)*nx[0]*nx[1]*nx[2]);
+  if(chi == 0) ERR.Pointer(cname, fname, "chi");
+  VRB.Smalloc(cname,fname, "chi", chi, nx[0]*nx[1]*nx[2]*sizeof(Vector));
 
   // do the smearchig on all nodes since they have to wait anyway.
   // In the end we take only the result for the source time_slice
@@ -1041,8 +905,12 @@ void FermionVectorTp::GaussianSmearVector(Lattice& lat,
   // working vector for the smeared source
   Vector* chi;
  
-  src = (Vector*) smalloc(cname,fname, "src", sizeof(Vector)*nx[0]*nx[1]*nx[2]);
-  chi = (Vector*) smalloc(cname,fname, "chi", sizeof(Vector)*nx[0]*nx[1]*nx[2]);
+  src = (Vector*) smalloc(sizeof(Vector)*nx[0]*nx[1]*nx[2]);
+  if(src == 0) ERR.Pointer(cname, fname, "src");
+  VRB.Smalloc(cname,fname, "src", src, nx[0]*nx[1]*nx[2]*sizeof(Vector));
+  chi = (Vector*) smalloc(sizeof(Vector)*nx[0]*nx[1]*nx[2]);
+  if(chi == 0) ERR.Pointer(cname, fname, "chi");
+  VRB.Smalloc(cname,fname, "chi", chi, nx[0]*nx[1]*nx[2]*sizeof(Vector));
 
   // do the smearchig on all nodes since they have to wait anyway.
   // In the end we take only the result for the source time_slice

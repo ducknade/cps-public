@@ -13,7 +13,6 @@
 #define INCLUDED_DERIVATIVE_H
 //#include <stdio.h>
 #include <util/data_types.h>
-#include <util/qcdio.h>
 #include <util/site.h>
 #include <util/qcdio.h>
 

@@ -2,7 +2,7 @@
 /*!\file
   \brief  Definitions of the LancArg structure.
   
-  $Id: lanc_arg.x,v 1.2 2013-03-18 19:33:13 chulwoo Exp $
+  $Id: lanc_arg.x,v 1.1.6.1 2012/11/15 15:14:59 yinnht Exp $
 */
 /*------------------------------------------------------------------*/
 

@@ -747,9 +747,6 @@ enable_qio
 enable_mdwf
 enable_xml
 enable_bfm
-enable_cuda
-enable_quda
-enable_fftw
 enable_namespace
 enable_double_prec
 '
@@ -1394,7 +1391,7 @@ Optional Features:
   --enable-target         What target are we compiling for? (default=noarch)
   --enable-optimise       Compile with maximum optimisation. (default=yes)
   --enable-sse            Compile with SSE. (default=yes)
-  --enable-debug          Compile with debug information. (default=yes)
+  --enable-debug          Compile with debug information. (default=no)
   --enable-cg-dwf         Compile with cg-dwf (default=no)
   --enable-blas           Compile with BLAS (default=no)
   --enable-gmp            Compile with GNU Multiprecision lib. (default=no)
@@ -1404,9 +1401,6 @@ Optional Features:
   --enable-xml            Compile with XML lib. (default=no)
   --enable-bfm            Compile with BAGEL fermion sparse-matrix (BFM) lib.
                           (default=no)
-  --enable-cuda           Location of CUDA installation. (default=no)
-  --enable-quda           Compile with QUDA GPU lib. (default=no)
-  --enable-fftw           Compile with FFTW (default=no)
   --enable-namespace      Build the library inside a 'cps' namespace.
                           (default=no for QCDOC, yes otherwise)
   --enable-double-prec    Build the library in double precision (default=yes)
@@ -5133,10 +5127,10 @@ elif test "$enable_target" = "bgq"; then
    ARCH="BGQ"
    ARCHDIR="BGQ_DIR"
    TESTING_PARALLEL="yes";
-   DFLAGS="${DFLAGS} -DUSE_OMP -DVEC_INLINE"
+   DFLAGS="${DFLAGS} -DUSE_OMP"
    LDFLAGS="${LDFLAGS} -fopenmp"
    CFLAGS="${CFLAGS} -fopenmp"
-   CXXFLAGS="${CXXLAGS} -fopenmp"
+   CXXFLAGS="${CFXXLAGS} -fopenmp"
 else
 
    ARCH=NOARCH
@@ -5190,6 +5184,10 @@ test -n "$CXX" || CXX="g++"
    else
    TESTING_PARALLEL="no";
    fi
+   DFLAGS="${DFLAGS} -DUSE_OMP"
+   LDFLAGS="${LDFLAGS} -fopenmp"
+   CFLAGS="${CFLAGS} -fopenmp"
+   CXXFLAGS="${CFXXLAGS} -fopenmp"
 fi
 
 
@@ -5208,12 +5206,9 @@ if test "$enable_optimise" = "yes"; then
    if test "$enable_target" = "bgl"; then
      CFLAGS="${CFLAGS} -O -Wall"
      CXXFLAGS="${CXXFLAGS} -O -Wall"
-   elif test "$enable_target" = "bgq"; then
-     CFLAGS="${CFLAGS} -O2 -Wall"
-     CXXFLAGS="${CXXFLAGS} -O2 -Wall"
    else
-     CFLAGS="${CFLAGS} -O3 -Wall"
-     CXXFLAGS="${CXXFLAGS} -O3 -Wall"
+     CFLAGS="${CFLAGS} -O2"
+     CXXFLAGS="${CXXFLAGS} -O2"
    fi
 fi
 
@@ -5254,8 +5249,8 @@ $as_echo_n "checking if debugging... " >&6; }
 { $as_echo "$as_me:$LINENO: result: $enable_debug" >&5
 $as_echo "$enable_debug" >&6; }
 if test "$enable_debug" = "yes"; then
-   CFLAGS="${CFLAGS} -g -Og"
-   CXXFLAGS="${CXXFLAGS} -g -Og"
+   CFLAGS="${CFLAGS} -g -O0"
+   CXXFLAGS="${CXXFLAGS} -g -O0"
 fi
 
 # Check whether --enable-cg_dwf was given.
@@ -5429,6 +5424,20 @@ $as_echo_n "checking if including XML... " >&6; }
 { $as_echo "$as_me:$LINENO: result: $enable_xml" >&5
 $as_echo "$enable_xml" >&6; }
 
+if test "$enable_xml" != "no"; then
+   if test "$enable_xml" != "yes"; then
+     XML_DIR=${enable_xml}
+   elif test "X${XML_DIR}X" = "XX"; then
+     echo "XML_DIR environment variable not set"
+     exit 1
+   fi
+
+   XML_CFLAGS=`${XML_DIR}/bin/xml2-config --cflags`
+   XML_LDFLAGS=`${XML_DIR}/bin/xml2-config --libs`
+
+   LDFLAGS="${LDFLAGS} ${XML_LDFLAGS}"
+   INCLUDE_FLAGS="${INCLUDE_FLAGS} ${XML_CFLAGS}"
+fi
 
 # Check whether --enable-bfm was given.
 if test "${enable_bfm+set}" = set; then
@@ -5442,119 +5451,28 @@ $as_echo_n "checking if including BFM... " >&6; }
 { $as_echo "$as_me:$LINENO: result: $enable_bfm" >&5
 $as_echo "$enable_bfm" >&6; }
 
-
 if test "$enable_bfm" != "no"; then
    if test "X${BFM_DIR}X" = "XX"; then
      BFM_DIR=${enable_bfm}
    fi
 
-
-   if test "$enable_bfm" != "yes"; then
-      LDFLAGS="${LDFLAGS} -L${BFM_DIR}/lib "
-      INCLUDE_FLAGS="-I${BFM_DIR}/include ${INCLUDE_FLAGS} "
-   else
-      BFM_DIR=${QMP_DIR}
-   fi
-      DFLAGS="${DFLAGS} -DUSE_BFM -DUSE_BFM_MINV -DUSE_BFM_TM -DUSE_HDCG"
-      LDFLAGS="-lqdp -lchroma ${LDFLAGS} -lqdp -lchroma -lXPathReader -lxmlWriter -lxml2 -lqio -lbfm -L/soft/libraries/essl/current/lib64 -lesslbg -L/soft/compilers/ibmcmp-nov2012/xlf/bg/14.1/lib64 -lxlf90_r -lxlfmath -lxl -ldl"
-   if test "X{$enable_xml}X" = "XX"; then
-   	enable_xml="yes"
-   fi
-fi
-
-if test "$enable_xml" != "no"; then
-   if test "$enable_xml" != "yes"; then
-     XML_DIR=${enable_xml}
-   elif test "X${XML_DIR}X" = "XX"; then
-     XML_DIR=${BFM_DIR}
-   fi
-
-   if test "${XML_DIR}" = "no"; then
-     echo "XML_DIR environment variable not set"
+   if test "X${XML_DIR}X" = "XX"; then
+     echo "XML library must be provided when compiling with bfm."
      exit 1
    fi
 
-   XML_CFLAGS=`${XML_DIR}/bin/xml2-config --cflags`
-   XML_LDFLAGS=`${XML_DIR}/bin/xml2-config --libs`
-
-   LDFLAGS="${LDFLAGS} ${XML_LDFLAGS}"
-   INCLUDE_FLAGS="${INCLUDE_FLAGS} ${XML_CFLAGS}"
+   if test "$enable_bfm" != "yes"; then
+      LDFLAGS="-L${BFM_DIR}/lib ${LDFLAGS}"
+      INCLUDE_FLAGS="-I${BFM_DIR}/include ${INCLUDE_FLAGS}"
+   fi
+      DFLAGS="${DFLAGS} -DUSE_BFM -DUSE_BFM_MINV -DUSE_BFM_TM"
+      LDFLAGS="-lqdp -lchroma ${LDFLAGS} -lqdp -lchroma -lXPathReader -lxmlWriter -lxml2 -lqio -lbfm"
 fi
 
 if test "$TESTING_PARALLEL" = "yes"; then
    ENABLE_PARALLEL="define PARALLEL 1"
 else
    ENABLE_PARALLEL="undef PARALLEL"
-fi
-# Check whether --enable-cuda was given.
-if test "${enable_cuda+set}" = set; then
-  enableval=$enable_cuda;
-else
-  enable_cuda="no"
-fi
-
-{ $as_echo "$as_me:$LINENO: checking if including CUDA" >&5
-$as_echo_n "checking if including CUDA... " >&6; }
-{ $as_echo "$as_me:$LINENO: result: $enable_cuda" >&5
-$as_echo "$enable_cuda" >&6; }
-
-# Check whether --enable-quda was given.
-if test "${enable_quda+set}" = set; then
-  enableval=$enable_quda;
-else
-  enable_quda="no"
-fi
-
-{ $as_echo "$as_me:$LINENO: checking if including QUDA" >&5
-$as_echo_n "checking if including QUDA... " >&6; }
-{ $as_echo "$as_me:$LINENO: result: $enable_quda" >&5
-$as_echo "$enable_quda" >&6; }
-
-if test "$enable_quda" != "no"; then
-   if test "X${QUDA_DIR}X" = "XX"; then
-     QUDA_DIR=${enable_quda}
-   fi
-   INCLUDE_FLAGS="${INCLUDE_FLAGS} -I${QUDA_DIR}/include"
-   LDFLAGS="${LDFLAGS} -L${QUDA_DIR}/lib -lquda"
-   DFLAGS="${DFLAGS} -DUSE_QUDA"
-fi
-
-if test "$enable_cuda" != "no"; then
-   if test "X${CUDA_DIR}X" = "XX"; then
-     CUDA_DIR=${enable_cuda}
-   fi
-   INCLUDE_FLAGS="${INCLUDE_FLAGS} -I${CUDA_DIR}/include"
-   LDFLAGS="${LDFLAGS} -L${CUDA_DIR}/lib64 -lcudart"
-fi
-
-if test "$enable_quda" != "no"; then
-   if test "X${CUDA_DIR}X" = "XX"; then
-     echo "CUDA_DIR environment variable not set (required for QUDA)"
-     exit 1
-   fi
-fi
-#-------------------------windy---------------------------
-
-# Check whether --enable-fftw was given.
-if test "${enable_fftw+set}" = set; then
-  enableval=$enable_fftw;
-else
-  enable_fftw="no"
-fi
-
-{ $as_echo "$as_me:$LINENO: checking if including fftw" >&5
-$as_echo_n "checking if including fftw... " >&6; }
-{ $as_echo "$as_me:$LINENO: result: $enable_blas" >&5
-$as_echo "$enable_blas" >&6; }
-if test "$enable_fftw" != "no"; then
-#	if test "$enable_blas" != "yes"; then
-   		LDFLAGS="${LDFLAGS} -L${enable_fftw}/lib -lfftw3"
-   		INCLUDE_FLAGS="${INCLUDE_FLAGS} -I${enable_fftw}/include"
-#	else
-#   		LDFLAGS="${LDFLAGS} -L\${SRCDIR}/aux/GotoBLAS2 -lgoto2"
-#   		INCLUDE_FLAGS="${INCLUDE_FLAGS} -I\${SRCDIR}/aux/GotoBLAS2"
-#	fi
-   	DFLAGS="${DFLAGS} -DUSE_FFTW"
 fi
 
 # Check whether --enable-namespace was given.

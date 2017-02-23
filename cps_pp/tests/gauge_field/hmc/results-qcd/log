@@ -1,0 +1,354 @@
+GlobalJobParameter::Initialize(): nodes= 1 1 1 1 1
+GlobalJobParameter::Initialize(): start_conf_alloc_flag=6
+Verbose::Acitve(2,-1202)=1
+Verbose::Acitve(12,-1202)=1
+verbose_level =-1202
+checksum_level =0
+Node 0: Plaq:run(): 0.000000e+00 flops /1.621120e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.648660e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 0.0000000000000000e+00 ; Traj = 0
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.289631e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.250800e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.221260e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.230317e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.169169e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.247787e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.248800e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.242523e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.249143e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.270616e+00 seconds = 0.000000e+00 MFlops
+Global::main(): 1.248441e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.842270e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.590900e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.4784650078652828e+05 ; Traj = 1
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.231094e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.238208e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.233797e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.231586e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.187928e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.188119e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /8.769352e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.642413e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.620922e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.619944e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 9.613772e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.754639e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.584940e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5518187012229802e+05 ; Traj = 2
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.242400e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.221719e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.277746e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.229208e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.221071e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.209768e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.202182e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.207682e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.201391e+00 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /1.228466e+00 seconds = 0.000000e+00 MFlops
+Global::main(): 1.228062e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.774409e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.612968e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5679420026024317e+05 ; Traj = 3
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.775231e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /5.152028e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.625127e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.625361e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.627168e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.625816e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.626188e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.756374e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.683681e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.625418e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 4.750146e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.750650e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.565878e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5714167597753878e+05 ; Traj = 4
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.635830e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.630432e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /5.275037e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.625287e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.624662e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.624362e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.629860e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.625151e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.624548e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.763618e-01 seconds = 0.000000e+00 MFlops
+Global::main(): 4.743592e+00 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.752939e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.602311e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5741086869446770e+05 ; Traj = 5
+AlgHmc::run(): shifts=0 0 0
+AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /1.245689e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /4.908800e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.867131e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.646110e-02 seconds = 9.137254e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.865919e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.396990e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.703497e-02 seconds = 9.045317e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.399951e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.427961e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.704999e-02 seconds = 9.042936e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.415980e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.398550e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.700493e-02 seconds = 9.050084e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.415530e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.393519e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702996e-02 seconds = 9.046111e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.418729e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.398080e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702806e-02 seconds = 9.046414e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.478160e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.403101e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.705810e-02 seconds = 9.041651e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.450289e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.394220e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.701709e-02 seconds = 9.048154e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.391900e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.400619e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.719399e-02 seconds = 9.020167e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.413260e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.470891e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.699801e-02 seconds = 9.051182e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396120e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.389218e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.700493e-02 seconds = 9.050084e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.422360e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.392570e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.698180e-02 seconds = 9.053757e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.397949e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.398750e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.697298e-02 seconds = 9.055159e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /6.628990e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.948920e-01 seconds = 0.000000e+00 MFlops
+AlgHmc::run(): hmc_arg->metropolis=1
+AlgHmc::run(): Metropolis step -> Accepted
+AlgHmc::run(): Hmc steps = 6, Delta_hamilton = -1.97917238343507051468e-01, accept = 1, dev = 1.596633e-12, max_diff = -2.979720e-10
+AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+AlgHmc::run(): Configuration number = 1
+Global::main(): 1.192302e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.599002e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.575630e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5748415621286523e+05 ; Traj = 6
+AlgHmc::run(): shifts=0 0 0
+AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /1.248770e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /4.971027e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.881832e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.333495e-02 seconds = 9.672820e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.425069e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.431511e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.700207e-02 seconds = 9.050538e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.394930e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.471532e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.825901e-02 seconds = 8.855272e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.397169e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.397620e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702186e-02 seconds = 9.047397e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.398511e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.389280e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.704689e-02 seconds = 9.043427e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.406150e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.727379e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.706000e-02 seconds = 9.041349e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.474169e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /4.348428e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /7.114291e-02 seconds = 7.251592e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.391969e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.391330e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.710101e-02 seconds = 9.034856e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.395278e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.390801e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.700302e-02 seconds = 9.050387e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.398559e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.504119e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.705404e-02 seconds = 9.042293e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396239e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.390141e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.707216e-02 seconds = 9.039423e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.393879e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.766060e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.708098e-02 seconds = 9.038026e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.391871e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.399198e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702496e-02 seconds = 9.046906e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /6.635904e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.946372e-01 seconds = 0.000000e+00 MFlops
+AlgHmc::run(): hmc_arg->metropolis=1
+AlgHmc::run(): Metropolis step -> Rejected
+AlgHmc::run(): Hmc steps = 6, Delta_hamilton = 9.42468057619407773018e-01, accept = 0, dev = 1.697176e-12, max_diff = -9.615955e-10
+AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+AlgHmc::run(): Configuration number = 1
+Global::main(): 1.191315e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.631610e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.678238e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5748415621286523e+05 ; Traj = 7
+AlgHmc::run(): shifts=0 0 0
+AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /1.247671e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /4.921913e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.885451e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.363703e-02 seconds = 9.618344e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.421209e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.385570e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.742192e-02 seconds = 8.984363e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.694220e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.485961e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.706000e-02 seconds = 9.041349e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.391790e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.452420e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.706000e-02 seconds = 9.041349e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.390081e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.389962e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.706000e-02 seconds = 9.041349e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.399980e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.389740e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.834198e-02 seconds = 8.842679e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396258e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.389931e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702996e-02 seconds = 9.046111e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.394079e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.388250e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.706286e-02 seconds = 9.040895e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.386099e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.395488e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.752301e-02 seconds = 8.968574e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.397908e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /4.414670e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.704308e-02 seconds = 9.044032e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.400719e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.406050e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.697012e-02 seconds = 9.055614e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.397260e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.395131e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.698299e-02 seconds = 9.053568e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396912e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.394160e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.697107e-02 seconds = 9.055462e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /6.711960e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.922241e-01 seconds = 0.000000e+00 MFlops
+AlgHmc::run(): hmc_arg->metropolis=1
+AlgHmc::run(): Metropolis step -> Accepted
+AlgHmc::run(): Hmc steps = 6, Delta_hamilton = -1.93532363278791308403e-01, accept = 1, dev = 1.620120e-12, max_diff = -5.037140e-10
+AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+AlgHmc::run(): Configuration number = 2
+Global::main(): 1.188844e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.626670e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.585319e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5755446247251439e+05 ; Traj = 8
+AlgHmc::run(): shifts=0 0 0
+AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /1.249850e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /5.049944e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.881059e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /8.463717e-02 seconds = 6.095424e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396139e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.505421e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.698085e-02 seconds = 9.053909e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.468380e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.390720e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.701089e-02 seconds = 9.049138e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396270e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.391459e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.698109e-02 seconds = 9.053871e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.405900e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.397610e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.697989e-02 seconds = 9.054060e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.409250e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.486719e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.698013e-02 seconds = 9.054022e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396769e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.396392e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.695796e-02 seconds = 9.057547e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.397989e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.738711e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.700803e-02 seconds = 9.049592e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.425109e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.393190e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.706000e-02 seconds = 9.041349e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.486760e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.393688e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.705810e-02 seconds = 9.041651e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.400831e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.389828e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.707502e-02 seconds = 9.038969e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.437359e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.395600e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.709386e-02 seconds = 9.035987e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.427351e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.402629e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /6.672406e-02 seconds = 7.731834e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /6.637096e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.944490e-01 seconds = 0.000000e+00 MFlops
+AlgHmc::run(): hmc_arg->metropolis=1
+AlgHmc::run(): Metropolis step -> Accepted
+AlgHmc::run(): Hmc steps = 6, Delta_hamilton = -1.36956714559346437454e-01, accept = 1, dev = 1.605234e-12, max_diff = -5.941966e-10
+AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+AlgHmc::run(): Configuration number = 3
+Global::main(): 1.184716e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.763248e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.609941e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5741231070769843e+05 ; Traj = 9
+AlgHmc::run(): shifts=0 0 0
+AlgHmc::run(): Running test 1 of 1, attempt 1 of 1
+Node 0: AlgMomentum:heatbath(): 0.000000e+00 flops /1.245520e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /5.034924e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.869622e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /8.325195e-02 seconds = 6.196844e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /4.211152e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.392181e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.705214e-02 seconds = 9.042596e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.488011e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.394010e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.705810e-02 seconds = 9.041651e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396540e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.388140e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.705500e-02 seconds = 9.042142e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.392580e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.391242e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.704403e-02 seconds = 9.043881e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.395121e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.760340e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /6.217194e-02 seconds = 8.297946e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /4.305651e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.399029e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.707002e-02 seconds = 9.039762e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.394198e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.404391e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.704808e-02 seconds = 9.043238e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.396661e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.448050e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.703402e-02 seconds = 9.045468e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /4.402869e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.395331e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702305e-02 seconds = 9.047208e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.393240e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.393512e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.703306e-02 seconds = 9.045620e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.395030e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.773210e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.701590e-02 seconds = 9.048343e+03 MFlops
+Node 0: AlgActionGauge:prepare_fg(M*,F): 0.000000e+00 flops /3.394310e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:evolve(): 0.000000e+00 flops /3.489978e-01 seconds = 0.000000e+00 MFlops
+Node 0: AlgMomentum:evolve(): 5.158994e+08 flops /5.702090e-02 seconds = 9.047549e+03 MFlops
+Node 0: AlgMomentum:energy(): 0.000000e+00 flops /6.627083e-03 seconds = 0.000000e+00 MFlops
+Node 0: AlgActionGauge:energy(): 0.000000e+00 flops /5.914550e-01 seconds = 0.000000e+00 MFlops
+AlgHmc::run(): hmc_arg->metropolis=1
+AlgHmc::run(): Metropolis step -> Accepted
+AlgHmc::run(): Hmc steps = 6, Delta_hamilton = 1.43395585590042173862e-01, accept = 1, dev = 1.650068e-12, max_diff = -4.982012e-10
+AlgHmc::run(): CG iterations: average = 0.000000e+00, min = 1000000, max = 0
+AlgHmc::run(): True Residual / |source|: average = 0.000000e+00, min = 3.400000e+38, max = 0.000000e+00
+AlgHmc::run(): Efficiency (acceptance per cg iteration) = 0.000000e+00
+AlgHmc::run(): Configuration number = 4
+Global::main(): 1.209084e+01 seconds
+Node 0: Plaq:run(): 0.000000e+00 flops /1.615789e-01 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /1.584210e-01 seconds = 0.000000e+00 MFlops
+Global::main(): plaq.smartGetPlaqSum = 1.5759439633920751e+05 ; Traj = 10

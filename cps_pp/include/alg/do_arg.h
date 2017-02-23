@@ -99,28 +99,6 @@ public:
 	   void SetupAsqTadU0 (  double u0 ) ;
 };
 
-class VML;
-class DoArgExt {
-public:
-	 bool Encode(char *filename,char *instance);
-	 bool Decode(char *filename,char *instance);
-	 bool Vml(VML *vmls,char *instance);
-	Float twist_bc_x;
-	Float twist_bc_y;
-	Float twist_bc_z;
-	Float twist_bc_t;
-	StartConfType start_u1_conf_kind;
-	Pointer start_u1_conf_load_addr;
-	char *start_u1_conf_filename;
-	int start_u1_conf_alloc_flag;
-	int mult_u1_conf_flag;
-	int save_stride;
-	int trajectory;
-	Float mobius_b_coeff;
-	Float mobius_c_coeff;
-	   DoArgExt (  ) ;
-};
-
 /* the xdr functions */
 
 #ifdef __cplusplus
@@ -130,12 +108,10 @@ extern "C" {
 #if defined(__STDC__) || defined(__cplusplus)
 extern  bool_t vml_BGLAxisMap (VML *, char *instance, BGLAxisMap*);
 extern  bool_t vml_DoArg (VML *, char *instance, DoArg*);
-extern  bool_t vml_DoArgExt (VML *, char *instance, DoArgExt*);
 
 #else /* K&R C */
 extern  bool_t vml_BGLAxisMap (VML *, char *instance, BGLAxisMap*);
 extern  bool_t vml_DoArg (VML *, char *instance, DoArg*);
-extern  bool_t vml_DoArgExt (VML *, char *instance, DoArgExt*);
 
 #endif /* K&R C */
 

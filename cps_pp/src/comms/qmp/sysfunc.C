@@ -146,28 +146,30 @@ void init_qmp(int * argc, char ***argv) {
 	peNum *= peGrid[i];
     peRank = peRank % peNum;
   }
-  int if_print=1;
-  for(int i = 0;i<NDIM;i++)
-  if (pePos[i]>=2) if_print=0;
 
-  if (if_print){
-      printf("Rank=%d Num=%d NDIM=%d\n",peRank,peNum,NDIM);
-      printf("dim:");
-      for(int i = 0;i<NDIM;i++)
-        printf(" %d",peGrid[i]);
-      printf("\n");
-      printf("pos:");
-      for(int i = 0;i<NDIM;i++)
-        printf(" %d",pePos[i]);
-      printf("\n");
-
-#if 0
-    int rc;
-    BGLPersonality pers;
-    rts_get_personality(&pers, sizeof(pers));
-    printf("from personality: %d %d %d %d\n",pers.xCoord,pers.yCoord,pers.zCoord,rts_get_processor_id());
-#endif
-  }
+// Commented out by Luchang
+//   int if_print=1;
+//   for(int i = 0;i<NDIM;i++)
+//   if (pePos[i]>=2) if_print=0;
+//
+//   if (if_print){
+//       printf("Rank=%d Num=%d NDIM=%d\n",peRank,peNum,NDIM);
+//       printf("dim:");
+//       for(int i = 0;i<NDIM;i++)
+//         printf(" %d",peGrid[i]);
+//       printf("\n");
+//       printf("pos:");
+//       for(int i = 0;i<NDIM;i++)
+//         printf(" %d",pePos[i]);
+//       printf("\n");
+//
+// #if 0
+//     int rc;
+//     BGLPersonality pers;
+//     rts_get_personality(&pers, sizeof(pers));
+//     printf("from personality: %d %d %d %d\n",pers.xCoord,pers.yCoord,pers.zCoord,rts_get_processor_id());
+// #endif
+//   }
 
 
 //     printf("from personality:\n");
@@ -187,11 +189,10 @@ void init_qmp(int * argc, char ***argv) {
     }
 #endif
     initialized = true;
-  printf("Rank=%d init_qmp() done\n",peRank);
     
   }
     
-}//End namespace QMPSCU {
+}//End namespace
 
 
 /*-------------------------------------------------------------------------*/
@@ -304,9 +305,9 @@ return 1;
 */
 /* In this implementation, this just returns the integer value
   associated with the direction from the SCUDir enum */
-//int SCURemap( SCUDir dir ) {
-//    return (int)dir;
-//}
+int SCURemap( SCUDir dir ) {
+    return (int)dir;
+}
 
 
 CPS_END_NAMESPACE

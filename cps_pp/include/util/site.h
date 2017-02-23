@@ -161,7 +161,7 @@ public:
      another way of looping over a node
      syntax:
      
-     Site x;
+     site x;
      while ( x.LoopsOverNode() )
      {
         // do stuff

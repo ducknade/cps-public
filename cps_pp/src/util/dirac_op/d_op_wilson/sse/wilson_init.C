@@ -4,19 +4,19 @@ CPS_START_NAMESPACE
 /*! \file
   \brief  Routine used internally in the DiracOpWilson class.
   
-  $Id: wilson_init.C,v 1.4 2013-01-08 21:09:25 chulwoo Exp $
+  $Id: wilson_init.C,v 1.2 2011/02/26 00:19:27 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-01-08 21:09:25 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/sse/wilson_init.C,v 1.4 2013-01-08 21:09:25 chulwoo Exp $
-//  $Id: wilson_init.C,v 1.4 2013-01-08 21:09:25 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2011/02/26 00:19:27 $
+//  $Header: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/sse/wilson_init.C,v 1.2 2011/02/26 00:19:27 chulwoo Exp $
+//  $Id: wilson_init.C,v 1.2 2011/02/26 00:19:27 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.4 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/sse/wilson_init.C,v $
+//  $Revision: 1.2 $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/sse/wilson_init.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -54,7 +54,7 @@ CPS_END_NAMESPACE
 #include <util/verbose.h>
 #include <util/error.h>
 //#include <omp.h>
-#include <util/omp_wrapper.h>
+#include "fake_omp.h"
 
 
 CPS_START_NAMESPACE
@@ -88,7 +88,6 @@ double read_cpu_MHz()
   return max_freq;
 }
 
-#undef USE_TAG
 //! allocate communication buffers and prepare communication
 void wilson_init_comm(int dir, int block, Wilson *wilson_p)
 {
@@ -107,17 +106,9 @@ void wilson_init_comm(int dir, int block, Wilson *wilson_p)
     wilson_p->msgmem[idx][0] =
       QMP_declare_msgmem((void *)(wilson_p->recv_buf[idx]), len);
     wilson_p->msghandle[idx][1] =
-#ifdef USE_TAG
       QMP_declare_send_relative_tag(wilson_p->msgmem[idx][1], dir, -sflag, 0,idx);
-#else
-      QMP_declare_send_relative(wilson_p->msgmem[idx][1], dir, -sflag, 0);
-#endif
     wilson_p->msghandle[idx][0] =
-#ifdef USE_TAG
       QMP_declare_receive_relative_tag(wilson_p->msgmem[idx][0], dir, +sflag, 0,idx);
-#else
-      QMP_declare_receive_relative(wilson_p->msgmem[idx][0], dir, +sflag, 0);
-#endif
     wilson_p->multiple[idx] = QMP_declare_multiple(wilson_p->msghandle[idx], 2);
     
     idx=dir+4;
@@ -130,17 +121,9 @@ void wilson_init_comm(int dir, int block, Wilson *wilson_p)
     wilson_p->msgmem[idx][0] =
       QMP_declare_msgmem((void *)(wilson_p->recv_buf[idx]), len);
     wilson_p->msghandle[idx][1] =
-#ifdef USE_TAG
       QMP_declare_send_relative_tag(wilson_p->msgmem[idx][1], dir, +sflag, 0,idx);
-#else
-      QMP_declare_send_relative(wilson_p->msgmem[idx][1], dir, +sflag, 0);
-#endif
     wilson_p->msghandle[idx][0] =
-#ifdef USE_TAG
       QMP_declare_receive_relative_tag(wilson_p->msgmem[idx][0], dir, -sflag, 0,idx);
-#else
-      QMP_declare_receive_relative(wilson_p->msgmem[idx][0], dir, -sflag, 0);
-#endif
     wilson_p->multiple[idx] = QMP_declare_multiple(wilson_p->msghandle[idx], 2);
 }
 	       

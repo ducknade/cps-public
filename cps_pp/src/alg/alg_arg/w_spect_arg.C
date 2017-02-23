@@ -226,8 +226,6 @@ vml_WspectArg (VML *vmls, char *name,WspectArg *objp)
 		 return FALSE;
 	 if (!vml_int (vmls, "BEfuzzing_hits", &objp->BEfuzzing_hits))
 		 return FALSE;
-	 if (!vml_int (vmls, "GaugeFixProp", &objp->GaugeFixProp))
-		 return FALSE;
 	 vml_class_end(vmls,"WspectArg",name);
 	return TRUE;
 }

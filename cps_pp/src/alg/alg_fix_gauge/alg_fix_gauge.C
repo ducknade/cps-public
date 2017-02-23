@@ -4,20 +4,20 @@ CPS_START_NAMESPACE
 /*!\file
   \brief Implementation of AlgFixGauge class methods.
 
-  $Id: alg_fix_gauge.C,v 1.11 2007-06-25 15:49:20 chulwoo Exp $
+  $Id: alg_fix_gauge.C,v 1.11 2007/06/25 15:49:20 chulwoo Exp $
 */
 //------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2007-06-25 15:49:20 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/alg/alg_fix_gauge/alg_fix_gauge.C,v 1.11 2007-06-25 15:49:20 chulwoo Exp $
-//  $Id: alg_fix_gauge.C,v 1.11 2007-06-25 15:49:20 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2007/06/25 15:49:20 $
+//  $Header: /space/cvs/cps/cps++/src/alg/alg_fix_gauge/alg_fix_gauge.C,v 1.11 2007/06/25 15:49:20 chulwoo Exp $
+//  $Id: alg_fix_gauge.C,v 1.11 2007/06/25 15:49:20 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: alg_fix_gauge.C,v $
 //  $Revision: 1.11 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/alg/alg_fix_gauge/alg_fix_gauge.C,v $
+//  $Source: /space/cvs/cps/cps++/src/alg/alg_fix_gauge/alg_fix_gauge.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -135,15 +135,13 @@ void AlgFixGauge::run()
 
   }
 
-  // Allocate gauge fixing matrices and set them to 1
+  // Allocate gauge fixing matrices
   //----------------------------------------------------------------
   lat.FixGaugeAllocate(fix, num, h_planes);
 
 
   // Calculate the gauge fixing matrices
   //----------------------------------------------------------------
-// added to make it possible to explicitly bypass gauge fixin:w
-  if ( alg_fix_gauge_arg->max_iter_num > 0 ) 
   lat.FixGauge(alg_fix_gauge_arg->stop_cond, 
 	       alg_fix_gauge_arg->max_iter_num);
 

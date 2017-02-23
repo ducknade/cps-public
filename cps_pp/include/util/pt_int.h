@@ -14,7 +14,7 @@
 /*!\file
   \brief Declaration of functions used by the parallel transport classes.
 
-  $Id: pt_int.h,v 1.24 2013-04-05 17:46:30 chulwoo Exp $
+  $Id: pt_int.h,v 1.21 2009/05/06 04:10:41 chulwoo Exp $
   Why are (at least some of) these not class methods?
 */
 #ifdef USE_SCU
@@ -211,7 +211,7 @@ int conjugated;
     	  GAUGE_LEN=18,
 		  VECT_LEN=6, 
 		  VECT_LEN_OUT=6,
-		  VECT_LEN_PAD=6};
+		  VECT_LEN_PAD=8};
     PT() {};
     ~PT() {};
     static int evenodd;
@@ -271,18 +271,17 @@ int flag = QCOMMS);
   }
 #else
   void *FastAlloc(int request){
-	if ( request==0) return NULL;
     void *p =  malloc(request);
     return p;
   }
   void *Alloc(char *cname, char *fname, char *vname, int request,unsigned
-int flag = 0, int if_alloc=1 );
+int flag = 0);
   void Free(void *p){
     if (p) free(p);
   }
 #endif
 
-  void *FastAlloc(char *cname, char *fname, char *vname, int request, int if_alloc=1 );
+  void *FastAlloc(char *cname, char *fname, char *vname, int request );
 
   Float dclock(){
     struct timeval start;
@@ -295,7 +294,7 @@ int flag = 0, int if_alloc=1 );
         fname,(Float)nflops,time,(Float)nflops/(time*1.e6));
         return nflops/time;
   }
-  void force_product_sum(PTvector *v, PTvector *w, Float coeff, matrix *f);
+  void force_product_sum(vector *v, vector *w, Float coeff, matrix *f);
   void update_momenta(matrix **force, Float dt, matrix *mom);
   void asqtad_fat(AsqDArg *asq_arg, matrix *fatlink);
   void asqtad_long(AsqDArg *asq_arg, matrix *longlink, matrix *longlink_m = NULL);

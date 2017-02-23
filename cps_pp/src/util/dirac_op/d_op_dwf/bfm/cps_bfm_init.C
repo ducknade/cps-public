@@ -31,7 +31,7 @@ static int qdp_already_initted = 0;
 
 CPS_START_NAMESPACE
 int cps_qdp_init(int *argc, char ***argv){
-  VRB.Result("","cps_qdp_init()","started\n");
+  VRB.Result("","cps_qdp_init()","started");
   if (qdp_initted) return 1;
 //  if (Chroma::isInitialized()) {
   if ( qdp_already_initted ) {
@@ -56,7 +56,7 @@ int cps_qdp_init(int *argc, char ***argv){
 }
 
 int cps_qdp_finalize(){
-  VRB.Result("","cps_qdp_finalize()","started\n");
+  VRB.Result("","cps_qdp_finalize()","started");
   if (!qdp_initted) {
     ERR.General("","cps_qdp_finalize()","qdp_initted=0!");
   }
@@ -203,8 +203,8 @@ int even, int odd, int Ls=0, double fac_t=1.){
 //        QDPdouble *qdp_p = (QDPdouble *) &(qdp[x[4]].elem(0).elem(0).elem(0).real());
 	QDPdouble *qdp_p = q_p[x[4]];        
 	const int tnum = omp_get_thread_num();
-//	if ((called%10000)==0)
-//	Printf("impex %d: %d %d %d %d %d:%d\n",i,x[0],x[1],x[2],x[3],x[4],tnum);
+	// if ((called%10000)==0)
+	// Printf("impex %d: %d %d %d %d %d:%d\n",i,x[0],x[1],x[2],x[3],x[4],tnum);
 #endif
       
       for ( int coco=0;coco<12;coco++ ) {
@@ -313,8 +313,7 @@ int max_iter
 #ifdef UNIFORM_SEED_TESTING
   majorityVote  dwf;
 #else
-//  bfm_qdp<double>  dwf;
-  bfm_qdp<float>  dwf;
+  bfm_qdp<double>  dwf;
 #endif
 
   dwfa.node_latt[0]  = lx;
@@ -468,45 +467,22 @@ int DiracOpDwf::InvCg(Vector *out,
   VRB.Result(cname,fname,
            "stp_cnd =%e\n", IFloat(residual));
 //  residual = 0.7*residual;
-    Vector *mmp = (Vector *) smalloc(cname,fname,"mmp",f_size_cb * sizeof(Float));
-    Vector *res = (Vector *) smalloc(cname,fname,"res",f_size_cb * sizeof(Float));
-for(int i =0;i<10;i++) {
-   Float *sol;
-   Float *src;
-	if(i==0){ sol=sol_cps;src=src_cps;}
-	else { 
-	   sol=(Float *)mmp;src=(Float *)res; 
-	   mmp->VecZero(f_size_cb);
-	}
-   int iter = cps_qdp_dwf_invert(lat,dirac_arg->mass,sol,src,residual,dirac_arg->max_num_iter);
-
-	if(i!=0){
-    out->FTimesPlusVec(1.,mmp, f_size_cb);
-	}
+//for(int i =0;i<1;i++) 
+   int iter = cps_qdp_dwf_invert(lat,dirac_arg->mass,sol_cps,src_cps,residual,dirac_arg->max_num_iter);
   //------------------------------------------------------------------
   // Done. Finish up and return
   //------------------------------------------------------------------
     // Calculate and set true residual: 
     // true_res = |src - MatPcDagMatPc * sol| / |src|
-//    Vector *sol = (Vector *) out;
-//    Vector *src = (Vector *) in;
-    MatPcDagMatPc(mmp, out);
-#if 0
-    res->CopyVec(in, f_size_cb);
-//    res->VecMinusEquVec(mmp, f_size_cb);
-    res->FTimesPlusVec(-1.,mmp, f_size_cb);
+  {
+    Vector *sol = (Vector *) out;
+    Vector *src = (Vector *) in;
+    Vector *mmp = (Vector *) smalloc(cname,fname,"mmp",f_size_cb * sizeof(Float));
+    Vector *res = (Vector *) smalloc(cname,fname,"res",f_size_cb * sizeof(Float));
+    MatPcDagMatPc(mmp, sol);
+    res->CopyVec(src, f_size_cb);
+    res->VecMinusEquVec(mmp, f_size_cb);
     Float res_norm_sq_cur = res->NormSqNode(f_size_cb);
-#else
-    Float res_norm_sq_cur = 0;
-    Float *in_f = (Float *)in;
-    Float *res_f = (Float *)res;
-    Float *mmp_f = (Float *)mmp;
-#pragma omp parallel for default(shared) reduction(+: res_norm_sq_cur)
-    for(int i_tmp=0;i_tmp<f_size_cb;i_tmp++){
-	Float temp = *(res_f+i_tmp) = *(in_f+i_tmp) - *(mmp_f+i_tmp);
-	res_norm_sq_cur += temp*temp;
-    }
-#endif
     DiracOpGlbSum(&res_norm_sq_cur);
     Float tmp = res_norm_sq_cur / src_norm_sq;
     tmp = sqrt(tmp);
@@ -515,9 +491,6 @@ for(int i =0;i<10;i++) {
     }
     VRB.Result(cname,fname,
   	     "True |res| / |src| = %e, iter = %d\n", IFloat(tmp), iter);
-	if(tmp<dirac_arg->stop_rsd) break;
-   residual = 0.5*dirac_arg->stop_rsd/tmp;
-}
 
     Printf("mmp =%p\n",mmp);
     sfree(cname,fname,"mmp",mmp);
@@ -525,6 +498,7 @@ for(int i =0;i<10;i++) {
     Printf("res =%p\n",res);
     sfree(cname,fname,"res",res);
     Printf("res freed\n");
+  }
 	cg_time +=dclock();
 	print_flops(cname,fname,0,cg_time);
 }

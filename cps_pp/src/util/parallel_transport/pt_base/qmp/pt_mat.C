@@ -1,22 +1,24 @@
 #ifdef USE_QMP
-#include <util/omp_wrapper.h>
+#ifdef USE_OMP
+#include <omp.h>
+#endif
 /*! \file
   \brief  Definition of parallel transport definitions for QCDOC.
   
-  $Id: pt_mat.C,v 1.9 2013-01-08 21:09:25 chulwoo Exp $
+  $Id: pt_mat.C,v 1.6 2012/03/27 20:05:49 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-01-08 21:09:25 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/parallel_transport/pt_base/qmp/pt_mat.C,v 1.9 2013-01-08 21:09:25 chulwoo Exp $
-//  $Id: pt_mat.C,v 1.9 2013-01-08 21:09:25 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/27 20:05:49 $
+//  $Header: /space/cvs/cps/cps++/src/util/parallel_transport/pt_base/qmp/pt_mat.C,v 1.6 2012/03/27 20:05:49 chulwoo Exp $
+//  $Id: pt_mat.C,v 1.6 2012/03/27 20:05:49 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: pt_mat.C,v $
-//  $Revision: 1.9 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/parallel_transport/pt_base/qmp/pt_mat.C,v $
+//  $Revision: 1.6 $
+//  $Source: /space/cvs/cps/cps++/src/util/parallel_transport/pt_base/qmp/pt_mat.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -270,13 +272,9 @@ void PT::mat(int n, matrix **mout, matrix **min, const int *dir){
   dtime += dclock();
   setup +=dtime;
   dtime = -dclock();
-  int if_print = 0;
-//  if ( (call_num%10000==1) && (!QMP_get_node_number()) ) if_print=1;
 
-#define USE_TEST2
 #ifdef USE_TEST2
 //assume nt > n!
-    static char *cname="mat()";
 #pragma omp parallel default(shared)
 {
   int iam,nt,ipoints,istart,offset;
@@ -293,12 +291,10 @@ void PT::mat(int n, matrix **mout, matrix **min, const int *dir){
   ipoints = (local_chi[w_t]/2)/nt_dir;
   offset = ipoints*i_t;
   if (i_t == (nt_dir-1)) ipoints = (local_chi[w_t]/2)-offset;
-    if ( if_print )
-      printf("thread %d of %d nt_dir n_t i_t ipoints offset= %d %d %d %d %d\n",iam,nt,nt_dir,n_t,i_t,ipoints,offset);
+    if (call_num%10000==1 && !QMP_get_node_number() ) 
+      printf("thread %d of %d n_t i_t ipoints offset=%d %d %d %d %d\n",iam,nt,n_t,i_t,ipoints,offset);
   //Interleaving of local computation of matrix multiplication
-  partrans_cmm_agg((uc_l[w_t]+offset*2),min[n_t],mout[n_t],ipoints);
-    if ( if_print )
-      printf("thread %d of %d done\n",iam,nt);
+  partrans_cmm_agg((uc_l[w_t]+offset),min[n_t],mout[n_t],ipoints);
 }
 #else
 {
@@ -332,33 +328,7 @@ void PT::mat(int n, matrix **mout, matrix **min, const int *dir){
   dtime = -dclock();
 
   //Do non-local computations
-#ifdef USE_TEST2
-//assume nt > n!
-#pragma omp parallel default(shared)
-{
-  int iam,nt,ipoints,istart,offset;
-  iam = omp_get_thread_num();
-  nt = omp_get_num_threads();
-  int nt_dir = nt/n;
-  int n_t = iam/nt_dir;
-  int i_t = iam%nt_dir;
-  if (n_t >= n ){  n_t = n-1;
-    i_t = iam - (n-1)*nt_dir;
-    nt_dir = nt -(n-1)*nt_dir;
-  }
-  int w_t = wire[n_t];
-  ipoints = (non_local_chi[w_t]/2)/nt_dir;
-  offset = ipoints*i_t;
-  if (i_t == (nt_dir-1)) ipoints = (non_local_chi[w_t]/2)-offset;
-    if ( if_print )
-      printf("thread %d of %d nt_dir n_t i_t ipoints offset= %d %d %d %d %d\n",iam,nt,nt_dir,n_t,i_t,ipoints,offset);
-  //Non-local computation
-  if (ipoints>0)
-  partrans_cmm_agg((uc_nl[w_t]+offset*2),(matrix *)rcv_buf[w_t],mout[n_t],ipoints);
-    if ( if_print )
-      printf("thread %d of %d done\n",iam,nt);
-}
-#else
+//pragma omp parallel
 {
 #pragma omp parallel for
   for(i=0;i<n;i++) 
@@ -371,8 +341,6 @@ void PT::mat(int n, matrix **mout, matrix **min, const int *dir){
   }
 
 }//#pragma omp parallel
-#endif
-
   dtime += dclock();
   nonlocal +=dtime;
 

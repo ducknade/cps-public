@@ -3,14 +3,14 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-04-05 17:46:30 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/alg/quark_prop_s.h,v 1.6 2013-04-05 17:46:30 chulwoo Exp $
-//  $Id: quark_prop_s.h,v 1.6 2013-04-05 17:46:30 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: zs $
+//  $Date: 2004/09/02 17:00:03 $
+//  $Header: /space/cvs/cps/cps++/include/alg/quark_prop_s.h,v 1.5 2004/09/02 17:00:03 zs Exp $
+//  $Id: quark_prop_s.h,v 1.5 2004/09/02 17:00:03 zs Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.6 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/alg/quark_prop_s.h,v $
+//  $Revision: 1.5 $
+//  $Source: /space/cvs/cps/cps++/include/alg/quark_prop_s.h,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -117,12 +117,9 @@ public:
    void getQuarkPropS(char *results);
 
    //-----------------------------------------------------------
-   // ACCESSORS: was for debugging, now implemented
+   // ACCESSORS: for debugging, not implemented
    //-----------------------------------------------------------
-   Float* AccessQuarkPropS(int color, int site) const{
-     int vol=GJP.VolNodeSites();
-     return (&prop[color][6*site]);
-   };
+   Float *AccessQuarkPropS(int color, int *site ) const;
 
    friend class QuarkPropSMng;
 };

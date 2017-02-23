@@ -3,7 +3,7 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_clover/noarch/clover.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_clover/noarch/clover.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -34,7 +34,7 @@ CPS_START_NAMESPACE
 // external variable definition for clover_mat_mlt_asm.asm
 //----------------------------------------------------------------------
 CPS_END_NAMESPACE
-//#include<comms/nga_reg.h>
+#include<comms/nga_reg.h>
 CPS_START_NAMESPACE
 //extern const unsigned int clover_cram_scratch_addr = CRAM_SCRATCH_ADDR;
 

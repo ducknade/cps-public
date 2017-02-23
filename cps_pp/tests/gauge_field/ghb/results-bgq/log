@@ -1,0 +1,265 @@
+
+Find available block: R01-M1-N12-128
+*********************************
+* QMP BlueGene/Q Native topology
+*********************************
+* Torus: 2 x 2 x 4 x 4 x2 
+* SMP: 1 tasks per node
+* MPI: 128 tasks
+* Physical XxYxZxT = 2x4x4x4
+* Logical  XxYxZxT = 2x4x4x4
+*********************************
+QMP_init_msg_passing returned 0
+QMP thread level = QMP_THREAD_SINGLE
+argv[0])(after)=../binaries/BGQ.x
+Node 0: GlobalJobParameter::Initialize(): nodes= 2 4 4 4 1
+Node 0: GlobalJobParameter::Initialize(): node_sites= 8 4 4 4 32
+Node 0: GlobalJobParameter::Initialize(): coor= 0 0 0 0 0
+dim 0: nodes=2 gjp_local_axis=0
+dim 1: nodes=4 gjp_local_axis=0
+dim 2: nodes=4 gjp_local_axis=0
+dim 3: nodes=4 gjp_local_axis=0
+Node 0: GlobalJobParameter::Initialize(): start_conf_alloc_flag=6
+Verbose::Acitve(2,-1202)=1
+Verbose::Acitve(12,-1202)=1
+verbose_level =-1202
+checksum_level =0
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.300045e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /4.981995e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.067901e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.236986e-02 seconds = 0.000000e+00 MFlops
+glb_sum:five_dim=1
+Node 0: Plaq:run(): 0.000000e+00 flops /4.884601e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.064110e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.216101e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /3.300405e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): 0.0000000000000000e+00
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /5.280972e-04 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /9.463072e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.738405e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /5.193090e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966810e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.214403e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966405e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.196307e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.964998e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.195711e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.965904e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.210803e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966190e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.193494e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966190e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.208896e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969600e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.209992e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968312e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.236719e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968694e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.205915e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968002e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.211995e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969886e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.223010e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.967621e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.223296e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969290e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.226896e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.967096e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.218003e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969004e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.228398e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968598e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.221794e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.970005e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.221889e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.965094e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.214403e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.969385e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.224011e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.970816e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.239604e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.966500e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.222509e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.968598e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.234406e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.971483e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.235408e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.971889e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.231903e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.965785e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.221603e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.971388e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.235980e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.971102e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.226992e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.970506e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.227206e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.972485e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.239604e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.974297e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.239819e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.974201e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.235885e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /4.776151e-01 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.577329e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.581549e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.585340e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587605e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.585316e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587652e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.597880e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587795e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.615499e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 4.144369e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.055002e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.037163e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.268697e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.976894e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.370401e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.268101e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.971911e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.596996e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): 1.4784650078652857e+05
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.055956e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226115e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.591062e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.591276e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.590656e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588582e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588248e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.589869e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588630e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.595878e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588296e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588749e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.492005e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.055956e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.040977e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.269698e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.976799e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.292510e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.267099e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.974606e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.594517e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): 1.5518187012229284e+05
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.057863e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.225710e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588797e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586794e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.589417e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.600694e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.584195e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.594090e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586985e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.592444e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.585053e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586126e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.491943e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.055956e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.040024e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.267314e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.971101e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.440997e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.267791e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.973914e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.587698e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): 1.5679420026024623e+05
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.057863e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226497e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586865e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587342e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587581e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.590823e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586436e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587700e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.587485e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588463e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.589488e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.592254e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.491271e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.055002e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.036924e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.269197e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.970791e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.320095e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.267123e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.973485e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.588103e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): 1.5714167597753907e+05
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.056910e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /1.226187e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.597165e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586555e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588201e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.592945e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.588797e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.599406e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.592349e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.600336e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.600431e-02 seconds = 0.000000e+00 MFlops
+Node 0: GheatBath:smartRun(): 0.000000e+00 flops /2.586532e-02 seconds = 0.000000e+00 MFlops
+Global::main(): 1.492114e+00 seconds
+Node 0: GaugeField::fetchLinks: fetch_local_links=1, fetch_neighbor_links=0
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.054049e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /7.079840e-03 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.267695e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.972293e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:run(): 0.000000e+00 flops /6.373405e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField::fetchLinks: fetch_local_links=0, fetch_neighbor_links=1
+Node 0: GaugeField:fL-comtime: 0.000000e+00 flops /1.268196e-02 seconds = 0.000000e+00 MFlops
+Node 0: GaugeField:fetchLinks: 0.000000e+00 flops /2.973986e-02 seconds = 0.000000e+00 MFlops
+Node 0: Plaq:smartGetPlaqSum(): 0.000000e+00 flops /4.587293e-02 seconds = 0.000000e+00 MFlops
+Node 0: Global::main(): 1.5741086869446875e+05

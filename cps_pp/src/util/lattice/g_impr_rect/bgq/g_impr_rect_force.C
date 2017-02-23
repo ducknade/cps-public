@@ -9,7 +9,83 @@
 #include <util/smalloc.h>
 #include <util/pt_mat.h>
 #include <util/time_cps.h>
+#include <cassert>
 CPS_START_NAMESPACE
+
+#define USE_LINK_BUFFER 0
+#if USE_LINK_BUFFER
+
+ForceArg GimprRect::EvolveMomGforce(Matrix *mom, Float dt){
+  char *fname = "EvolveMomGforce(M*,F)";
+  VRB.Func(cname,fname);
+
+  EnableLinkBuffer(0); VRB.Result(cname, fname, "Warning! Enabling link buffer!\n");
+  assert(LinkBufferIsEnabled()); //needed for parallel for loop
+  const int buffer_thickness = 2;
+  printf("creating buffer\n");
+  CreateBuffer(buffer_thickness, BUFFER_SHAPE_LOCAL_AND_FACES_AND_1ST_CORNERS);
+  printf("finished creating buffer\n");
+
+  Float L1=0.0;
+  Float L2=0.0;
+  Float Linf=0.0;
+
+#ifdef PROFILE
+  Float time = -dclock();
+  ForceFlops = 0;
+#endif
+  
+  const int vol_node_sites = GJP.VolNodeSites();
+#pragma omp parallel num_threads(64) reduction(+:L1,L2)
+  {
+    Float Linf_priv = 0.0;
+    Matrix mt0;
+#pragma omp for 
+    for(int uoff = 0; uoff < vol_node_sites; uoff++) {
+      int x[4];
+      CoordsFromOffset(x, uoff);
+
+      for (int mu = 0; mu < 4; ++mu) {
+        GforceSite(mt0, x, mu);
+
+        IFloat *ihp = (IFloat *)(mom+uoff+mu);
+        IFloat *dotp = (IFloat *)&mt0;
+        fTimesV1PlusV2(ihp, dt, dotp, ihp, 18);
+
+        Float norm = ((Matrix*)dotp)->norm();
+        Float tmp = sqrt(norm);
+        L1 += tmp;
+        L2 += norm;
+        if(tmp > Linf_priv) Linf_priv = tmp;
+      }
+    }
+
+#pragma omp critical
+    {
+      if(Linf_priv > Linf) Linf = Linf_priv;
+    }
+  }
+
+  ClearAllBufferedLink();
+
+  ForceFlops +=GJP.VolNodeSites()*4*18*2;
+#ifdef PROFILE
+  time += dclock();
+  print_flops(cname,fname,ForceFlops,time);
+#endif
+
+  glb_sum(&L1);
+  glb_sum(&L2);
+  glb_max(&Linf);
+
+  L1 /= 4.0*GJP.VolSites();
+  L2 /= 4.0*GJP.VolSites();
+
+  VRB.FuncEnd(cname,fname);
+  return ForceArg(dt*L1, dt*sqrt(L2), dt*Linf);
+}
+
+#else
 
 //------------------------------------------------------------------
 // EvolveMomGforce(Matrix *mom, Float dt):
@@ -19,6 +95,8 @@ CPS_START_NAMESPACE
 ForceArg GimprRect::EvolveMomGforce(Matrix *mom, Float dt)
 {
     const char *fname = "EvolveMomGforce()";
+
+    VRB.Result(cname, fname, "Hantao's code\n");
 
     const int vol = GJP.VolNodeSites();
     const int N = 4; //Num of dimensions
@@ -200,5 +278,7 @@ ForceArg GimprRect::EvolveMomGforce(Matrix *mom, Float dt)
     ret.glb_reduce();
     return ret;
 }
+
+#endif
 
 CPS_END_NAMESPACE

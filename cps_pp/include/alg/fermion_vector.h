@@ -11,7 +11,6 @@
 
 #include <math.h>
 #include <string.h>
-#include <vector>
 #include <util/gjp.h>
 #include <util/lattice.h>
 #include <util/random.h>
@@ -54,11 +53,8 @@ public:
 
   void SetWallSource ( int color, int spin, int time_slice);
   void SetWallSource ( int color, int spin, int time_slice, Float* src);
-
-  // if src_offset is non NULL use the array as offsets for the starts and ends of the box soruce
   void SetBoxSource  ( int color, int spin, int bstart, int bend, 
-		       int time_slice,
-		       int* src_offset=0);
+		    int time_slice);
 
   // Sets a 4D box source. If you want to set a 3D xyz box, set
   // size[3] == 1 and glb_x[3] to the global time slice you want.
@@ -71,11 +67,8 @@ public:
                       const int size[4], // global size in x, y, z and t directions
                       const Float mom[4]); // momentum
 
-  void SetZ3BWall(int color, int spin, int t, const int size[3],
-                  const std::vector<Rcomplex> &rand_num);
-
   /*! Gauge fix sink - Coulomb gauge only */
-  void GaugeFixSink       ( Lattice& lat, int dir, int unfix=0);
+  void GaugeFixSink       ( Lattice& lat, int dir);
 
   /*! Gauge fix sink - Landau gauge */
   void LandauGaugeFixSink ( Lattice& lat );

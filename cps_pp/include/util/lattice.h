@@ -1,3 +1,4 @@
+// vim: set ts=2 sw=2 expandtab:
 #ifndef INCLUDED_LATTICE_H
 #define INCLUDED_LATTICE_H
 
@@ -8,16 +9,16 @@
 /*!\file
   \brief  Definitions of the Lattice classes.
 
-  $Id: lattice.h,v 1.69 2013-06-25 12:51:12 chulwoo Exp $
+  $Id: lattice.h,v 1.59.24.4.4.2 2012/08/27 15:54:51 yinnht Exp $
 */
 /*----------------------------------------------------------------------
-  $Author: chulwoo $
-  $Date: 2013-06-25 12:51:12 $
-  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/lattice.h,v 1.69 2013-06-25 12:51:12 chulwoo Exp $
-  $Id: lattice.h,v 1.69 2013-06-25 12:51:12 chulwoo Exp $
-  $Name: not supported by cvs2svn $
-  $Revision: 1.69 $
-  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/include/util/lattice.h,v $
+  $Author: yinnht $
+  $Date: 2012/08/27 15:54:51 $
+  $Header: /space/cvs/cps/cps++/include/util/lattice.h,v 1.59.24.4.4.2 2012/08/27 15:54:51 yinnht Exp $
+  $Id: lattice.h,v 1.59.24.4.4.2 2012/08/27 15:54:51 yinnht Exp $
+  $Name: v5_0_16_hantao_io_test_v7 $
+  $Revision: 1.59.24.4.4.2 $
+  $Source: /space/cvs/cps/cps++/include/util/lattice.h,v $
   $State: Exp $
 */  
 //------------------------------------------------------------------
@@ -37,15 +38,17 @@
 
 #include <alg/cg_arg.h>
 #include <alg/eig_arg.h>
-#include <alg/lanczos_arg.h>
 #include <alg/force_arg.h>
 #ifdef PARALLEL
 #include <comms/sysfunc_cps.h>
 #endif
 
+#include <vector>
+
 CPS_START_NAMESPACE
 
 class LinkBuffer;
+class GaugeField;
 
 //------------------------------------------------------------------
 //
@@ -69,8 +72,6 @@ class Lattice
 
     static Matrix* gauge_field;
        // Pointer to the gauge field configuration.
-    static Float* u1_gauge_field;
-       // Pointer to the u1 gauge field configuration.
   
     static int is_allocated;	
        // 0 = gauge field has not been allocated
@@ -79,7 +80,6 @@ class Lattice
     static int is_initialized;	
        // 0 = gauge field has not been initialized
        // 1 = gauge field has been initialized
-    static int u1_is_initialized;
 
     static StrOrdType str_ord;
        // The gauge field configuration storage order
@@ -151,6 +151,7 @@ class Lattice
       //!< Another pointer!
 
     friend class LinkBuffer;
+    friend class GaugeField;
     
     // Added in by Ping for anisotropic lattices
     //------------------------------------------------------------------
@@ -181,35 +182,26 @@ class Lattice
     //!< Gets the gauge link U_mu(x+dir)
       // GRF: renamed to avoid conflict with the more general
       // purpose function
-        // U1 field
-    const Float* GetLinkOld(Float *g_offset, const int *x, int v, int mu) const;
-
-    int LinkBufferIsEnabled() {
-      // Line below casts a pointer to an integer to check NULL ness
-      // this is naughty (bj)
-      // return ((int) link_buffer)
-
-      // This is more explicit 
-      if ( link_buffer == 0x0 ) { 
-	return 0;
-      }
-      else {
-	return 1;
-      }
+    
+    bool LinkBufferIsEnabled() {
+      return !(link_buffer == NULL);
     }
     //!< Returns true if there is a buffer for the links, false otherwise.
 
     int EnableLinkBuffer(int buf_sz);
       //!< Creates a link buffer.
 
+    void CreateBuffer(int thickness, bool record = false);
+    void CreateBuffer(int thickness, const std::vector<int> & indexes);
+    void CreateBuffer(int thickness, LinkBufferShape shape, bool record = false);
+
+    std::vector<int> GetBufferredIndexes();
+
     void DisableLinkBuffer();   
       //!< delete the LinkBuffer Object when it's not in use. 
 
     const Matrix * GetBufferedLink(const int *x, int mu);
       //!< Gets a link from the buffer.
-
-    void ClearBufferedLink(const int * x, int mu);
-     //!< Removes links from the buffer.
 
     void ClearAllBufferedLink();
       //!< Deletes all the links from the buffer.
@@ -248,21 +240,9 @@ class Lattice
         return gauge_field;
     }
     //!< Returns the pointer to the gauge field configuration.
-    Float *U1GaugeField() const;
-         //!< Returns the pointer to the gauge field configuration.
-    void twist_bc(int sign);
-      // implement twisted boundary conditions
-    void mult_su3_links_by_u1(const Float Q);
-      //mult su3 links by exp(i Q theta_mu) theta_mu = QED potential
-    void mult_su3_links_by_mag_field(Float* B0);
-      //mult su3 links by constant B field (linear vector potential)
-      // and fix boundary links to give same plaquette (flux)
-
 
     void GaugeField(Matrix *u);
     //!< Copies an array into the gauge configuration.
-    void U1GaugeField(Float *u);
-        //!< Copies an array into the gauge configuration.
 
     int GsiteOffset(const int *x) const
         { return x[0]*g_dir_offset[0]+x[1]*g_dir_offset[1]
@@ -277,10 +257,18 @@ class Lattice
 	*/
     virtual unsigned long GsiteOffset(const int *x, const int dir) const;
 
+    int CoordsFromOffset(int x[4], int offset) const
+    {
+      int j = offset;
+      x[0] = j % node_sites[0]; j /= node_sites[0];
+      x[1] = j % node_sites[1]; j /= node_sites[1];
+      x[2] = j % node_sites[2]; j /= node_sites[2];
+      x[3] = j;
+    }
+    //!< Inverse of GsiteOffset(const int*)
+
 
     void CopyGaugeField(Matrix* u);
-        //!< Copies the  gauge configuration into an array;
-    void CopyU1GaugeField(Float* u);
         //!< Copies the  gauge configuration into an array;
 
     int CompareGaugeField(Matrix* u);
@@ -293,8 +281,6 @@ class Lattice
         //!< Returns the number of colors.	  
 
     int GsiteSize();
-        //!< Gets the number of gauge field  components per lattice site.
-    int U1GsiteSize();
         //!< Gets the number of gauge field  components per lattice site.
 
     void Staple(Matrix& stap, int *x, int mu);
@@ -374,15 +360,12 @@ class Lattice
         // The plaquette field is:
         //
         //   U_u(x) U_v(x+u) U_u(x+v)~ U_v(x)~
-    Float ReU1Plaq(int *x, int mu, int nu) const;
 
     Float SumReTrPlaqNode() const;
        //!< Calculates the local sum of the real part of the trace of the plaquette 
-    Float SumReU1PlaqNode() const;
 
     Float SumReTrPlaq() const;
        //!< Calculates the global sum of the real part of the trace of the plaquette 
-    Float SumReU1Plaq(void) const;
 
     Float ReTrRect(int *x, int mu, int nu) const;
         //!< Calculates the real part of the trace of a 6-link rectangle.
@@ -477,6 +460,8 @@ class Lattice
     void Reunitarize();
     //!< Re-unitarize the gauge field configuration.
 
+    void Reconstruct3rdRow();
+
     void Reunitarize(Float &dev, Float &max_diff);
     	//!< Test the gauge field for unitarity violation and reunitarize it.
 	// and return:
@@ -485,6 +470,23 @@ class Lattice
         // where U(i), V(i) is the gauge field before and after 
         // reunitarization. The index i runs over all components of
         // the gauge field.
+
+    void ZeroTboundary();
+    //!< Zero out the temporal links connecting t=0 to t=N_t
+
+    void ZeroTboundaryMom(Matrix* mom);
+    //!< Zero out the momenta of the temporal gauge links connecting t=0 to t=Nt
+
+    bool TestZeroTboundary();
+    //!< returns true if all the temporal gauge links connecting t=0 to t=Nt are zero.
+    // Otherwise returns false.
+
+    bool TestZeroTboundaryMom(Matrix* mom);
+    //!< returns true if all the momenta corresponding to temporal gauge links connecting
+    // t=0 to t=Nt are zero. Otherwise returns false.
+            
+
+    void Dagger();
 
     int MetropolisAccept(Float delta_h, Float *accept);
     //!< Metropolis algorithm decision.
@@ -504,9 +506,6 @@ class Lattice
 		 Vector *f_field_1,
 		 Vector *f_field_2);
     //!< Converts the gauge field and two fermion fields to a new data layout.
-    void Convert(StrOrdType new_str_ord,
-		 Vector *f_field_1);
-    //!< Converts a fermion field to a new data layout.
     
 
     void Convert(StrOrdType new_str_ord);
@@ -542,8 +541,6 @@ class Lattice
 
     void SetGfieldOrd();
     //!< Creates a unit gauge field.
-    void SetU1GfieldOrd();
-    //!< Creates a unit U1 gauge field.
 
     void SetGfieldDisOrd();
     //!< Creates a random (disordered) gauge field.
@@ -718,7 +715,7 @@ class Lattice
       \param mu The direction of the link.
      */
 
-    static uint64_t ForceFlops;
+    static int ForceFlops;
     //!< Counter for flops in the HMD force calculations.
 
     virtual ForceArg EvolveMomGforce(Matrix *mom, Float step_size) = 0;
@@ -756,16 +753,8 @@ class Lattice
     //~~ added F_CLASS_WILSON_TM for twisted mass fermions
     int FwilsonType(){
       if (Fclass()==F_CLASS_WILSON || Fclass() ==F_CLASS_CLOVER || 
-	  Fclass() ==F_CLASS_DWF || Fclass()==F_CLASS_MOBIUS 
-        || Fclass() ==F_CLASS_WILSON_TM || Fclass() ==F_CLASS_NAIVE
-        || Fclass() ==F_CLASS_BFM ) return 1;
-      else return 0;
-    }
-
-    //~~ to distinguish 5D types. Currently exclude BFM, as BFM does all the 5D stuff outside CPS.
-    int F5D(){
-      if ( Fclass() ==F_CLASS_DWF || Fclass()==F_CLASS_MOBIUS 
-        || Fclass() ==F_CLASS_MDWF || Fclass() == F_CLASS_BFM ) return 1;
+        Fclass() ==F_CLASS_DWF 
+        || Fclass() ==F_CLASS_WILSON_TM) return 1;
       else return 0;
     }
 
@@ -1020,43 +1009,13 @@ class Lattice
 			CnvFrmType cnv_frm = CNV_FRM_YES,
 			PreserveType prs_f_in = PRESERVE_YES)
 	{ return FmatEvlInv(f_out, f_in, cg_arg, 0, cnv_frm); }
-
-	virtual void Fsolfour2five(Vector *sol_5d, Vector *sol_4d, Vector *src_5d, CgArg *cg_arg){
-		char *fname = "Fsolfour2five()";
-		ERR.NotImplemented(cname,fname);
-	}
-    // Recover the 5D solution from the 4D solution, without solve the equation again.
     
-  //!< It solves the eigenvectors and eigenvalues of the fermion matrix using implicitly restarting Lanczos with polynomial accerelation with shifts.
-    /*!<
-      \param f_eigenv The computed eigenvalues
-      \param lambda The corresponding eigenvalues
-      \param eig_arg 
-      \param cnv_frm Whether the lattice fields need to be converted to
-  to a new storage order appropriate for the type of fermion action.
-  If this is ::CNV_FRM_NO, then just the gauge field is converted.
-  If this is ::CNV_FRM_YES, then the fields \a f_out and \a f_in
-  are also converted: This assumes they are initially in the same order as
-  the gauge field. Fields that are converted are restored to their original
-  order upon exit of this method. \e N.B. If the fields are already in the
-  suitable order, then specifying ::CNV_FRM_YES here has no effect.
-      \return The number of eigensolver iterations.
-      \post f_eigenv contains the eigenvectors.
-      \post lambda contains the eigenvalues.
-
-      Currently only impolemented for even/odd preconditioned matrix (extention is easy though).
-      
-    */
     virtual int FeigSolv(Vector **f_eigenv, Float *lambda, 
-			 LanczosArg *eig_arg, 
-			 CnvFrmType cnv_frm = CNV_FRM_YES){
-		char *fname = "FeigSolv(**V,F*,L*,C)";
-		ERR.NotImplemented(cname,fname);
-		return -1;
-	}
-
-  
-    //!< It solves the eigenvectors and eigenvalues of the fermion matrix Using Ritz function minimization.
+			 Float *chirality, int *valid_eig,
+			 Float **hsum,
+			 EigArg *eig_arg, 
+			 CnvFrmType cnv_frm = CNV_FRM_YES) = 0;
+    //!< It the eigenvectors and eigenvalues of the fermion matrix.
     /*!<
       \param f_eigenv The computed eigenvalues
       \param lambda The corresponding eigenvalues
@@ -1076,13 +1035,7 @@ class Lattice
       \post f_eigenv contains the eigenvectors.
       \post lambda contains the eigenvalues.
      */
-    virtual int FeigSolv(Vector **f_eigenv, Float *lambda, 
-			 Float *chirality, int *valid_eig,
-			 Float **hsum,
-			 EigArg *eig_arg, 
-			 CnvFrmType cnv_frm = CNV_FRM_YES) = 0;
 
-  
     virtual Float SetPhi(Vector *phi, Vector *frm1, Vector *frm2,
 			 Float mass, DagType dag) = 0;
 
@@ -1162,10 +1115,7 @@ class Lattice
 
     virtual void Fconvert(Vector *f_field, 
 		   	  StrOrdType to,
-			  StrOrdType from, int cb=2){
-		char *fname = "Fconvert(*V,O,O)";
-		ERR.NotImplemented(cname,fname);
-	}
+			  StrOrdType from) = 0;
     //!< Converts the field layout.
     /*!
       Exactly which data layouts are supported depends on the type of
@@ -1177,7 +1127,7 @@ class Lattice
     */
     void Fconvert(LatVector *f_field, 
 		   	  StrOrdType to,
-		  StrOrdType from, int cb=2){
+			  StrOrdType from){
       Fconvert(f_field->Vec(),to,from);
     }
 
@@ -1758,11 +1708,7 @@ class Fnone : public virtual Lattice
 		CnvFrmType cnv_frm = CNV_FRM_YES,
 		PreserveType prs_f_in = PRESERVE_YES);
         // It does nothing and returns 0.
-
-    int FeigSolv(Vector **f_eigenv, Float *lambda, 
-		 LanczosArg *eig_arg, 
-		 CnvFrmType cnv_frm = CNV_FRM_YES){ return 0; };
-    
+	
     int FeigSolv(Vector **f_eigenv, Float *lambda,
 		 Float *chirality, int *valid_eig,
 		 Float **hsum,
@@ -1802,7 +1748,7 @@ class Fnone : public virtual Lattice
 
     void Fconvert(Vector *f_field,
 			  StrOrdType to,
-		  StrOrdType from, int cb=2);
+			  StrOrdType from);
         // Convert fermion field f_field from -> to
 
     Float BhamiltonNode(Vector *boson, Float mass);
@@ -1865,7 +1811,7 @@ class FstagTypes : public virtual Lattice
 
     int FchkbEvl() const;
 
-    void Fconvert(Vector*, StrOrdType, StrOrdType, int cb=2);
+    void Fconvert(Vector*, StrOrdType, StrOrdType);
     
     Float FhamiltonNode( Vector*,  Vector*) ;
     
@@ -1913,10 +1859,6 @@ class Fstag : public virtual FstagTypes
 		Float *true_res,
 		CnvFrmType cnv_frm = CNV_FRM_YES,
 		PreserveType prs_f_in = PRESERVE_YES);
-
-    int FeigSolv(Vector **f_eigenv, Float *lambda, 
-		 LanczosArg *eig_arg, 
-		 CnvFrmType cnv_frm = CNV_FRM_YES);    
 
     int FeigSolv(Vector **f_eigenv, Float *lambda, 
 		 Float *chirality, int *valid_eig,
@@ -1997,10 +1939,6 @@ class Fasqtad : public virtual FstagTypes, public virtual Fsmear
 		CnvFrmType cnv_frm = CNV_FRM_YES,
 		PreserveType prs_f_in = PRESERVE_YES);
 
-    int FeigSolv(Vector **f_eigenv, Float *lambda, 
-		 LanczosArg *eig_arg, 
-		 CnvFrmType cnv_frm = CNV_FRM_YES);
-    
     int FeigSolv(Vector **f_eigenv, Float *lambda, 
 		 Float *chirality, int *valid_eig,
 		 Float **hsum,
@@ -2105,10 +2043,6 @@ class Fp4 : public virtual FstagTypes, public virtual Fsmear
 		PreserveType prs_f_in = PRESERVE_YES);
 
     int FeigSolv(Vector **f_eigenv, Float *lambda, 
-		 LanczosArg *eig_arg, 
-		 CnvFrmType cnv_frm = CNV_FRM_YES);
-    
-    int FeigSolv(Vector **f_eigenv, Float *lambda, 
 		 Float *chirality, int *valid_eig,
 		 Float **hsum,
 		 EigArg *eig_arg,
@@ -2166,15 +2100,9 @@ class Fp4 : public virtual FstagTypes, public virtual Fsmear
     void force_product_sum(const Vector*, const Vector*, IFloat, Matrix*);
 };
 
-// specific to dwf , in src/util/dirac_op/d_op_mobius/d_op_mobius.C
-void ReflectAndMultGamma5( Vector *out, const Vector *in,  int nodevol, int ls);
-void HermicianDWF_ee( Vector* vtmp, Vector* evec, Float mass, Lattice* lattice, Vector* Apsi );
-
 CPS_END_NAMESPACE
 
 #include <util/lattice/f_wilson_types.h>
 #include <util/lattice/lattice_types.h>
-
-
 
 #endif

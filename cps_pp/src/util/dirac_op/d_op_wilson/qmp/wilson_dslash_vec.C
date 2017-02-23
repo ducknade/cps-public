@@ -1,12 +1,10 @@
 #include <config.h>
 #include <stdio.h>
 #include <math.h>
-#include <util/dirac_op.h>
-#include <util/omp_wrapper.h>
+#include <omp.h>
 #include <qmp.h>
 
-//#ifdef USE_BFM
-#if 0
+#ifdef USE_BFM
 #include "/bgsys/drivers/ppcfloor/hwi/include/bqc/nd_rese_dcr.h"
 #endif
 
@@ -14,19 +12,19 @@ CPS_START_NAMESPACE
 /*! \file
   \brief  Routine used internally in the DiracOpWilson class.
 
-  $Id: wilson_dslash_vec.C,v 1.5 2013-05-14 16:56:34 chulwoo Exp $
+  $Id: wilson_dslash_vec.C,v 1.2 2012/03/26 13:50:12 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-05-14 16:56:34 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_vec.C,v 1.5 2013-05-14 16:56:34 chulwoo Exp $
-//  $Id: wilson_dslash_vec.C,v 1.5 2013-05-14 16:56:34 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/26 13:50:12 $
+//  $Header: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_vec.C,v 1.2 2012/03/26 13:50:12 chulwoo Exp $
+//  $Id: wilson_dslash_vec.C,v 1.2 2012/03/26 13:50:12 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.5 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_vec.C,v $
+//  $Revision: 1.2 $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_wilson/qmp/wilson_dslash_vec.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -247,17 +245,19 @@ void wilson_dslash_vec(IFloat *chi_p_f,
 		ind_buf[i]=Send_buf[i];
 	}
 
-	if (called%100==0)
-	VRB.Result(cname,fname,"local_comm=%d %d %d %d\n",local_comm[0],local_comm[1],local_comm[2],local_comm[3]);
+//	if (called%100==0)
+//	VRB.Result(cname,fname,"local_comm=%d %d %d %d\n",local_comm[0],local_comm[1],local_comm[2],local_comm[3]);
 
 //
 //  non-local send
 //
 //
 //omp_set_num_threads(8);
-//	omp_set_num_threads(64);
 #pragma omp parallel for default(shared) private(mu)
 	for (int dir=0;dir<8;dir++){
+//	if ((called%10000==0) &&(!UniqueID())){
+//		printf("wilson_dslash: dir=%d thread %d of %d\n",dir,omp_get_thread_num(),omp_get_num_threads());
+//	}
 		int x, y, z, t;
 		int r, c, s;
 		int xp, yp, zp, tp;
@@ -595,18 +595,15 @@ Printf("getMinusData((IFloat *)fbuf, (IFloat *)tmp6, SPINOR_SIZE, 1);\n");
 	setup += time;
 
 	time = -dclock();
-//	omp_set_num_threads(64);
 /*--------------------------------------------------------------------------*/
 /* Loop over sites                                                          */
 /*--------------------------------------------------------------------------*/
 	for(int i=0;i<SPINOR_SIZE;i++) fbuf[i]=0.;
+	omp_set_num_threads(64);
 	int index=0;
 #pragma omp parallel for default(shared) private(mu)
 	for(index = 0; index<vol*2;index++){
 //	Printf("wilson_dslash: %d %d %d %d\n",x,y,z,t);
-//	if ((called%10000==0) &&(!UniqueID())){
-//		printf("wilson_dslash: index=%d thread %d of %d\n",index,omp_get_thread_num(),omp_get_num_threads());
-//	}
 	int r, c, s;
 	int x, y, z, t;
 	int xp, yp, zp, tp;
@@ -633,11 +630,9 @@ Printf("getMinusData((IFloat *)fbuf, (IFloat *)tmp6, SPINOR_SIZE, 1);\n");
 	y = temp % ly; temp = temp/ly;
 	z = temp % lz; temp = temp/lz;
 	t = temp % lt; temp = temp/lt;
-
-if (0) 
-if ((called%1000000==0) &&(!UniqueID())){
-printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,omp_get_thread_num(),omp_get_num_threads(),tmp);
-}
+//	if ((called%1000000==0) &&(!UniqueID())){
+//printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,omp_get_thread_num(),omp_get_num_threads(),tmp);
+//	}
 
 
 	parity = x+y+z+t;
@@ -1117,20 +1112,20 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 
 #undef NL_OMP
 {
+	int i_nl,i_mu;
 #pragma omp parallel for default(shared)
 	for( int i=0;i<num_nl[0];i++){ 
-//		int i_nl;
-//		i_nl=i;
-//		i_mu = 0;
+		i_nl=i;
+		i_mu = 0;
 	Float tmp[SPINOR_SIZE];
 	Float tmp1[SPINOR_SIZE];
 
 		/* 1-gamma_0 */
 		/*-----------*/
 
-		Float *chi = chi_p + SPINOR_SIZE * ( *(t_ind[0]+i) );
-		Float *u   = u_p + GAUGE_SIZE * ( *(u_ind[0]+i) );
-		Float *psi = ind_buf[0] + i* SPINOR_SIZE*vec_len;
+		Float *chi = chi_p + SPINOR_SIZE * ( *(t_ind[0]+i_nl) );
+		Float *u   = u_p + GAUGE_SIZE * ( *(u_ind[0]+i_nl) );
+		Float *psi = ind_buf[0] + i_nl* SPINOR_SIZE*vec_len;
 		int r, c, s;
 		for(int vec_ind=0;vec_ind<vec_len;vec_ind++){
 			MINUSX(u,tmp,tmp1,sdag,psi);
@@ -1141,9 +1136,9 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 			psi += SPINOR_SIZE;
 			chi +=vec_offset;
 		}
-		chi = chi_p + SPINOR_SIZE * ( *(t_ind[4]+i) );
-		u   = u_p + GAUGE_SIZE * ( *(u_ind[4]+i) );
-		psi = ind_buf[4] + i* SPINOR_SIZE*vec_len;
+		chi = chi_p + SPINOR_SIZE * ( *(t_ind[4]+i_nl) );
+		u   = u_p + GAUGE_SIZE * ( *(u_ind[4]+i_nl) );
+		psi = ind_buf[4] + i_nl* SPINOR_SIZE*vec_len;
 		for(int vec_ind=0;vec_ind<vec_len;vec_ind++){
 			for(s=0;s<4;s++)
 			for(c=0;c<3;c++)
@@ -1156,7 +1151,7 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 
 #pragma omp parallel for default(shared)
 	for( int i=0;i<num_nl[1];i++){ 
-//		i_mu = 1;
+		i_mu = 1;
 	Float tmp[SPINOR_SIZE];
 	Float tmp1[SPINOR_SIZE];
 	Float tmp2[SPINOR_SIZE];
@@ -1189,7 +1184,7 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 
 #pragma omp parallel for default(shared)
 	for( int i=0;i<num_nl[2];i++){ 
-//		i_mu = 0;
+		i_mu = 0;
 	Float tmp[SPINOR_SIZE];
 	Float tmp3[SPINOR_SIZE];
 
@@ -1223,7 +1218,7 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 	}
 #pragma omp parallel for default(shared)
 	for( int i=0;i<num_nl[3];i++){ 
-//		i_mu = 0;
+		i_mu = 0;
 	Float tmp[SPINOR_SIZE];
 	Float tmp4[SPINOR_SIZE];
 
@@ -1267,14 +1262,13 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 
 	called++;
 
-	if (called%100==0){
-		print_flops("wilson_dslash_vec()","local*100",0,local);
-		print_flops("wilson_dslash_vec()","nonlocal*100",0,nonlocal);
-		print_flops("wilson_dslash_vec()","qmp*100",0,qmp);
-		print_flops("wilson_dslash_vec()","setup*100",0,setup);
+	if (called%1000==0){
+		print_flops("wilson_dslash_vec()","local*1000",0,local);
+		print_flops("wilson_dslash_vec()","nonlocal*1000",0,nonlocal);
+		print_flops("wilson_dslash_vec()","qmp*1000",0,qmp);
+		print_flops("wilson_dslash_vec()","setup*1000",0,setup);
 		local=nonlocal=qmp=setup=0.;
-//#ifdef USE_BFM
-#if 0
+#ifdef USE_BFM
 {
 	 char link_name[ND_RESE_DCR_num][10] = { "A-", "A+", "B-", "B+", "C-", "C+", "D-", "D+", "E-", "E+", "IO" };
     uint32_t i;
@@ -1295,10 +1289,9 @@ printf("wilson_dslash: %d %d %d %d %d: thread %d of %d tmp=%p \n",index,x,y,z,t,
 #endif
 	}
 //	VRB.Result(cname,fname,"done");
-DiracOp::CGflops += 1320*vol*vec_len;
 }
 
-#if 0
+#if 1
 void wilson_dslash(IFloat *chi_p_f, 
 			IFloat *u_p_f, 
 			IFloat *psi_p_f, 

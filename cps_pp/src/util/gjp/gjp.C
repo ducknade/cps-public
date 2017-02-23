@@ -4,20 +4,20 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Definition of GlobalJobParameter class methods.
 
-  $Id: gjp.C,v 1.47 2013-06-25 12:51:12 chulwoo Exp $
+  $Id: gjp.C,v 1.42 2012/03/26 13:50:12 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-06-25 12:51:12 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/gjp/gjp.C,v 1.47 2013-06-25 12:51:12 chulwoo Exp $
-//  $Id: gjp.C,v 1.47 2013-06-25 12:51:12 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/26 13:50:12 $
+//  $Header: /space/cvs/cps/cps++/src/util/gjp/gjp.C,v 1.42 2012/03/26 13:50:12 chulwoo Exp $
+//  $Id: gjp.C,v 1.42 2012/03/26 13:50:12 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: gjp.C,v $
-//  $Revision: 1.47 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/gjp/gjp.C,v $
+//  $Revision: 1.42 $
+//  $Source: /space/cvs/cps/cps++/src/util/gjp/gjp.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -52,12 +52,7 @@ CPS_END_NAMESPACE
 #include <util/error.h>
 #include <util/checksum.h>
 #include <alg/do_arg.h>
-//#include <mem/p2v.h>
-
-#ifdef USE_QUDA
-#include <alg/quda_arg.h>
-#endif
-
+#include <mem/p2v.h>
 CPS_START_NAMESPACE
 
 static const double SMALL = 1e-10;
@@ -74,7 +69,6 @@ int gjp_local_axis[6] = {0, 0, 0, 0, 1, 1};
      // (some written in assembly).
      // It is set by GJP.Initialize.
 
-#if 0
 SCUDir gjp_scu_dir[10] = { SCU_XP, SCU_XM, SCU_YP, SCU_YM,	
                            SCU_ZP, SCU_ZM, SCU_TP, SCU_TM,
                            SCU_TP, SCU_TM };
@@ -86,7 +80,6 @@ SCUDir gjp_scu_dir[10] = { SCU_XP, SCU_XM, SCU_YP, SCU_YM,
      // the direction for communication.
      // It is set by GJP.Initialize.
      // {0,1,2,3,4} corresponds to {x,y,z,t,s}
-#endif
 
 int gjp_scu_wire_map[10] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 0};
      // it gives the wire number for directions
@@ -121,11 +114,6 @@ int bgl_cps_dir[8];
 #endif
 
 GlobalJobParameter GJP;
-
-#ifdef USE_QUDA
-QudaArg QudaParam;
-#endif
-
 //------------------------------------------------------------------
 // Constructor
 //------------------------------------------------------------------
@@ -135,7 +123,7 @@ GlobalJobParameter::GlobalJobParameter()
   char *fname = "GlobalJobParameter()";
 //  printf("%s::%s Entered\n",cname,fname);
 //  VRB.Func(cname,fname);
-  doext_p = NULL;
+
   arg_set=0;
 }
 
@@ -169,12 +157,6 @@ void GlobalJobParameter::Initialize(const DoArg& rda) {
   doarg_int = rda;
   Initialize();
 #endif
-}
-
-void GlobalJobParameter::InitializeExt(const DoArgExt& rda) {
-  doext_int = rda;
-  doext_p = &doext_int;
-//  Initialize();
 }
 
 void GlobalJobParameter::Initialize() {
@@ -311,7 +293,6 @@ node_coor[0], node_coor[1], node_coor[2], node_coor[3], node_coor[4]);
     printf("dim %d: nodes=%d gjp_local_axis=%d\n",la,nodes[la],gjp_local_axis[la]);
   }
 
-#if 0
   gjp_scu_dir[0] = SCU_XP;
   gjp_scu_dir[1] = SCU_XM;
   gjp_scu_dir[2] = SCU_YP;
@@ -322,7 +303,6 @@ node_coor[0], node_coor[1], node_coor[2], node_coor[3], node_coor[4]);
   gjp_scu_dir[7] = SCU_TM;
   gjp_scu_dir[8] = SCU_SP;
   gjp_scu_dir[9] = SCU_SM;
-#endif
 
 #if TARGET == QCDOC
   for(int i = 0;i<5;i++)
@@ -356,6 +336,9 @@ node_coor[0], node_coor[1], node_coor[2], node_coor[3], node_coor[4]);
   if(bc[i] == BND_CND_APRD) 
     node_bc[i] = ( node_coor[i] == (nodes[i]-1) ) ? BND_CND_APRD : BND_CND_PRD;
   }
+
+  //By default, don't use open boundary conditions.
+  t_open_bc = false;
 
   // Set the initial configuration load address
   //----------------------------------------------------------------
@@ -395,7 +378,6 @@ if (!UniqueID())
 
  mdwf_arg = NULL;
  mdwf_tuning = NULL;
-  VRB.FuncEnd(cname,fname);
 }
 
 

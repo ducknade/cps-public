@@ -74,6 +74,7 @@ void AlgIntForceGrad::evolve_fg(AlgInt * which_int, Float fg_dt, Float dt)
 
   which_int->prepare_fg(force, fg_dt);
 
+
   // evolve the gauge field temporarily to include the force gradient
   // contribution
   LatticeContainer lat_cont;
@@ -81,6 +82,13 @@ void AlgIntForceGrad::evolve_fg(AlgInt * which_int, Float fg_dt, Float dt)
     Lattice & lat = LatticeFactory::Create(F_CLASS_NONE, G_CLASS_NONE);
     lat_cont.Get(lat);
     lat.EvolveGfield(force, 1.0);
+    
+    //Check to make sure boundary links stay zero with open BC's:
+    if(GJP.TopenBc()) {
+      if(!lat.TestZeroTboundaryMom(force)) ERR.General(cname, fname, "Nonzero boundary force!\n");
+      if(!lat.TestZeroTboundary()) ERR.General(cname, fname, "Nonzero boundary link!\n");
+    }
+
     LatticeFactory::Destroy();
   }
   sfree(cname, fname, "force", force);

@@ -3,7 +3,7 @@
 #include <util/ReadLatticePar.h>
 #include <util/time_cps.h>
 
-#ifdef USE_QMP
+#if TARGET != NOARCH
 #include <qmp.h>
 #endif
 
@@ -47,16 +47,12 @@ void ReadLatticeParallel::read(Lattice & lat, const QioArg & rd_arg)
     ERR.FileR(cname, fname, rd_arg.FileName);
   log();
 
-#ifndef USE_QMP
-	int temp_start = hd.data_start;
-	broadcastInt(&temp_start);
-	hd.data_start = temp_start;
-#else
+#if TARGET != NOARCH
   QMP_broadcast(&hd.data_start, sizeof(long));
-  broadcastInt(&hd.recon_row_3);
-  //  cout << "recon_row_3 = " << hd.recon_row_3 << endl;
 #endif
 
+  broadcastInt(&hd.recon_row_3);
+  //  cout << "recon_row_3 = " << hd.recon_row_3 << endl;
 
 
   // check all conditions between FILE and GJP
@@ -120,7 +116,7 @@ void ReadLatticeParallel::read(Lattice & lat, const QioArg & rd_arg)
 
 
 #if TARGET != QCDOC
-//  setSerial();
+  setSerial();
 #endif
 
   log();

@@ -1,26 +1,28 @@
 #include<config.h>
 #include<unistd.h>
-//#ifndef HAVE_SYNC
-//static void inline CPS_NAMESPACE::sync(){}
-//#endif
+#if TARGET != QCDOC
+#ifndef HAVE_SYNC
+void inline sync(){}
+#endif
+#endif
 CPS_START_NAMESPACE
 /*!\file
   \brief  Functions used by the data layout conversion routines.
 
-  $Id: convert_func.C,v 1.24 2013-04-05 20:05:48 chulwoo Exp $
+  $Id: convert_func.C,v 1.21 2012/03/27 05:02:40 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-04-05 20:05:48 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/convert/convert_func.C,v 1.24 2013-04-05 20:05:48 chulwoo Exp $
-//  $Id: convert_func.C,v 1.24 2013-04-05 20:05:48 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2012/03/27 05:02:40 $
+//  $Header: /space/cvs/cps/cps++/src/util/lattice/convert/convert_func.C,v 1.21 2012/03/27 05:02:40 chulwoo Exp $
+//  $Id: convert_func.C,v 1.21 2012/03/27 05:02:40 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: convert_func.C,v $
-//  $Revision: 1.24 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/convert/convert_func.C,v $
+//  $Revision: 1.21 $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/convert/convert_func.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -30,7 +32,7 @@ CPS_END_NAMESPACE
 #include <util/verbose.h>
 #include <util/lattice.h>
 #include <comms/sysfunc_cps.h>
-////#include <comms/nga_reg.h>
+//#include <comms/nga_reg.h>
 #include <comms/cbuf.h>
 CPS_START_NAMESPACE
 
@@ -114,46 +116,35 @@ void MultStagPhases(CAP cap)
 
 void RunGConverter(CAP cap, unsigned *site_tbl, unsigned *link_tbl)
 {
+	unsigned 	low,
+			current,
+			desired,
+			tmp ;
+	Float		*cram1,
+			*cram2,
+			*cram_tmp ;
 	char *fname = "RunGConverter";
 
 //-------------------------------------------------------------------------
 // cram1, cram2 should be in CRAM
 //-------------------------------------------------------------------------
 //   VRB.Func("",fname);
-//  sync();
+  sync();
   const int GSIZE= 72;
 //  if(!UniqueID())printf("%s:cap->site_size=%d\n",fname,cap->site_size);
   if (cap->site_size>GSIZE)
   ERR.General("",fname,"cap->site_size(%d)>GSIZE\n",cap->site_size,GSIZE);
-  uint32_t vol = cap->vol;
-
-//#ifndef USE_OMP
-#if 1
-	uint32_t 	low,
-			current,
-			desired,
-			tmp ;
-	Float		*cram1,
-			*cram2,
-			*cram_tmp ;
   Float cram1_stack[GSIZE], cram2_stack[GSIZE];
   cram1 = cram1_stack;
   cram2 = cram2_stack;
-	for (low=0; low<vol; low++) {
-#else
-#pragma omp parallel for default(shared)
-	for (low=0; low<vol; low++) {
-	uint32_t low,
-			current,
-			desired,
-			tmp ;
-	Float		*cram1,
-			*cram2,
-			*cram_tmp ;
-	  Float cram1_stack[GSIZE], cram2_stack[GSIZE];
-	  cram1 = cram1_stack;
-	  cram2 = cram2_stack;
-#endif
+
+//	cram1 = (Float *) qalloc(0,cap->site_size*sizeof(Float)) ;
+//	cram1 = (Float *) fmalloc(cname_none,fname,"cram1",cap->site_size*sizeof(Float)) ;
+//	cram2 = (Float *) qalloc(0,cap->site_size*sizeof(Float)) ;
+//	cram2 = (Float *) fmalloc(cname_none,fname,"cram2",cap->site_size*sizeof(Float)) ;
+
+
+	for (low=0; low<cap->vol; low++) {
 //               VRB.Flow("",fname,"low=%d\n",low);
 		current = low ;
 		desired = *(site_tbl+low) ;
@@ -194,7 +185,7 @@ void RunGConverter(CAP cap, unsigned *site_tbl, unsigned *link_tbl)
 		}
 	}
 
-//  sync();
+  sync();
 //   VRB.Func("",fname);
 //	sfree(cname_none,fname, "cram2", cram2);
 //	sfree(cname_none,fname, "cram1", cram1);

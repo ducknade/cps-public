@@ -4,7 +4,7 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_stag/qcdoc/d_op_stag.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_stag/qcdoc/d_op_stag.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -30,7 +30,7 @@ CPS_END_NAMESPACE
 #include<comms/cbuf.h>
 #include<comms/glb.h>
 #include<comms/scu.h>
-//#include<mem/p2v.h>
+#include<mem/p2v.h>
 CPS_START_NAMESPACE
 
 extern "C"{
@@ -94,7 +94,7 @@ DiracOpStag::DiracOpStag(Lattice & latt,
   //----------------------------------------------------------------
   // Copy optimized code into its execution place (CRAM)
   //----------------------------------------------------------------
-//  p2vStagDs();
+  p2vStagDs();
 
 }
 

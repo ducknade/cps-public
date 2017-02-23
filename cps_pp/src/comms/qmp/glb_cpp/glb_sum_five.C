@@ -9,7 +9,7 @@ CPS_START_NAMESPACE
 */
 //--------------------------------------------------------------------
 //  CVS keywords
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/comms/qmp/glb_cpp/glb_sum_five.C,v $
+//  $Source: /space/cvs/cps/cps++/src/comms/qmp/glb_cpp/glb_sum_five.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -66,8 +66,7 @@ void glb_sum_five(Float * float_p)
       fprintf(stderr, "glb_sum_five %d  : Node %d : Oops I did it again: me (%d,%d,%d,%d,%d) %0.14e != Node 0: %0.14e\n",
         initted, UniqueID(), CoorX(), CoorY(), CoorZ(), CoorT(), CoorS(),
                *float_p,  temp );
-//    exit(-30);
-	    float *temp = NULL; *temp=1.;
+    exit(-30);
   }
   glb_sum_internal2(float_p,5);
 //  QMP_sum_double(float_p);

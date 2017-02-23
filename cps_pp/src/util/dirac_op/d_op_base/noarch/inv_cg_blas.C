@@ -6,20 +6,20 @@ CPS_START_NAMESPACE
 /*! \file
   \brief  Definition of DiracOp class CG solver methods.
 
-  $Id: inv_cg_blas.C,v 1.3 2013-04-05 17:51:13 chulwoo Exp $
+  $Id: inv_cg_blas.C,v 1.2 2011/02/26 00:33:24 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-04-05 17:51:13 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_base/noarch/inv_cg_blas.C,v 1.3 2013-04-05 17:51:13 chulwoo Exp $
-//  $Id: inv_cg_blas.C,v 1.3 2013-04-05 17:51:13 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2011/02/26 00:33:24 $
+//  $Header: /space/cvs/cps/cps++/src/util/dirac_op/d_op_base/noarch/inv_cg_blas.C,v 1.2 2011/02/26 00:33:24 chulwoo Exp $
+//  $Id: inv_cg_blas.C,v 1.2 2011/02/26 00:33:24 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: inv_cg_blas.C,v $
-//  $Revision: 1.3 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_base/noarch/inv_cg_blas.C,v $
+//  $Revision: 1.2 $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_base/noarch/inv_cg_blas.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -38,7 +38,7 @@ CPS_END_NAMESPACE
 #include <util/error.h>
 #include <util/time_cps.h>
 #include <util/qblas_extend.h>
-//#include <comms/nga_reg.h>
+#include <comms/nga_reg.h>
 #include <comms/cbuf.h>
 #include <math.h>
 #if TARGET == BGL
@@ -192,12 +192,12 @@ int DiracOp::InvCg(Vector *out,
   
   // Allocate space for storing d
   //------------------------------------------------------------------
-  Float *d_store = (Float *) smalloc( (dirac_arg->max_num_iter-1) * sizeof(Float));
+  Float *d_store = (Float *) smalloc( (dirac_arg->max_num_iter) * sizeof(Float));
   if(d_store == 0)
     ERR.Pointer(cname,fname, "d_store");
-  VRB.Smalloc(cname,fname, "d_store", d_store, (dirac_arg->max_num_iter-1) * sizeof(Float));
+  VRB.Smalloc(cname,fname, "d_store", d_store, (dirac_arg->max_num_iter) * sizeof(Float));
   
-  for ( int n = 0; n < dirac_arg->max_num_iter-1; n++ )  d_store[n] = 0;
+  for ( int n = 0; n < dirac_arg->max_num_iter; n++ )  d_store[n] = 0;
   
   cblas_dcopy(f_size_cb,IFl(sol),IFl(sol_store));
   
@@ -247,7 +247,7 @@ int DiracOp::InvCg(Vector *out,
     VRB.Flow(cname,fname,
              "|res[0]|^2 = %e\n", IFloat(res_norm_sq_cur));
     itr = 0;
-    max_itr = dirac_arg->max_num_iter-1;
+    max_itr = dirac_arg->max_num_iter;
     if(res_norm_sq_cur <= stp_cnd) max_itr = 0;
         
     //------------------------------------------------------------------
@@ -362,7 +362,7 @@ int DiracOp::InvCg(Vector *out,
 #endif
     
     // It has not reached stp_cnd: Issue a warning
-    if(itr == dirac_arg->max_num_iter - 1){
+    if(itr == dirac_arg->max_num_iter){
       VRB.Warn(cname,fname,
                "CG reached max iterations = %d. |res|^2 = %e\n",
                itr+1, IFloat(res_norm_sq_cur) );

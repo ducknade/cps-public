@@ -1,14 +1,18 @@
 #include<config.h>
+//#define USE_OMP
+#ifdef USE_OMP
+#include <omp.h>
+#endif
 CPS_START_NAMESPACE
 /*!\file
   \brief  Implementation of FdwfBase class.
 
-  $Id: f_dwf_base_force.C,v 1.12 2013-03-21 18:50:43 chulwoo Exp $
+  $Id: f_dwf_base_force.C,v 1.9 2012/03/27 20:05:49 chulwoo Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/f_dwf_base/qmp/f_dwf_base_force.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/f_dwf_base/qmp/f_dwf_base_force.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -42,7 +46,6 @@ CPS_END_NAMESPACE
 #include <util/random.h>
 #include <util/error.h>
 #include <util/time_cps.h>
-#include <util/omp_wrapper.h>
 #include <comms/scu.h> // GRF
 #include <comms/glb.h>
 CPS_START_NAMESPACE
@@ -117,7 +120,6 @@ ForceArg FdwfBase::EvolveMomFforce(Matrix *mom, Vector *chi,
 
 #ifdef PROFILE
   Float time = -dclock();
-  Float time0=time;
   ForceFlops=0;
 #endif
   {
@@ -244,6 +246,11 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
 
   static int called=0;
   called++;
+#ifdef USE_OMP
+  const int MAX_THREADS=omp_get_num_threads();
+#else
+  const int MAX_THREADS=1;
+#endif
 
   int f_size = FsiteSize() * GJP.VolNodeSites() ;
   int f_site_size_4d = 2 * Colors() * SpinComponents();
@@ -292,7 +299,12 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
     v1_buf[i]=v2_buf[i]=NULL;
  }
 
+#ifndef USE_OMP
+  Matrix *tmp_mat = (Matrix *)fmalloc(cname,fname,"tmp_mat",sizeof(Matrix)*2);
+#else
+//  VRB.Result(cname,fname,"omp_get_num_threads=%d\n",omp_get_num_threads());
   Matrix *tmp_mat = (Matrix *)fmalloc(cname,fname,"tmp_mat",sizeof(Matrix)*2*MAX_THREADS);
+#endif
 
   size_t f_bytes = sizeof(Float)*f_site_size_4d;
   size_t st_bytes = sizeof(Float)*f_size_4d - f_bytes;
@@ -340,25 +352,25 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
         QMP_start(Send[mu]);
     }
   }
-#if 1
-//omp_set_num_threads(MAX_THREADS);
+
   Float L1[MAX_THREADS] ;
   Float L2[MAX_THREADS];
   Float Linf[MAX_THREADS] ;
   for(int i =0;i<MAX_THREADS;i++){
     L1[i]=L2[i]=Linf[i]=0.;
   }
+#ifdef USE_OMP
+omp_set_num_threads(MAX_THREADS);
 //reduction(+:L1,L2)
    	long i =0;
 #pragma omp parallel for default(shared) private(mu)
     for (i=0;i<vol*4;i++){
   	int pos[4];
 	long rest=i;
-	mu = rest%4; rest = rest/4;
 	for(int j =0; j<4;j++){
 		pos[j]= rest%size[j]; rest = rest/size[j];
 	}
-  	if((i==0) && (called%10000)==1) Printf("omp_get_num_threads=%d",omp_get_num_threads());
+	mu = rest;
 	int tnum = omp_get_thread_num();
         Matrix *tmp_mat1,*tmp_mat2;
   	tmp_mat1 = tmp_mat + 2*omp_get_thread_num();
@@ -373,6 +385,7 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
   	Matrix *tmp_mat1,*tmp_mat2;
 	  tmp_mat1 = tmp_mat;
 	  tmp_mat2 = tmp_mat1+1;
+	  int tnum=0;
 #endif
       int gauge_offset = offset(size,pos);
       int vec_offset = f_site_size_4d*gauge_offset ;
@@ -414,7 +427,7 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
 //      }
 
       tmp_mat2->DotMEqual(*(gauge+gauge_offset), *tmp_mat1) ;
-//        OMP_DEBUG(" tmp_mat2->DotMEqual(*(gauge+gauge_offset), *tmp_mat1) ; thread=%d\n",omp_get_thread_num());
+        OMP_DEBUG(" tmp_mat2->DotMEqual(*(gauge+gauge_offset), *tmp_mat1) ; thread=%d\n",omp_get_thread_num());
 
       tmp_mat1->Dagger(*tmp_mat2) ;
 
@@ -425,25 +438,23 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
 
       *(mom+gauge_offset) += *tmp_mat2 ;
         OMP_DEBUG("*(mom+gauge_offset) += *tmp_mat2 ; thread=%d\n",omp_get_thread_num());
-#if 1
-{
+
       Float norm = tmp_mat2->norm();
       Float tmp = sqrt(norm);
+      if((called%10000)==1) Printf("%d %d %d %d %d thread=%d norm=%g tmp=%g\n",mu,pos[0],pos[1],pos[2],pos[3],tnum,norm,tmp);
 //#pragma omp atomic
+{
       L1[tnum] += tmp;
       L2[tnum] += norm;
       Linf[tnum] = (tmp>Linf[tnum] ? tmp : Linf[tnum]);
 }
-#endif
     }
 
     } // end for x,y,z,t, mu
    OMP_DEBUG("Loop ended! %d\n",mu);
-  uint64_t temp_flop = (2*9*16*ls + 18+ 198+36+24)*lx*ly*lz*lt*(4.-1./lx-1/ly-1./lz-1./lt);
-  ForceFlops += temp_flop;
 #ifdef PROFILE
   time += dclock();
-  print_flops(fname,"local",temp_flop,time);
+  print_flops(fname,"local",ForceFlops,time);
   time =- dclock();
 #endif
 
@@ -456,10 +467,11 @@ ForceArg FdwfBase::EvolveMomFforceInt(Matrix *mom, Vector *v1, Vector *v2,
   }
 #ifdef PROFILE
   time += dclock();
-  print_flops(fname,"QMP_wait",0,time);
+  print_flops(fname,"QMP_wait",ForceFlops,time);
   time =- dclock();
 #endif
 
+#if 1
 
 static int surf_initted=0;
 static int *surf_table[4];
@@ -472,6 +484,9 @@ if (!surf_initted){
     } else {
 		surf_table[mu]=surf_mu_offset[mu]=NULL;
 	}
+surf_initted=1;
+}
+{
     int pos[4];
     int surf_index[4];
     for (mu=0; mu<4; mu++)
@@ -497,13 +512,13 @@ if (!surf_initted){
 		surf_index[mu] ++;
 	  
     }
-	surf_initted=1;
+}
+#endif
 #ifdef PROFILE
   time += dclock();
-  print_flops(fname,"setup",0,time);
+  print_flops(fname,"setup",ForceFlops,time);
   time =- dclock();
 #endif
-}
 
  
 //------------------------------------------------------------------
@@ -524,7 +539,11 @@ if (!surf_initted){
 #pragma omp parallel for
 	for (long i=0;i<surf[mu];i++){
         Matrix *tmp_mat1,*tmp_mat2;
+#ifdef USE_OMP
 		int tnum = omp_get_thread_num();
+#else
+		int tnum = 0;
+#endif
   		tmp_mat1 = tmp_mat + 2*tnum;
   		tmp_mat2 = tmp_mat1+1;
  		int gauge_offset = *(surf_table[mu]+i);
@@ -681,11 +700,10 @@ if (!surf_initted){
 
 #endif
 
-  temp_flop = (2*9*16*ls + 18+ 198+36+24)*lx*ly*lz*lt*(1./lx+1/ly+1./lz+1./lt);
-  ForceFlops += temp_flop;
+  ForceFlops += (2*9*16*ls + 18+ 198+36+24)*lx*ly*lz*lt*4;
 #ifdef PROFILE
   time += dclock();
-  print_flops(fname,"non-local",temp_flop,time);
+  print_flops(fname,"non-local",ForceFlops,time);
 #endif
  
 //------------------------------------------------------------------

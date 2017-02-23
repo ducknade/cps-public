@@ -7,7 +7,7 @@ CPS_START_NAMESPACE
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/convert/convert.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/convert/convert.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -18,7 +18,7 @@ CPS_END_NAMESPACE
 #include <util/verbose.h>
 #include <util/error.h>
 #include <util/gjp.h>
-//#include <comms/nga_reg.h>
+#include <comms/nga_reg.h>
 #include <comms/cbuf.h>
 CPS_START_NAMESPACE
 
@@ -103,33 +103,6 @@ void Lattice::Convert(StrOrdType new_str_ord,
 //-------------------------------------------------------------------------
 	Convert(new_str_ord) ;
 
-	return ;
-}
-
-
-void Lattice::Convert(StrOrdType new_str_ord, 
-		     Vector *f_field_1) 
-{
-	char *fname = "Convert(StrOrdType,V*)";
-	VRB.Func(cname,fname);
-
-//-------------------------------------------------------------------------
-// Check if conversion is needed
-//-------------------------------------------------------------------------
-	if (new_str_ord == str_ord) {
-		VRB.Flow(cname,fname,
-			"No conversion necessary from %d to %d\n",
-			int(str_ord), int(new_str_ord));
-		return ;
-	}
-	
-//-------------------------------------------------------------------------
-// Convert the fermion fields 1
-//-------------------------------------------------------------------------
-	if( f_field_1 == 0 )
-		ERR.Pointer(cname,fname, "f_field_1");
-	Fconvert(f_field_1, new_str_ord, str_ord);
-	
 	return ;
 }
 
@@ -251,8 +224,6 @@ void Lattice::Convert(StrOrdType new_str_ord)
 		  }
 
 			break ;
-          	case DWF_4D_EOPREC: 
-		case DWF_4D_EOPREC_EE: 
 		case WILSON :
 			VRB.Flow(cname,fname,
 			"Converting gauge field order: WILSON -> CANONICAL\n");
@@ -421,7 +392,7 @@ static char *converting_str = "Converting frm field str ord from %d to %d\n";
 //------------------------------------------------------------------
 //! Does nothing!
 //------------------------------------------------------------------
-void Fnone::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb) 
+void Fnone::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from) 
 {
 	VRB.Func(cname,fname_fconvert);
 }
@@ -435,7 +406,7 @@ void Fnone::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 */
 //-------------------------------------------------------------------------
 
-void FwilsonTypes::Fconvert(Vector *f_field,StrOrdType to,StrOrdType from, int cb)
+void FwilsonTypes::Fconvert(Vector *f_field,StrOrdType to,StrOrdType from)
 {
 	CAS	cas ;
 
@@ -490,7 +461,7 @@ void FwilsonTypes::Fconvert(Vector *f_field,StrOrdType to,StrOrdType from, int c
   \param from The current order; either CANONICAL or STAG.
 */
 //------------------------------------------------------------------
-void FstagTypes::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int num_checkerboard) 
+void FstagTypes::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from) 
 {
   VRB.Func(cname,fname_fconvert);
   
@@ -518,13 +489,13 @@ void FstagTypes::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int n
     
     VRB.Flow(cname,fname_fconvert, converting_str,
 	     int(from), int(to));
-    FcanonToStag(&cas,num_checkerboard) ;
+    FcanonToStag(&cas) ;
     
   } else if ((from == STAG) && (to == CANONICAL)) {
     
     VRB.Flow(cname,fname_fconvert, converting_str,
 	     int(from), int(to));    
-    FstagToCanon(&cas,num_checkerboard) ;
+    FstagToCanon(&cas) ;
     
   } else {
     ERR.General(cname,fname_fconvert,
@@ -552,7 +523,7 @@ void FstagTypes::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int n
   \param from The current order; either CANONICAL or WILSON.
 */
 //------------------------------------------------------------------
-void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb) 
+void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from) 
 {
 	Float *field_ptr;
 	Float *tmp_field_ptr;
@@ -585,6 +556,7 @@ void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 		return ;
 	}
 
+//	printf("f_size is: %d\n", f_size);
 
 	// Allocate memory for a temporary
 	//----------------------------------------------------------
@@ -600,6 +572,7 @@ void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 	  
 	  // convert from canonical to intermediate conversion
 	  field_ptr = (Float *) f_field;
+//      printf("field_ptr=%p\n",field_ptr);
 	  for(i=0; i<ls; i++){
 	    cas.start_ptr = field_ptr;
 	    FcanonToWilson(&cas) ;
@@ -609,6 +582,7 @@ void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 	  // copy intermediate converted vector to a buffer
 	  field_ptr = (Float *) f_field;
 	  tmp_field_ptr = (Float *) tmp_f_field;
+//	  moveMem(tmp_field_ptr, field_ptr, f_size * sizeof(Float));
 	  moveFloat(tmp_field_ptr, field_ptr, f_size );
 
 	  // Set odd part
@@ -616,6 +590,7 @@ void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 	  tmp_field_ptr = (Float *) tmp_f_field;
 	  for(i=0; i<ls; i++){
 	    parity = (i+1) % 2;
+//	    moveMem(field_ptr, tmp_field_ptr, half_stride * sizeof(Float));
 	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
 	    field_ptr = field_ptr + half_stride;
 	    tmp_field_ptr = tmp_field_ptr + (2 * parity + 1) * half_stride; 
@@ -626,84 +601,11 @@ void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 	  tmp_field_ptr = tmp_field_ptr + half_stride;
 	  for(i=0; i<ls; i++){
 	    parity = i % 2;
+//	    moveMem(field_ptr, tmp_field_ptr, half_stride * sizeof(Float));
 	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
 	    field_ptr = field_ptr + half_stride;
 	    tmp_field_ptr = tmp_field_ptr + (2 * parity + 1) * half_stride; 
 	  }
-	  
-	} else if ((from == CANONICAL) && (to == DWF_4D_EOPREC)) {
-
-	  VRB.Flow(cname,fname_fconvert, converting_str,
-		   int(from), int(to));
-	  
-	  // convert from canonical to odd-even on each s-slice
-	  field_ptr = (Float *) f_field;
-	  for(i=0; i<ls; i++){
-	    cas.start_ptr = field_ptr;
-	    FcanonToWilson(&cas) ;
-	    field_ptr = field_ptr + stride;
-	  }
-
-	  // copy intermediate converted vector to a buffer
-	  field_ptr = (Float *) f_field;
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  moveFloat(tmp_field_ptr, field_ptr, f_size );
-
-	  // Set odd part: 4d odd-even.
-	  field_ptr = (Float *) f_field;
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + half_stride;
-	    tmp_field_ptr = tmp_field_ptr + stride; 
-	  }
-
-	  // Set even part
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  tmp_field_ptr = tmp_field_ptr + half_stride;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + half_stride;
-	    tmp_field_ptr = tmp_field_ptr + stride; 
-	  }
-
-
-	} else if ((from == CANONICAL) && (to == DWF_4D_EOPREC_EE )) {
-
-	  VRB.Flow(cname,fname_fconvert, converting_str,
-		   int(from), int(to));
-	  
-	  // convert from canonical to odd-even on each s-slice
-	  field_ptr = (Float *) f_field;
-	  for(i=0; i<ls; i++){
-	    cas.start_ptr = field_ptr;
-	    FcanonToWilson(&cas) ;
-	    field_ptr = field_ptr + stride;
-	  }
-
-	  // copy intermediate converted vector to a buffer
-	  field_ptr = (Float *) f_field;
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  moveFloat(tmp_field_ptr, field_ptr, f_size );
-
-	  // Set even part:
-	  field_ptr = (Float *) f_field;
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  tmp_field_ptr = tmp_field_ptr + half_stride;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + half_stride;
-	    tmp_field_ptr = tmp_field_ptr + stride; 
-	  }
-
-	  // Set odd part
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + half_stride;
-	    tmp_field_ptr = tmp_field_ptr + stride; 
-	  }
-
 
 	} else if ((from == WILSON) && (to == CANONICAL)) {
 	  
@@ -747,76 +649,6 @@ void FdwfBase::Fconvert(Vector *f_field, StrOrdType to, StrOrdType from, int cb)
 	    FwilsonToCanon(&cas) ;
 	    field_ptr = field_ptr + stride;
 	  }
-
-	} else if ((from == DWF_4D_EOPREC) && (to == CANONICAL)) {
-	  
-	  VRB.Flow(cname,fname_fconvert, converting_str,
-		   int(from), int(to));
-
-	  // copy vector to a buffer for intermediate conversion
-	  field_ptr = (Float *) f_field;
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  moveFloat(tmp_field_ptr, field_ptr, f_size);
-
-	  // convert odd part to intermediate conversion
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + stride; 
-	    tmp_field_ptr = tmp_field_ptr + half_stride;
-	  }
-
-	  // convert even part to intermediate conversion
-	  field_ptr = (Float *) f_field;
-	  field_ptr = field_ptr + half_stride;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + stride; 
-	    tmp_field_ptr = tmp_field_ptr + half_stride;
-	  }
-
-	  // convert from intermediate conversion to canonical
-	  field_ptr = (Float *) f_field;
-	  for(i=0; i<ls; i++){
-	    cas.start_ptr = field_ptr;
-	    FwilsonToCanon(&cas) ;
-	    field_ptr = field_ptr + stride;
-	  }
-
-
-	} else if ((from == DWF_4D_EOPREC_EE) && (to == CANONICAL)) {
-	  
-	  VRB.Flow(cname,fname_fconvert, converting_str,
-		   int(from), int(to));
-
-	  // copy vector to a buffer for intermediate conversion
-	  field_ptr = (Float *) f_field;
-	  tmp_field_ptr = (Float *) tmp_f_field;
-	  moveFloat(tmp_field_ptr, field_ptr, f_size);
-
-	  // convert even part to intermediate conversion
-	  field_ptr = field_ptr + half_stride;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + stride; 
-	    tmp_field_ptr = tmp_field_ptr + half_stride;
-	  }
-
-	  // convert odd part to intermediate conversion
-	  field_ptr = (Float *) f_field;
-	  for(i=0; i<ls; i++){
-	    moveFloat(field_ptr, tmp_field_ptr, half_stride );
-	    field_ptr = field_ptr + stride; 
-	    tmp_field_ptr = tmp_field_ptr + half_stride;
-	  }
-
-	  // convert from intermediate conversion to canonical
-	  field_ptr = (Float *) f_field;
-	  for(i=0; i<ls; i++){
-	    cas.start_ptr = field_ptr;
-	    FwilsonToCanon(&cas) ;
-	    field_ptr = field_ptr + stride;
-	  }
-
 
 	} else {
 		ERR.General(cname,fname_fconvert,

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+runjob --block $1 --label --args -qmp-geom native --exe ../binaries/BGQ.x

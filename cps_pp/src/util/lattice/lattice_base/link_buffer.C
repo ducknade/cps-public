@@ -1,3 +1,4 @@
+// vim: set ts=2 sw=2 expandtab:
 #include<config.h>
 CPS_START_NAMESPACE
 /*!\file
@@ -10,20 +11,21 @@ CPS_START_NAMESPACE
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-04-05 17:51:14 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/lattice_base/link_buffer.C,v 1.9 2013-04-05 17:51:14 chulwoo Exp $
-//  $Id: link_buffer.C,v 1.9 2013-04-05 17:51:14 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2008/09/18 15:23:17 $
+//  $Header: /space/cvs/cps/cps++/src/util/lattice/lattice_base/link_buffer.C,v 1.8 2008/09/18 15:23:17 chulwoo Exp $
+//  $Id: link_buffer.C,v 1.8 2008/09/18 15:23:17 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
-//  $Revision: 1.9 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/lattice/lattice_base/link_buffer.C,v $
+//  $Revision: 1.8 $
+//  $Source: /space/cvs/cps/cps++/src/util/lattice/lattice_base/link_buffer.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
 CPS_END_NAMESPACE
 #include <util/vector.h>
 #include <util/verbose.h>
-//#include <comms/nga_reg.h>
+#include <util/time_cps.h>
+#include <comms/nga_reg.h>
 #include <comms/scu.h>
 #include <comms/cbuf.h>
 #include <util/gjp.h>
@@ -31,182 +33,570 @@ CPS_END_NAMESPACE
 #include <util/link_buffer.h>
 #include <util/list.h>
 #include <util/qcdio.h>
+#include <omp.h>
+
+#include <vector>
+#include <map>
+#include <stdio.h>
+#include <cassert>
 CPS_START_NAMESPACE
 
-enum {MATRIX_SIZE = 18};
+const int MATRIX_SIZE = 18;
 
-//! The basic object in the link buffer.
-/*!
-  This is manipulated in the internal workings of the Linkbuffer class.
-*/
-struct LinkEntry{
-  list_head hash_entry;
-  //to put this LinkEntry in the hash table
-  
-  list_head flush_entry; 
-  //to put this LinkEntry in the free_list or the flush_list
-  
-  int d_node_id;
-  //the node that this link belong to
-  
-  Matrix link; 
-  // the link
-};
-
-//  CRAM temp buffer
-#ifdef _TARTAN
-Matrix & mat1 = * ((Matrix*) CRAM_SCRATCH_ADDR);
-Matrix & mat2 = * (&mat1+1);
-Matrix & mat3 = * (&mat2+1);
-Matrix & mat4 = * (&mat3+1);
-Matrix & mat5 = * (&mat4+1);
-
-const Matrix *new_mp = &mat1;
-Matrix *result1_mp = &mat2;
-Matrix *result_mp = &mat3;
-Matrix *acumulate_mp =&mat4;
-#else
-
-Matrix CRAM_SCRATCH[5] ;
-
-Matrix & mat1 = CRAM_SCRATCH[0] ;
-Matrix & mat2 = CRAM_SCRATCH[1] ;
-Matrix & mat3 = CRAM_SCRATCH[2] ;
-Matrix & mat4 = CRAM_SCRATCH[3] ;
-Matrix & mat5 = CRAM_SCRATCH[4] ;
-
-const Matrix *new_mp = &mat1;
-Matrix *result1_mp = &mat2;
-Matrix *result_mp = &mat3;
-Matrix *acumulate_mp =&mat4;
-#endif
-
-//! Prints the addresses of the items in a linked list 
-void print_list(list_head * lp){ 
-  list_head * lh_p = lp->next;
-  printf("\n\nlist at %x:\n", (lp));
-  printf("%x %x %x\n", (lp), (lp)->prev, (lp)->next);
-  while(lh_p != lp){
-    printf("%x %x %x\n", (lh_p), (lh_p)->prev, (lh_p)->next);
-    lh_p = lh_p->next;
-  }
-}
-
-static int cnt;
-static int hit_cnt;
-
-//! The number of items in a linked list
-int list_len(list_head * l){
-  list_head * l_iter = l->next; 
-   int i=0;
-  while(l_iter != l){ l_iter=l_iter->next; i++;}
-  return i;
-}
-//int
-//LinkBuffer::check_lists(){
-//  hash_sz=0;
-//  for(int i=0;i< GJP.VolNodeSites()*4;i++){
-//    hash_sz += list_len(&hash_tab[i]);
-//  }
-//  int flush_size = list_len(&flush_list);
-//  int free_size = list_len(&free_list);
-//  if(hash_sz != flush_size || hash_sz + free_size!=buf_sz){
-//    printf("hash_sz %d flush_size %d free_size %d\n", hash_sze,
-//            flush_size, free_size);
-//    return 1;
-//  }
-//  return 0;
-//}
-
-LinkBuffer::LinkBuffer(Lattice &_lat, int _buf_sz):lat(_lat), buf_sz(_buf_sz){
+LinkBuffer::LinkBuffer(Lattice &lat_, int buf_sz_not_used):lat(lat_) {
   cname = "LinkBuffer";
   char * fname = "LinkBuffer";
+  VRB.Result(cname, fname, "create link buffer object.\n");
   VRB.Func(cname, fname);
-
-  cnt=0; hit_cnt=0;
-  
-  tab_size = GJP.VolNodeSites()*4;
-  hash_tab = (list_head *)smalloc(tab_size*sizeof(list_head)); 
-  if(hash_tab==0) ERR.Pointer(cname, fname, "hash_tab");
-  
-  int i;
-  for(i=0; i<tab_size; i++) {
-    INIT_LIST_HEAD(&hash_tab[i]); 
-    //print_list(&hash_tab[i]);
-  }
-  
-  INIT_LIST_HEAD(&flush_list); 
-  INIT_LIST_HEAD(&free_list); 
-  
-  link_entry_buf = (LinkEntry*)smalloc(sizeof (LinkEntry) * buf_sz); 
-  if(link_entry_buf==0) ERR.Pointer(cname, fname, "link_entry_buf");
-  
-  LinkEntry * tmp = link_entry_buf; 
-  for(i =0 ; i < buf_sz ; i++, tmp++){
-    list_add(&(tmp->hash_entry), &free_list); 
-    // hash_tab and free_list use the same entry in the LinkEntry
-    // put everything on the freelist initially
-    // INIT_LIST_HEAD(&(tmp->flush_entry)); 
-  }
-  site_stride[0]=4; 
-  node_stride[0]=1;
-  site_size[0]=GJP.Nodes(0)*GJP.NodeSites(0);
-  for(i=1;i<4;i++){
-   site_stride[i]=site_stride[i-1]*GJP.NodeSites(i-1);
-   site_size[i]=GJP.Nodes(i)*GJP.NodeSites(i);
-   node_stride[i]=node_stride[i-1]*GJP.Nodes(i-1);
-  }
+  bufferred_gauge_field = NULL;
+  bufferred_volume = 0;
+  record_bufferred_indexes = false;
 }
 
 /*!
   Prints to \c stdout the number of times a lenk has been fetched from the
   buffer and the the number of times that link was on this node.
 */
-LinkBuffer::~LinkBuffer(){ 
-  //char * fname = "~LinkBuffer()";
-  //VRB.Func(cname, fname);
-  sfree(link_entry_buf); sfree(hash_tab);
-  printf("GetBufferedLink called %d times with %d hits\n", cnt, hit_cnt);
+LinkBuffer::~LinkBuffer(){
+  char * fname = "~LinkBuffer()";
+  VRB.Result(cname, fname, "destroy link buffer object.\n");
+  VRB.Func(cname, fname);
+  ClearAll();
 }
 
-//-----------------------------------------------------------------------
-//LinkBuffer::hash() 
-// given the lattice coordinates of a link and its direction.x[0-4] can be
-// any integer, mu can be 0, 1, 2 ,3.
-// the returned value is between 0 and VolNodeSize*4
-//-----------------------------------------------------------------------
-int LinkBuffer:: hash(const int *x, int mu){
-  //char * fname ="hash";
-  int result=0;
-
-  for(int i=0; i<4; i++){
-    int local_x = x[i];
-    while(local_x<0) local_x += GJP.NodeSites(i); 
-    while(local_x>=GJP.NodeSites(i)) local_x -= GJP.NodeSites(i);
-    result += local_x*site_stride[i];
-  } 
-  return (result + mu);
-}
-
-//----------------------------------------------------------------------
-// LinkBuffer::GetNodeId()
-// given the lattice coordinates of a link calculate the coordinate of the 
-// node that this link resides on. These coordinates are further converted
-// into an integer.
-//----------------------------------------------------------------------
-int LinkBuffer::GetNodeId(const int *x){
-  //char * fname = "GetNodeId";
-
-  int result=0;
-  for(int i = 0 ;i< 4; i++) {
-    int tmp_size =site_size[i]; 
-    int tmp_x = x[i];
-    while(tmp_x<0) tmp_x += tmp_size;
-    while(tmp_x>=tmp_size) tmp_x -= tmp_size;
-    result += node_stride[i] * (tmp_x/GJP.NodeSites(i));
+void Lattice::CreateBuffer(int thickness, const std::vector<int> & indexes) {
+  if(LinkBufferIsEnabled()) {
+    link_buffer->CreateBuffer(thickness, indexes);
   }
-  //VRB.Flow(cname, fname, "node_id=%d\n", result);
-  return result;
+}
+
+void Lattice::CreateBuffer(int thickness, bool record) {
+  if(LinkBufferIsEnabled()) {
+    link_buffer->CreateBuffer(thickness, record);
+  }
+}
+
+void Lattice::CreateBuffer(int thickness, LinkBufferShape shape, bool record) {
+  if(LinkBufferIsEnabled()) {
+    link_buffer->CreateBuffer(thickness, shape, record);
+  }
+}
+
+void LinkBuffer::CreateBuffer(int thickness, const std::vector<int> & indexes) {
+  using namespace std;
+  char * fname = "CreateBuffer(indexes)";
+  //VRB.Result(cname, fname, "communication size = %d.\n", indexes.size());
+  Float dtime = -dclock();
+  
+  buffer_thickness = thickness;
+  record_bufferred_indexes = false;
+  bufferred_indexes.clear();
+  
+  int thick = buffer_thickness;
+  int * sites = local_node_sites;
+  int * offset = bufferred_dir_offset;
+  
+  //compute size of buffered volume
+  int vol = 1;
+  for (int i = 0; i < 4; i++) {
+    sites[i] = lat.node_sites[i];
+    offset[i] = vol;
+    vol *= sites[i] + 2 * thick;
+  }
+  
+  //if the buffered volume has changed, then free the memory
+  //for the old buffered volume
+  if (vol != bufferred_volume) {
+    ClearAll();
+  }
+  
+  //if necessary, allocate the buffered volume
+  if (NULL == bufferred_gauge_field) {
+    VRB.Result(cname, fname, "malloc buffer vol = %d.\n", vol);
+    bufferred_gauge_field = (Matrix *) smalloc(vol * 4 * MATRIX_SIZE * sizeof(Float));
+    bufferred_volume = vol;
+  }
+  
+  //the key of send map is a 4-element vector giving the offset of the node to
+  //send to. The value is a vector of all the Matrices to send.
+  map<vector<int>, vector<Matrix> > sendmap;
+  map<vector<int>, int > sendmap_consume;
+  vector<int> key(4, 0), pos(4, 0), lpos(4, 0);
+
+  for (int i = 0; i < indexes.size(); i++) {
+    GetCoordinateFromIndex(pos.data(), indexes[i]);
+    for (int i = 0; i < 4; i++) {
+      lpos[i] = pos[i] % sites[i];
+      key[i] = pos[i] / sites[i];
+      if (lpos[i] < 0) {
+        lpos[i] += sites[i];
+        key[i]--;
+      }
+    }
+    int mu = indexes[i] % 4;
+    sendmap[key].push_back(*lat.GetLink(lpos.data(), mu));
+  }
+  Float comtime = -dclock();
+  map<vector<int>, vector<Matrix> >::iterator it;
+  vector<Matrix> recv_vec;
+  for (it = sendmap.begin(); it != sendmap.end(); it++) {
+    key = it->first;
+    //VRB.Result(cname, fname, "communicating : %d %d %d %d\n",
+    //    key[0], key[1], key[2], key[3]);
+    vector<Matrix> & send_vec = it->second;
+    int size = send_vec.size();
+    size_t size_bytes = size * MATRIX_SIZE * sizeof(IFloat);
+    recv_vec.resize(max(2500, size));
+    Matrix * send = send_vec.data();
+    Matrix * recv = recv_vec.data();
+    for (int i = 0; i < 4; i++) {
+      int dis = key[i];
+      if (dis < 0) {
+        while (dis != 0) {
+          getMinusData((IFloat *)recv, (IFloat *)send, size * MATRIX_SIZE, i);
+          memcpy(send, recv, size_bytes);
+          dis++;
+        }
+      } else if (dis > 0) {
+        while (dis != 0) {
+          getPlusData((IFloat *)recv, (IFloat *)send, size * MATRIX_SIZE, i);
+          memcpy(send, recv, size_bytes);
+          dis--;
+        }
+      }
+    }
+    sendmap_consume[key] = 0;
+  }
+  comtime += dclock();
+  //print_flops(cname, fname, 0, comtime);
+  for (int i = 0; i < indexes.size(); i++) {
+    int index = indexes[i];
+    GetCoordinateFromIndex(pos.data(), index);
+    for (int i = 0; i < 4; i++) {
+      lpos[i] = pos[i] % sites[i];
+      key[i] = pos[i] / sites[i];
+      if (lpos[i] < 0) {
+        lpos[i] += sites[i];
+        key[i]--;
+      }
+    }
+    int consume = sendmap_consume[key];
+    bufferred_gauge_field[index] = sendmap[key][consume];
+    sendmap_consume[key] = consume + 1;
+
+    /* Debug code
+    int mu = index % 4;
+    Matrix diff_matrix = *lat.GetLink(pos.data(), mu) - bufferred_gauge_field[index];
+    if (diff_matrix.ReTr() != 0) {
+      VRB.Result(cname, fname, "Mismatch: %d %d %d %d -- %d %d %d %d\n",
+          key[0], key[1], key[2], key[3],
+          pos[0], pos[1], pos[2], pos[3]);
+    }
+    // */
+
+  }
+  dtime += dclock();
+  //print_flops(cname, fname, 0, dtime);
+}
+
+void LinkBuffer::CreateBuffer(int thickness, bool record) {
+  using namespace std;
+  char * fname = "CreateBuffer";
+  Float dtime = -dclock();
+
+  buffer_thickness = thickness;
+  record_bufferred_indexes = record;
+  bufferred_indexes.clear();
+
+  int thick = buffer_thickness;
+  int * sites = local_node_sites;
+  int * offset = bufferred_dir_offset;
+
+  //compute the size of the link buffer
+  int vol = 1;
+  for (int i = 0; i < 4; i++) {
+    sites[i] = lat.node_sites[i];
+    offset[i] = vol;
+    vol *= sites[i] + 2 * thick;
+  }
+
+  //if the buffered volume has changed, free the old buffer
+  if (vol != bufferred_volume) {
+    ClearAll();
+  }
+
+  //if necessary, allocate memory for a new buffer
+  if (NULL == bufferred_gauge_field) {
+    VRB.Result(cname, fname, "malloc buffer vol = %d.\n", vol);
+    bufferred_gauge_field = (Matrix *) smalloc(vol * 4 * MATRIX_SIZE * sizeof(Float));
+    bufferred_volume = vol;
+  }
+
+  //the key of send map is a 4-element vector giving the offset of the node to
+  //receive from. The value is a vector of all the Matrices to send.
+  map<vector<int>, vector<Matrix> > sendmap;
+  map<vector<int>, int > sendmap_consume;
+  vector<int> pos(4, 0);  //coordinates position of a site relative to this node
+  vector<int> lpos(4, 0); //coordinates of a site relative to its home node
+  vector<int> key(4, 0);  //offset of a site's home node from this node
+
+  //Populate sendmap with the data that we need to send to other nodes
+  for (int x = - thick; x < sites[0] + thick; x++)
+    for (int y = - thick; y < sites[1] + thick; y++)
+      for (int z = - thick; z < sites[2] + thick; z++)
+        for (int t = - thick; t < sites[3] + thick; t++) {
+          pos[0] = x;
+          pos[1] = y;
+          pos[2] = z;
+          pos[3] = t;
+          for (int i = 0; i < 4; i++) {
+            lpos[i] = pos[i] % sites[i];
+            key[i] = pos[i] / sites[i];
+            if (lpos[i] < 0) {
+              lpos[i] += sites[i];
+              key[i]--;
+            }
+          }
+          //if (key[0] != 0 || key[1] != 0 || key[2] != 0 || key[3] != 0) {
+            vector<Matrix> & vec = sendmap[key];
+            for (int mu = 0; mu < 4; mu++) {
+              vec.push_back(*lat.GetLink(lpos.data(), mu));
+            }
+          //}
+        }
+
+  Float comtime = -dclock();
+  
+  vector<Matrix> recv_vec; //will store data received from other nodes
+
+  //Iterate over all the nodes to which we need to send data.
+  //We ultimately copy the received data into the corresponding
+  //value of sendmap.
+  map<vector<int>, vector<Matrix> >::iterator it;
+  for (it = sendmap.begin(); it != sendmap.end(); it++) {
+    key = it->first; //offset of node
+    vector<Matrix> & send_vec = it->second;
+
+    int size = send_vec.size();
+    size_t size_bytes = size * MATRIX_SIZE * sizeof(IFloat);
+    recv_vec.resize(max(2500, size)); //Ask Luchang why max()
+
+    //Get data from the node with offset given by key. 
+    //This may take several rounds of communications.
+    Matrix * send = send_vec.data();
+    Matrix * recv = recv_vec.data();
+    for (int i = 0; i < 4; i++) {
+      int dis = key[i];
+      if (dis < 0) {
+        while (dis != 0) {
+          getMinusData((IFloat *)recv, (IFloat *)send, size * MATRIX_SIZE, i);
+          memcpy(send, recv, size_bytes);
+          dis++;
+        }
+      } else if (dis > 0) {
+        while (dis != 0) {
+          getPlusData((IFloat *)recv, (IFloat *)send, size * MATRIX_SIZE, i);
+          memcpy(send, recv, size_bytes);
+          dis--;
+        }
+      }
+    }
+    sendmap_consume[key] = 0;
+  }
+  comtime += dclock();
+  print_flops(cname, fname, 0, comtime);
+
+  //now sendmap[key] is the vector of data recieved from the node
+  //pointed to by key.
+
+  //Copy the received data into bufferred_gauge_field
+  for (int x = - thick; x < sites[0] + thick; x++)
+    for (int y = - thick; y < sites[1] + thick; y++)
+      for (int z = - thick; z < sites[2] + thick; z++)
+        for (int t = - thick; t < sites[3] + thick; t++) {
+          pos[0] = x;
+          pos[1] = y;
+          pos[2] = z;
+          pos[3] = t;
+          for (int i = 0; i < 4; i++) {
+            lpos[i] = pos[i] % sites[i];
+            key[i] = pos[i] / sites[i];
+            if (lpos[i] < 0) {
+              lpos[i] += sites[i];
+              key[i]--;
+            }
+          }
+          int index = BufferredSiteOffset(pos.data()) * 4;
+          //if (key[0] != 0 || key[1] != 0 || key[2] != 0 || key[3] != 0) {
+            //sendmap_consume[key] keeps track of our progress in consuming the
+            //received data in sendmap[key], so that we know which index of 
+            //sendmap[key] corresponds to which site.
+            int consume = sendmap_consume[key]; 
+            vector<Matrix> & vec = sendmap[key];
+            for (int mu = 0; mu < 4; mu++) {
+              bufferred_gauge_field[index+mu] = vec[consume];
+              consume++;
+
+              /* Debug code
+              Matrix diff_matrix = *lat.GetLink(pos.data(), mu) - bufferred_gauge_field[index+mu];
+              if (diff_matrix.ReTr() != 0) {
+                VRB.Result(cname, fname, "Mismatch: %d %d %d %d -- %d %d %d %d\n",
+                    key[0], key[1], key[2], key[3],
+                    pos[0], pos[1], pos[2], pos[3]);
+              }
+              // */
+
+            }
+            sendmap_consume[key] = consume;
+          //}
+
+        }
+  dtime += dclock();
+  print_flops(cname, fname, 0, dtime);
+}
+
+
+//Computes the offset of a site in a generic subvolume
+static inline int GsiteOffset(const int * x,
+                              const int * size,
+                              const int * origin)
+{
+  int ret = 4 * (x[0] - origin[0] + size[0] *
+                (x[1] - origin[1] + size[1] *
+                (x[2] - origin[2] + size[2] *
+                (x[3] - origin[3]))));
+  return ret;
+}
+
+//Computes the coordinates of a site in a generic
+//subvolume from the site's index.
+static inline void GetCoordinatesFromIndex(int x[4],
+                                           const int index,
+                                           const int size[4],
+                                           const int origin[4])
+{
+    int j = index;
+    x[0] = (j % size[0]) + origin[0]; j /= size[0];
+    x[1] = (j % size[1]) + origin[1]; j /= size[1];
+    x[2] = (j % size[2]) + origin[2]; j /= size[2];
+    x[3] = (j % size[3]) + origin[3];
+}
+
+//Copies part of one subvolume into another subvolume. 
+//dest_size and dest_origin specify the size and position of the destination subvolume.
+//src_size and src_origin specify the size and position of the source subvolume.
+//copy_size and copy_origin specify the size and position of the
+//subvolume that will actually be copied.
+static void CopySubvolume(Matrix* dest,
+                          const int dest_size[4],
+                          const int dest_origin[4],
+                          const Matrix* src,
+                          const int src_size[4],
+                          const int src_origin[4],
+                          const int copy_size[4],
+                          const int copy_origin[4])
+{
+  const int site_bytes = 4 * sizeof(Matrix);
+  const int copy_volume = copy_size[0] * copy_size[1] * copy_size[2] * copy_size[3];
+
+  omp_set_num_threads(64);
+#pragma omp parallel for
+  for(int i = 0; i < copy_volume; i++) {
+    int x[4];
+    GetCoordinatesFromIndex(x, i, copy_size, copy_origin);
+
+    int dest_offset = GsiteOffset(x, dest_size, dest_origin);
+    int src_offset = GsiteOffset(x, src_size, src_origin);
+
+    memcpy(dest + dest_offset, src + src_offset, site_bytes);
+  }
+}
+
+
+void LinkBuffer::CreateBuffer(int thickness, LinkBufferShape shape, bool record) {
+  char * fname = "CreateBuffer";
+  if(shape == BUFFER_SHAPE_HYPERCUBE) {
+    CreateBuffer(thickness, record);
+    return;
+  }
+
+  buffer_thickness = thickness;
+  record_bufferred_indexes = record;
+  bufferred_indexes.clear();
+
+  int thick = buffer_thickness;
+  int * sites = local_node_sites;
+  int * offset = bufferred_dir_offset;
+
+  //compute the size of the link buffer
+  int vol = 1;
+  for (int i = 0; i < 4; i++) {
+    sites[i] = lat.node_sites[i];
+    offset[i] = vol;
+    vol *= sites[i] + 2*thick;
+  }
+
+  //if the buffered volume has changed, free the old buffer
+  if (vol != bufferred_volume) {
+    ClearAll();
+  }
+
+  //if necessary, allocate memory for a new buffer
+  if (NULL == bufferred_gauge_field) {
+    VRB.Result(cname, fname, "malloc buffer vol = %d.\n", vol);
+    bufferred_gauge_field = (Matrix *) smalloc(vol * 4 * MATRIX_SIZE * sizeof(Float));
+    bufferred_volume = vol;
+  }
+
+  const int buffer_size[4] = {sites[0] + 2 * thick,
+                              sites[1] + 2 * thick,
+                              sites[2] + 2 * thick,
+                              sites[3] + 2 * thick};
+  const int buffer_origin[4] = {-thick, -thick, -thick, -thick};
+
+  Matrix * local_gauge_field = lat.GaugeField();
+  const int local_size[4] = {sites[0], sites[1], sites[2], sites[3]};
+  const int local_origin[4] = {0, 0, 0, 0};
+
+  //First do the easy part: copy the local volume into the buffer
+  CopySubvolume(bufferred_gauge_field, buffer_size, buffer_origin,
+                local_gauge_field, local_size, local_origin,
+                local_size, local_origin);
+
+  //Next grab faces from the neighboring nodes
+  for(int mu = 0; mu < 4; mu++) {
+    assert(local_size[mu] >= thick);
+
+    //Allocate space to store the transmitted slabs
+    int slab_size[4] = {local_size[0], local_size[1], local_size[2], local_size[3]};
+    slab_size[mu] = thick;
+    int slab_vol = slab_size[0] * slab_size[1] * slab_size[2] * slab_size[3];
+    
+    int slab_bytes = 4 * sizeof(Matrix) * slab_vol;
+    int slab_floats = slab_bytes / sizeof(Float);
+    Matrix * slab_send = (Matrix *)smalloc(slab_bytes, "slab_send");
+    Matrix * slab_recv = (Matrix *)smalloc(slab_bytes, "slab_recv");
+
+    int send_origin[4] = {0, 0, 0, 0};
+    int recv_origin[4] = {0, 0, 0, 0};
+
+    for(int send_forward = 0; send_forward <= 1; send_forward++) {
+      if(send_forward) { //we will transmit data forward
+        send_origin[mu] = local_size[mu] - thick;
+        recv_origin[mu] = -thick;
+      } else { //we will transmit data backward
+        send_origin[mu] = 0;
+        recv_origin[mu] = local_size[mu];
+      }
+
+      //Assemble the slab that will be transmitted
+      CopySubvolume(slab_send, slab_size, send_origin,
+                    local_gauge_field, local_size, local_origin,
+                    slab_size, send_origin);
+
+      //Transmit the slab
+      if(send_forward) getMinusData((IFloat*)slab_recv, (IFloat*)slab_send, slab_floats, mu);
+      else              getPlusData((IFloat*)slab_recv, (IFloat*)slab_send, slab_floats, mu);
+
+      //Copy the received slab into the right place in the buffer
+      CopySubvolume(bufferred_gauge_field, buffer_size, buffer_origin,
+                    slab_recv, slab_size, recv_origin,
+                    slab_size, recv_origin);
+    }
+
+    sfree(slab_send, "slab_send");
+    sfree(slab_recv, "slab_recv");
+  }
+
+  //If all we had to buffer was the faces then we are done
+  if(shape == BUFFER_SHAPE_LOCAL_AND_FACES) return;
+
+  //Finally we buffer the corners that are two hops from this node
+  //(but not the corners that are three or four hops from this node).
+  assert(shape == BUFFER_SHAPE_LOCAL_AND_FACES_AND_1ST_CORNERS);
+    
+  for(int mu = 0; mu < 4; mu++) {
+    for(int nu = mu+1; nu < 4; nu++) {
+      //Allocate space to store the transmitted corners
+      int corner_size[4] = {local_size[0], local_size[1], local_size[2], local_size[3]};
+      corner_size[mu] = thick;
+      corner_size[nu] = thick;
+      int corner_vol = corner_size[0] * corner_size[1] * corner_size[2] * corner_size[3];
+
+      int corner_bytes = 4 * sizeof(Matrix) * corner_vol;
+      int corner_floats = corner_bytes / sizeof(Float);
+      Matrix * corner_send = (Matrix *)smalloc(corner_bytes, "corner_send");
+      Matrix * corner_itmd = (Matrix *)smalloc(corner_bytes, "corner_itmd");
+      Matrix * corner_recv = (Matrix *)smalloc(corner_bytes, "corner_recv");
+
+      int send_origin[4] = {0, 0, 0, 0};
+      int recv_origin[4] = {0, 0, 0, 0};
+
+      for(int mu_forward = 0; mu_forward <= 1; mu_forward++) {
+        for(int nu_forward = 0; nu_forward <= 1; nu_forward++) {
+          if(mu_forward) { 
+            send_origin[mu] = local_size[mu] - thick;
+            recv_origin[mu] = -thick;
+          } else { 
+            send_origin[mu] = 0;
+            recv_origin[mu] = local_size[mu];
+          }
+          if(nu_forward) { 
+            send_origin[nu] = local_size[nu] - thick;
+            recv_origin[nu] = -thick;
+          } else { 
+            send_origin[nu] = 0;
+            recv_origin[nu] = local_size[nu];
+          }
+
+          //Assemble the corner that will be transmitted
+          CopySubvolume(corner_send, corner_size, send_origin,
+                        local_gauge_field, local_size, local_origin,
+                        corner_size, send_origin);
+
+          //Transmit the corner; this time this requires two hops
+          if(mu_forward) getMinusData((IFloat*)corner_itmd, (IFloat*)corner_send, corner_floats, mu);
+          else            getPlusData((IFloat*)corner_itmd, (IFloat*)corner_send, corner_floats, mu);
+
+          if(nu_forward) getMinusData((IFloat*)corner_recv, (IFloat*)corner_itmd, corner_floats, nu);
+          else            getPlusData((IFloat*)corner_recv, (IFloat*)corner_itmd, corner_floats, nu);
+
+          //Copy the received corner into the right place in the buffer
+          CopySubvolume(bufferred_gauge_field, buffer_size, buffer_origin,
+                        corner_recv, corner_size, recv_origin,
+                        corner_size, recv_origin);
+        }
+      }
+
+      sfree(corner_send, "corner_send");
+      sfree(corner_itmd, "corner_itmd");
+      sfree(corner_recv, "corner_recv");
+    }
+  }
+}
+
+
+std::vector<int> Lattice::GetBufferredIndexes() {
+  char * fname = "GetBufferredIndexes";
+  if (NULL == link_buffer) {
+    ERR.General(cname, fname, "buffer not enabled.\n");
+  } else {
+    return link_buffer->GetBufferredIndexes();
+  }
+}
+
+std::vector<int> LinkBuffer::GetBufferredIndexes() {
+  using namespace std;
+  int size = bufferred_indexes.size();
+  vector<int> indexes;
+  indexes.resize(size);
+  set<int>::iterator it;
+  int k = 0;
+  for (it = bufferred_indexes.begin(); it != bufferred_indexes.end(); it++) {
+    indexes[k] = *it;
+    k++;
+  }
+  return indexes;
 }
 
 //----------------------------------------------------------------------
@@ -218,77 +608,23 @@ int LinkBuffer::GetNodeId(const int *x){
   \return The link \a U_mu(x).
 */
 //----------------------------------------------------------------------
-Matrix * LinkBuffer::GetBufferedLink(const int *x, int mu){
+const Matrix * LinkBuffer::GetBufferedLink(const int *x, int mu) {
   char * fname = "GetBufferedLink()";
-  VRB.Flow(cname, fname, "cnt =%d hit=%d \n",cnt, hit_cnt);
+  VRB.Func(cname, fname);
+  int index = BufferredSiteOffset(x) * 4 + mu;
 
-  //int h=hash(x,mu);
-  list_head * hash_list= &hash_tab[hash(x,mu)];
-  int node_id = GetNodeId(x);
-  list_head * list_iter=hash_list->next;
-  list_head * list_p;
-  LinkEntry * link_entry;
-  //printf("%d %d %d %d %d %d %d\n", x[0],x[1],x[2],x[3],mu, h, node_id );
-  cnt++;
-  
-  while(list_iter!=hash_list) {
-    link_entry = list_entry(list_iter, LinkEntry, hash_entry); 
-    if (link_entry->d_node_id == node_id){
-      hit_cnt++;
+  //add check to see whether x is in the buffered volume?
 
-      //move the link from its current position in the flush_list
-      //to the end of it. so it won't be easily flushed too soon.
-      //a very simple policy it may need improvements
-      //-------------------------------------------------------------
-      //list_p =& link_entry->flush_entry;
-      //list_del(list_p);
-      //list_add(list_p, flush_list.prev );
-
-      //move the link from its current position in the hash list to the 
-      //head of it, so it's easier to locate it next item.
-      //-------------------------------------------------------------
-      list_del(list_iter);
-      list_add(list_iter, hash_list); 
-
-      return &link_entry->link;
+  if (index < bufferred_volume * 4) {
+    if (record_bufferred_indexes) {
+      bufferred_indexes.insert(index);
     }
-    list_iter= list_iter->next;
-  } 
-  
-  if(list_empty(&free_list)){
-      //free_list is empty, the flush_list must not be empty. 
-    list_p = flush_list.next; 
-    list_del(list_p);
-      //remove the first element from the flush_list
-    list_add(list_p, flush_list.prev);
-      //append to the end of the flush_list, so it don't get flushed too soon
-    link_entry = list_entry(list_p, LinkEntry, flush_entry); 
-      //get its LinkEntry
-    list_p = &link_entry -> hash_entry;
-    list_del(list_p);
-      //remove it from its current hash_list
-    list_add(list_p, hash_list); 
-      //add it to the head of the new hash_list
+    return bufferred_gauge_field + index;
+  } else {
+    //remove this later:
+    ERR.General(cname, fname, "Link not in buffer.\n");
+    return lat.GetLink(x, mu);
   }
-  else {
-      //free_list is not empty.
-
-    list_p = free_list.next; 
-    list_del(list_p);
-      //remove an element from the head of free_list
-
-    list_add(list_p, hash_list);
-      //add it to the hash_list
-
-    link_entry = list_entry(list_p, LinkEntry, hash_entry); 
-    list_add(&link_entry->flush_entry, flush_list.prev);
-      //get its LinkEntry and append it to the end of the flush_list
-  } 
-  link_entry->d_node_id = node_id;
-  
-  moveMem((IFloat*)&link_entry->link,(IFloat*) lat.GetLink(x, mu),
-	 MATRIX_SIZE * sizeof(IFloat)); 
-  return & link_entry->link;
 }
 
 //----------------------------------------------------------------------
@@ -300,41 +636,16 @@ Matrix * LinkBuffer::GetBufferedLink(const int *x, int mu){
 */
 //----------------------------------------------------------------------
 
-void LinkBuffer::ClearBufferedLink(const int *x, int mu){
-  char * fname = "ClearBufferedLink()";
-  VRB.Func(cname, fname);
-  
-  list_head * hash_list = &hash_tab[hash(x,mu)];
-  //get the hash list in the hash table
-  
-  list_head * list_iter=hash_list->next;
-  LinkEntry * link_entry;
-  int i=0; 
-  while (list_iter != hash_list ) {
-    i++;
-    link_entry = list_entry(list_iter, LinkEntry, hash_entry); 
-    //get the LinkEntry of this object
-    
-    list_del(&link_entry->flush_entry);
-    //delete this LinkEntry from the  flush_list 
-
-    list_iter = list_iter->next;
-  }
-
-  //printf("clearbufferedlink() removing %d links\n", i); 
-  list_splice(hash_list, & free_list);
-  //move all elements on the hash_list to the free_list
-  INIT_LIST_HEAD(hash_list); 
-  //clean up this hash_list 
-  //if(check_lists())ERR.Pointer(cname, fname, "check_list");
-}
-
 void LinkBuffer::ClearAll(){
-  for(int i=0;i<tab_size;i++){
-    list_splice(&hash_tab[i], &free_list);
-    INIT_LIST_HEAD(&hash_tab[i]);
+  char * fname = "ClearAll()";
+  VRB.Func(cname, fname);
+  bufferred_indexes.clear();
+  if (NULL != bufferred_gauge_field) {
+    VRB.Result(cname, fname, "sfree buffer vol = %d.\n", bufferred_volume);
+    sfree(bufferred_gauge_field);
+    bufferred_gauge_field = NULL;
+    bufferred_volume = 0;
   }
-  INIT_LIST_HEAD(&flush_list);
 }
 
 void Lattice::ClearAllBufferedLink(){
@@ -350,7 +661,7 @@ void Lattice::ClearAllBufferedLink(){
 int Lattice::EnableLinkBuffer(int buf_sz){
   //char * fname = "EnableLinkBuffer()";
   //VRB.Func(cname, fname);
-  if(link_buffer==0 && buf_sz > 0 )
+  if(link_buffer==0)
     link_buffer = new LinkBuffer(*this, buf_sz);
   if(link_buffer) return 1;
   else return 0;
@@ -370,23 +681,21 @@ void Lattice::DisableLinkBuffer(){
   \param mu The direction index of the link.
   \return The link \a U_mu(x).
 */
-const Matrix * Lattice::
-GetBufferedLink(const int *x , int mu){
-  if(IsOnNode(x)) return gauge_field+GsiteOffset((int*)x) + mu;    
+const Matrix * Lattice::GetBufferedLink(const int *x , int mu) {
+  //if (IsOnNode(x)) {
+  //  /* Debug code
+  //  VRB.Result(cname, "", "Read %d %d %d %d mu %d\n", x[0], x[1], x[2], x[3], mu);
+  //  Matrix diff_matrix = *(gauge_field+GsiteOffset((int*)x) + mu) - *(link_buffer->GetBufferedLink(x, mu));
+  //  if (diff_matrix.ReTr() != 0) {
+  //    VRB.Result(cname, "", "Mismatch %d %d %d %d mu %d\n", x[0], x[1], x[2], x[3], mu);
+  //  }
+  //  // */
+  //  return gauge_field+GsiteOffset((int*)x) + mu;
+  //}
   if(LinkBufferIsEnabled()) return link_buffer->GetBufferedLink(x, mu);
+  //remove this later:
+  ERR.General("Lattice", "GetBufferedLink", "Link buffer not enabled\n");
   return GetLink(x,mu);
-}
-
-/*!
-  Remove from the buffer all the links with local lattice site \a x
-  and direction \a mu.
-  \param x The lattice coordinates.
-  \param mu The direction index.
-*/
-void  Lattice::
-ClearBufferedLink(const int *x, int mu){
-  if(LinkBufferIsEnabled())
-    link_buffer->ClearBufferedLink(x, mu); 
 }
 
 /*!
@@ -429,7 +738,8 @@ BufferedStaple(Matrix& stap, const int *x, int u){
   setCbufCntrlReg(2, CBUF_MODE2);
   setCbufCntrlReg(4, CBUF_MODE4);
 
-  acumulate_mp->ZeroMatrix();
+  Matrix accumulate;
+  accumulate.ZeroMatrix();
   
   for(int i=0;i<4;i++)link_site[i]=x[i]; 
 
@@ -444,11 +754,11 @@ BufferedStaple(Matrix& stap, const int *x, int u){
     dir[0]=v;     //v0
     dir[1]=u1;
     dir[2]=(v+4)&7; //v1
-    PathOrdProdPlus(*acumulate_mp, link_site, dir, 3);
+    PathOrdProdPlus(accumulate, link_site, dir, 3);
     //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp,
     //		   MATRIX_SIZE*sizeof(IFloat));
   } 
-  moveMem((IFloat*)&stap,  (IFloat*) acumulate_mp, MATRIX_SIZE*sizeof(IFloat)); 
+  moveMem((IFloat*)&stap,  (IFloat*) &accumulate, MATRIX_SIZE*sizeof(IFloat)); 
 }
 
 
@@ -490,7 +800,8 @@ BufferedRectStaple(Matrix& stap, const int *x, int u){
   setCbufCntrlReg(2, CBUF_MODE2);
   setCbufCntrlReg(4, CBUF_MODE4);
 
-  acumulate_mp->ZeroMatrix();
+  Matrix accumulate;
+  accumulate.ZeroMatrix();
   
   for(int i=0;i<4;i++)link_site[i]=x[i]; 
 
@@ -510,7 +821,7 @@ BufferedRectStaple(Matrix& stap, const int *x, int u){
     dir[3] = v1;
     dir[4] = v1;
       
-    PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+    PathOrdProdPlus(accumulate, link_site, dir, 5); 
     //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
     //		   MATRIX_SIZE*sizeof(IFloat)); 
       
@@ -520,7 +831,7 @@ BufferedRectStaple(Matrix& stap, const int *x, int u){
     //dir[3] = v1; 
     dir[4] = u;
       
-    PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+    PathOrdProdPlus(accumulate, link_site, dir, 5); 
     //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
     //		   MATRIX_SIZE*sizeof(IFloat)); 
       
@@ -529,12 +840,12 @@ BufferedRectStaple(Matrix& stap, const int *x, int u){
     //dir[2] = u1;
     dir[3] = u1; 
     dir[4] = v1;
-    PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+    PathOrdProdPlus(accumulate, link_site, dir, 5); 
     //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
     //		   MATRIX_SIZE*sizeof(IFloat)); 
     
   }
-  moveMem((IFloat*)&stap, (IFloat*)acumulate_mp, MATRIX_SIZE*sizeof(IFloat));
+  moveMem((IFloat*)&stap, (IFloat*)&accumulate, MATRIX_SIZE*sizeof(IFloat));
 }
 
 
@@ -573,7 +884,8 @@ BufferedChairStaple(Matrix& stap, const int *x, int u){
   setCbufCntrlReg(2, CBUF_MODE2);
   setCbufCntrlReg(4, CBUF_MODE4);
 
-  acumulate_mp->ZeroMatrix();
+  Matrix accumulate;
+  accumulate.ZeroMatrix();
   
   int dir[5];
   Matrix m_tmp;
@@ -597,7 +909,7 @@ BufferedChairStaple(Matrix& stap, const int *x, int u){
       dir[3] = u1;
       dir[4] = v1;
 
-      PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+      PathOrdProdPlus(accumulate, link_site, dir, 5); 
       //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
       //          MATRIX_SIZE*sizeof(IFloat)); 
 	  
@@ -606,7 +918,7 @@ BufferedChairStaple(Matrix& stap, const int *x, int u){
       dir[2] = u1;
       dir[3] = v1; 
       dir[4] = w1;
-      PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+      PathOrdProdPlus(accumulate, link_site, dir, 5); 
       //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
       //            MATRIX_SIZE*sizeof(IFloat)); 
 	  
@@ -615,13 +927,13 @@ BufferedChairStaple(Matrix& stap, const int *x, int u){
       dir[2] = v;
       dir[3] = w1; 
       dir[4] = v1;
-      PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+      PathOrdProdPlus(accumulate, link_site, dir, 5); 
       //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
       //             MATRIX_SIZE*sizeof(IFloat)); 
 
     }
   }
-  moveMem((IFloat *) &stap, (IFloat*)acumulate_mp, MATRIX_SIZE*sizeof(IFloat));
+  moveMem((IFloat *) &stap, (IFloat*)&accumulate, MATRIX_SIZE*sizeof(IFloat));
 }
 //------------------------------------------------------------------------
 /*!
@@ -648,7 +960,8 @@ BufferedCubeStaple(Matrix &stap, const int *x, int u){
   setCbufCntrlReg(2, CBUF_MODE2);
   setCbufCntrlReg(4, CBUF_MODE4);
 
-  acumulate_mp->ZeroMatrix();
+  Matrix accumulate;
+  accumulate.ZeroMatrix();
 
   for(int i=0;i<4;i++) link_site[i]=x[i]; 
 
@@ -668,13 +981,13 @@ BufferedCubeStaple(Matrix &stap, const int *x, int u){
       dir[3] = v1;
       dir[4] = (w+4)&7;
 
-      PathOrdProdPlus(*acumulate_mp, link_site, dir, 5); 
+      PathOrdProdPlus(accumulate, link_site, dir, 5); 
       //vecAddEquVec((IFloat*) &stap, (IFloat*) &m_tmp, 
       //	       MATRIX_SIZE*sizeof(IFloat)); 
       
     }
   }
-  moveMem((IFloat*)&stap, (IFloat*)acumulate_mp, MATRIX_SIZE*sizeof(IFloat));
+  moveMem((IFloat*)&stap, (IFloat*)&accumulate, MATRIX_SIZE*sizeof(IFloat));
 }
 
 
@@ -706,6 +1019,10 @@ void Lattice::
 PathOrdProdPlus(Matrix & mat, const int * x, const int* dirs, int n){
   //char * fname = "PathOrdProd"; 
   //VRB.Flow(cname, fname,"(,,,%d)\n",n);
+
+  Matrix result, result1, mat1;
+  Matrix * result_mp = &result;
+  Matrix * result1_mp = &result1;
 
   int abs_dir;
   int dir_sign;
@@ -804,6 +1121,7 @@ PathOrdProd(Matrix & mat, const int * x, const int* dirs, int n){
  
   const Matrix * p1;
   Matrix m1, m2,  m4;
+  Matrix mat1, mat2, mat3;
   Matrix * r1_mp = &mat1;
   Matrix * r_mp  = &mat2;
   Matrix * buf1_mp=&mat3;

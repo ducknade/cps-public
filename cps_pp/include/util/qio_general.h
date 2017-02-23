@@ -21,7 +21,6 @@
 #include <alg/do_arg.h>
 
 #include <qio.h>
-#include <qioxml.h>
 
 #include <qmp.h>
 
@@ -101,6 +100,7 @@
 
 #define QIO_RW_DIMENSION 4
 
+
 /* default OUTPUT-format (default input is QIO_UNKNOWN) */
 /* one of QIO_UNKNOWN, QIO_SINGLEFILE, QIO_PARTFILE, QIO_MULTIFILE */ 
 #if ( TARGET == QCDOC ) || (TARGET == BGP)
@@ -109,40 +109,13 @@
  #define QIO_VOLFMT QIO_SINGLEFILE
 #endif
 
-
-
 /* one of QIO_SERIAL, QIO_PARALLEL */
 /* for safety added for QCDOC */
 
-//#if (TARGET == QCDOC) || (TARGET == BGP)
-#if 1
+#if (TARGET == QCDOC) || (TARGET == BGP)
   #define QIO_SERPAR QIO_PARALLEL
 #else
   #define QIO_SERPAR QIO_SERIAL
-#endif
-
-// Uncomment the following to enforce the PARTFILE, which may or may not
-// improve the speed of I/O on cluster
-//#define QIO_VOLFMT QIO_PARTFILE
-
-// The following three lines FORCE PARTFILE with io-node being smaller than
-// total nodes. For RICC and FNAL. 
-
-//#define USE_QIO_SPARSE_PARTFILE
-
-#ifdef USE_QIO_SPARSE_PARTFILE
-#define QIO_VOLFMT QIO_PARTFILE
-#define QIO_SPARSE_PARTFILE
-#define QIO_SERPAR QIO_PARALLEL
-// Number of nodes, per which one io-node is designated.
-// Set it to zero if you want all nodes to be io-node.
-
-// For FNAL DS
-#define QIO_SPARSE_PARTFILE_NODES 32
-
-// For RICC
-//#define QIO_SPARSE_PARTFILE_NODES 8
-
 #endif
 
 
@@ -172,75 +145,13 @@
 #define QIO_PROP_COLOR_MAX 3
 
 
-
 /***********************************************************************************************/
 
 
 CPS_START_NAMESPACE
-using namespace std;
 
 //! source types
 enum QIO_PROP_SOURCE_TYPES {QIO_UNKNOWN_SOURCE=0, QIO_SCALAR_SOURCE, QIO_FULL_SOURCE};
-
-//! initialize everything needed for QIO
-#ifndef USE_QIO
-//#include <util/qio_dummy.h>
-class qio_init {
-
- private:
-
-  char *cname;
-//  QMP_bool_t qmp_run;
-
- public:
-
-  qio_init(int argc, char* argv[]):cname("qio_init")
-    {
-
-      const char * fname = "qio_init()";
-      ERR.NotImplemented(cname,fname);
-      
-    }
-
-
-
-    virtual ~qio_init()
-      {
-	const char * fname = "~qio_init()";
-	ERR.NotImplemented(cname,fname);
-      }
-
-  void qio_setLayout()
-      {
-	const char * fname = "qio_setLayout()";
-	ERR.NotImplemented(cname,fname);
-      }
-
-  void qio_setFilesystem()
-      {
-	const char * fname = "qio_setFilesystem()";
-	ERR.NotImplemented(cname,fname);
-      }
-  
-
-};
-
-// general functions for reading global data
-
-
-//void qio_putGlobal(char *buf, size_t index, int count, void *arg);
-
-//void qio_putGlobalSingle(char *buf, size_t index, int count, void *arg);
-
-
-// writing global data
-
-
-//void qio_getGlobal(char *buf, size_t index, int count, void *arg);
-
-//void qio_getGlobalSingle(char *buf, size_t index, int count, void *arg);
-
-#else
 
 //! initialize everything needed for QIO
 class qio_init {
@@ -256,7 +167,7 @@ class qio_init {
     {
 
       #ifdef DEBUG_Init
-      printf("qio_init is up\n");
+        std::printf("qio_init is up\n");
       #endif //DEBUG_Init
 
       const char * fname = "qio_init()";
@@ -329,7 +240,7 @@ class qio_init {
     virtual ~qio_init()
       {
 	#ifdef DEBUG_Init
-	printf("shut down qio_init\n");
+          std::printf("shut down qio_init\n");
 	#endif //DEBUG_Init
 
 	const char * fname = "~qio_init()";
@@ -354,14 +265,10 @@ class qio_init {
       }
 
 
-  QIO_Layout layout;
-  QIO_Filesystem fs; 
-  QIO_Filesystem* pointer_fs; //so that we could sustitue NULL for default case
-  
-  void qio_setLayout();
+    QIO_Layout layout;
 
-  void qio_setFilesystem();  
-  
+    void qio_setLayout();
+
 
 };
 
@@ -381,7 +288,8 @@ void qio_getGlobal(char *buf, size_t index, int count, void *arg);
 void qio_getGlobalSingle(char *buf, size_t index, int count, void *arg);
 
 
-#endif // USE_QIO
+
+
 
 
 CPS_END_NAMESPACE

@@ -13,7 +13,7 @@ CPS_END_NAMESPACE
 #include <util/gjp.h>
 #include <util/gw_hb.h>
 #include <util/time_cps.h>
-//#include <comms/nga_reg.h>
+#include <comms/nga_reg.h>
 #include <comms/glb.h>
 #include <comms/cbuf.h>
 CPS_START_NAMESPACE
@@ -208,8 +208,6 @@ ForceArg GtadpoleRect::EvolveMomGforce(Matrix *mom, Float dt){
   time += dclock();
   print_flops(cname,fname,ForceFlops,time);
 #endif
-
-  L1=L2=Linf=0.;
 
   glb_sum(&L1);
   glb_sum(&L2);

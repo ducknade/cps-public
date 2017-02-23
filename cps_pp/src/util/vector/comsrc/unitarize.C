@@ -3,19 +3,19 @@ CPS_START_NAMESPACE
 /*!\file
   \brief  Definition of Matrix class method Matrix::Unitarize
 
-  $Id: unitarize.C,v 1.4 2004-08-18 11:58:08 zs Exp $
+  $Id: unitarize.C,v 1.4 2004/08/18 11:58:08 zs Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
 //  $Author: zs $
-//  $Date: 2004-08-18 11:58:08 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/vector/comsrc/unitarize.C,v 1.4 2004-08-18 11:58:08 zs Exp $
-//  $Id: unitarize.C,v 1.4 2004-08-18 11:58:08 zs Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2004/08/18 11:58:08 $
+//  $Header: /space/cvs/cps/cps++/src/util/vector/comsrc/unitarize.C,v 1.4 2004/08/18 11:58:08 zs Exp $
+//  $Id: unitarize.C,v 1.4 2004/08/18 11:58:08 zs Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $Revision: 1.4 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/vector/comsrc/unitarize.C,v $
+//  $Source: /space/cvs/cps/cps++/src/util/vector/comsrc/unitarize.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -70,6 +70,18 @@ void Matrix::Unitarize()
     crossProductConj(p3, p1, p2);
 }
 
+
+void Matrix::Construct3rdRow() {
+    Float *p1 = &u[0];	// row 1
+    Float *p2 = &u[6] ;	// row 2
+    Float *p3 = &u[12];	// row 3
+
+	//------------------------------------------------------------
+    // the conjugate of last row is the cross product of the first 2
+    // p3 = (p1^* X p2^*)
+    //------------------------------------------------------------
+    crossProductConj(p3, p1, p2);
+}
 
 //------------------------------------------------------------------
 // Few routines that are needed by the Unitarize routine

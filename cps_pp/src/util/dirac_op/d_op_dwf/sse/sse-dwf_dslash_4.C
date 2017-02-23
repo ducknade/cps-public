@@ -5,14 +5,14 @@ CPS_START_NAMESPACE
 //  CVS keywords
 //
 //  $Author: chulwoo $
-//  $Date: 2013-01-08 21:09:25 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_dwf/sse/sse-dwf_dslash_4.C,v 1.4 2013-01-08 21:09:25 chulwoo Exp $
-//  $Id: sse-dwf_dslash_4.C,v 1.4 2013-01-08 21:09:25 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Date: 2011/04/13 19:05:04 $
+//  $Header: /space/cvs/cps/cps++/src/util/dirac_op/d_op_dwf/sse/sse-dwf_dslash_4.C,v 1.3 2011/04/13 19:05:04 chulwoo Exp $
+//  $Id: sse-dwf_dslash_4.C,v 1.3 2011/04/13 19:05:04 chulwoo Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: sse-dwf_dslash_4.C,v $
-//  $Revision: 1.4 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/dirac_op/d_op_dwf/sse/sse-dwf_dslash_4.C,v $
+//  $Revision: 1.3 $
+//  $Source: /space/cvs/cps/cps++/src/util/dirac_op/d_op_dwf/sse/sse-dwf_dslash_4.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -30,14 +30,13 @@ CPS_START_NAMESPACE
 
 CPS_END_NAMESPACE
 //#include <omp.h>
-#include <util/omp_wrapper.h>
+#include "fake_omp.h"
 #include <pmmintrin.h>
 #include <util/wilson.h>
 
 #include<config.h>
 #include<util/dwf.h>
 #include<util/wilson.h>
-#include<util/dirac_op.h>
 #include<util/gjp.h>
 #include<util/vector.h>
 #include<util/verbose.h>
@@ -306,8 +305,6 @@ void dwf_dslash_4(Vector *out,
        }
      }//loop(ls)
    }//lop(parity_5)
-
-DiracOp::CGflops += 1320*wilson_p->vol[0]*ls;
 
 #ifdef PROFILE
 	 Float time_tot= time_bnd+time_blk+time_comm2;

@@ -3,20 +3,20 @@ CPS_START_NAMESPACE
 /*! \file
   \brief  Definition of ParTransStagTypes class constructor and destructor.
 
-  $Id: pt_wilson_t.C,v 1.4 2013-04-05 17:46:31 chulwoo Exp $
+  $Id: pt_wilson_t.C,v 1.3 2004/08/18 11:58:07 zs Exp $
 */
 //--------------------------------------------------------------------
 //  CVS keywords
 //
-//  $Author: chulwoo $
-//  $Date: 2013-04-05 17:46:31 $
-//  $Header: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/parallel_transport/pt_wilson_types/pt_wilson_t.C,v 1.4 2013-04-05 17:46:31 chulwoo Exp $
-//  $Id: pt_wilson_t.C,v 1.4 2013-04-05 17:46:31 chulwoo Exp $
-//  $Name: not supported by cvs2svn $
+//  $Author: zs $
+//  $Date: 2004/08/18 11:58:07 $
+//  $Header: /space/cvs/cps/cps++/src/util/parallel_transport/pt_wilson_types/pt_wilson_t.C,v 1.3 2004/08/18 11:58:07 zs Exp $
+//  $Id: pt_wilson_t.C,v 1.3 2004/08/18 11:58:07 zs Exp $
+//  $Name: v5_0_16_hantao_io_test_v7 $
 //  $Locker:  $
 //  $RCSfile: pt_wilson_t.C,v $
-//  $Revision: 1.4 $
-//  $Source: /home/chulwoo/CPS/repo/CVS/cps_only/cps_pp/src/util/parallel_transport/pt_wilson_types/pt_wilson_t.C,v $
+//  $Revision: 1.3 $
+//  $Source: /space/cvs/cps/cps++/src/util/parallel_transport/pt_wilson_types/pt_wilson_t.C,v $
 //  $State: Exp $
 //
 //--------------------------------------------------------------------
@@ -40,8 +40,7 @@ ParTransWilsonTypes::ParTransWilsonTypes(Lattice & latt) :
   cname = "ParTransStagTypes";
   char *fname = "ParTransStagTypes(Lattice&)";
   VRB.Func(cname,fname);
-  if (lat.StrOrd() != WILSON && lat.StrOrd() != CANONICAL
-      && lat.StrOrd() != DWF_4D_EOPREC  && lat.StrOrd() != DWF_4D_EOPREC_EE ){
+  if (lat.StrOrd() != WILSON && lat.StrOrd() != CANONICAL ){
     old_str_ord = lat.StrOrd();
     lat.Convert(CANONICAL);
   }
@@ -56,8 +55,7 @@ ParTransWilsonTypes::~ParTransWilsonTypes() {
   VRB.Func(cname,fname);
   pt_delete_g();
   pt_delete();
-  if (lat.StrOrd() != WILSON && lat.StrOrd() != CANONICAL 
-      && lat.StrOrd() != DWF_4D_EOPREC  && lat.StrOrd() != DWF_4D_EOPREC_EE ){
+  if (old_str_ord != WILSON && old_str_ord != CANONICAL ){
     lat.Convert(old_str_ord);
   }
 }
