@@ -54,8 +54,9 @@
 /* Define to 1 if you have the <string.h> header file. */
 #undef HAVE_STRING_H
 
+// TODO: uncomment this HAVE_SYNC flag would lead to error.
 /* Define to 1 if you have the `sync' function. */
-#undef HAVE_SYNC
+// #undef HAVE_SYNC
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H

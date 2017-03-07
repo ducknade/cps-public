@@ -34,7 +34,7 @@ if $build_libs ; then
         # ./scripts/false.sh
         # ./scripts/noweb.sh
         # ./scripts/qa0.sh
-#        ./scripts/mdwf.sh
+#      	./scripts/mdwf.sh
 #        ./scripts/fftw.sh
 #        ./scripts/cmake.sh
 #        ./scripts/eigen.sh

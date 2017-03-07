@@ -1,8 +1,16 @@
 #!/bin/bash
 
 if [ -z "$cps" ] ; then
-    cps=$HOME/cps-jtu-build/public/
+    cps=$HOME/cps-build/public/
 fi
+
+# public: compiled with openmpi-2.0.1, configured with -enalbe-qmp=$prefix
+													#	-enalbe-qio
+													#	-enalbe-sse=no
+													#	-enable-debug=no
+													#	exacutable gets seg fault.
+# public-1.1: same with public but using local mpich on qcdserver. Got same seg fault.
+# public-1.2: configured without any flag set.
 
 prefix=$cps/local
 
@@ -67,7 +75,7 @@ fi
 
 wd=$(pwd)
 distfiles=$wd/distfiles
-temp_dir=/dev/shm/$(whoami)/temp/cps-build
+temp_dir=$HOME/temp/cps-build
 src_dir=$temp_dir/src
 build_dir=$temp_dir/build
 
