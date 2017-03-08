@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$cps" ] ; then
-    cps=$HOME/cps-build/public/
+    cps=$(readlink -m $(pwd)/../)/cps-build/public/
 fi
 
 # public: compiled with openmpi-2.0.1, configured with -enalbe-qmp=$prefix

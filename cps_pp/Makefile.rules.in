@@ -138,6 +138,8 @@ depend: recurse
 	echo > Makefile_depend
 ifeq ($(HAVE_MAKEDEPEND),yes)
 	cd $(SRCDIR2) ;makedepend -f$(BUILDDIR2)/Makefile_depend $(INCLUDE_FLAGS) $(DFLAGS) $(notdir $(CSRC)) $(notdir $(CCSRC))
+else ifeq($(strip $(notdir $(CSRC)) $(notdir $(CCSRC))),)
+	echo > "no source"
 else
 ######################################################################
 # use these lines if you don't have makedepend (is a bit slower)
