@@ -1,8 +1,8 @@
-CPS version gaugefield_greg by Greg. 
+CPS version gaugefield_greg by Greg McGlynn. 
 
 Modified by Jiqun to improve UI experience. 03/08/2017
 
-Require a descent version of gcc and MPI.
+Require a decent version of gcc and MPI.
 
 Install with
 $ ./build.sh
