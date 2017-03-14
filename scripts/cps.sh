@@ -36,7 +36,7 @@ profile ../cps_pp-qmp/configure \
     --enable-qio \
     --enable-sse=no \
     --enable-debug=no
-profile make
+profile make -j30
 cd "$cps"
 
 echo
