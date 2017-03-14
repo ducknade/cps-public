@@ -9,7 +9,7 @@ echo "!!!! build qio !!!!"
 rm -rf $src_dir || true
 mkdir -p $src_dir || true
 cd $src_dir
-tar xzf $distfiles/qio-2.3.8.tar.gz
+tar xf $distfiles/qio-2.3.8.tar.gz
 
 rm -rf $build_dir || true
 mkdir -p $build_dir || true

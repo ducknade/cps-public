@@ -6,7 +6,7 @@ name=cps
 
 echo "!!!! build CPS !!!!"
 
-cps="$(readlink -m $cps)"
+cps="$(cd $cps; pwd)"
 echo "Real location is : ""$cps"
 
 rm -rf $cps/build* >/dev/null 2>&1 || true
@@ -36,7 +36,7 @@ profile ../cps_pp-qmp/configure \
     --enable-qio \
     --enable-sse=no \
     --enable-debug=no
-profile make -j30
+profile make
 cd "$cps"
 
 echo
