@@ -18,14 +18,18 @@ private:
 
 	void logRun();
 
-        void calculateZ(GaugeField &gf, const int pos[4], int mu, Float Z[8]);
-        void DoRKStep(Lattice &lat, GaugeField& gf, int rk_step, int site); 
+  void calculateZ(GaugeField &gf, const int pos[4], int mu, Float Z[8]);
+  void DoRKStep(Lattice &lat, GaugeField& gf, int rk_step, int site); 
+  
+  void do_rk_step_adaptive(Lattice &lat, GaugeField& gf, GaugeField& gfp, int rk_step, int site); 
 
 public:
 	AlgWilsonFlow(Lattice& lat, CommonArg *ca, Float dtime=0.01, bool proj=true, Float tol=1e-8);
 	virtual ~AlgWilsonFlow();
 
 	void run();
+	
+  double run_adaptive(double input_dt);
 
 	void su3projon(){su3_proj=true;}
 	void su3projoff(){su3_proj=false;}

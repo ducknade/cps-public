@@ -4,7 +4,7 @@
 
 name=cps
 
-echo "!!!! build CPS !!!!"
+echo "!!!! building CPS !!!!"
 
 cps="$(cd $cps; pwd)"
 echo "Real location is : ""$cps"
@@ -37,10 +37,11 @@ profile ../cps_pp-qmp/configure \
     --enable-sse=no \
     --enable-debug=no
 profile make -j30
+cp cps.a libcps.a
 cd "$cps"
 
 echo
 cd $wd
-echo "!!!! CPS build !!!!"
+echo "!!!! CPS built !!!!"
 
 rm -rf $temp_dir
