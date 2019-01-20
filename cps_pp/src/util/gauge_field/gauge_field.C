@@ -381,7 +381,7 @@ fetchLocalLinks(GaugeField &gf) {
 #ifdef PROFILE_COMM
   Float dtime = -dclock();
 #endif
-#pragma parallel for
+#pragma omp parallel for
   for (int index = 0; index < localVolume(); index++) {
     int x[4];
     coordinatesFromIndex(x, index);
