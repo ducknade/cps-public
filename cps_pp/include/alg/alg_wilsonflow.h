@@ -29,7 +29,7 @@ public:
 
 	void run();
 	
-  double run_adaptive(double input_dt);
+  double run_adaptive(double& input_dt);
 
 	void su3projon(){su3_proj=true;}
 	void su3projoff(){su3_proj=false;}

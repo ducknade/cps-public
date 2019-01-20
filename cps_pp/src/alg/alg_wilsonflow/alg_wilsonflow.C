@@ -218,7 +218,7 @@ void AlgWilsonFlow::do_rk_step_adaptive(Lattice &lat, GaugeField& gf, GaugeField
     
 }
 
-double AlgWilsonFlow::run_adaptive(double input_dt)
+double AlgWilsonFlow::run_adaptive(double& input_dt)
 {
   const char fname[] = "run()";
 
@@ -236,6 +236,7 @@ double AlgWilsonFlow::run_adaptive(double input_dt)
   stash.Get(lat);
 
   dt = input_dt;
+  double previous_dt;
 
   while(true){
     stash.Set(lat);
@@ -267,7 +268,7 @@ double AlgWilsonFlow::run_adaptive(double input_dt)
     }
 
     double d = Linf_distance(lat, gfp);
-    double previous_dt = dt;
+    previous_dt = dt;
     if(d < tolerance){
       if(cps::UniqueID() == 0) printf("Adaptive Wilson flow ACCEPTED  with d = %12.8e, tolerance = %12.8e.\n", d, tolerance);
       logRun();
@@ -284,7 +285,8 @@ double AlgWilsonFlow::run_adaptive(double input_dt)
   //Check if smearing messes up open boundary conditions (it shouldn't!)
   if(GJP.TopenBc() && !lat.TestZeroTboundary()) ERR.General(cname, fname, "Nonzero boundary link!\n");
 
-  return dt;
+  input_dt = dt;
+  return previous_dt;
 }
 
 

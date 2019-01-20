@@ -2,7 +2,7 @@
 
 if [ -z "$cps" ] ; then
     # cps=$(cd $(pwd)/../; pwd)/cps-build/public
-    cps=/gpfs/mira-home/jiquntu/cps-build/public
+    cps=/gpfs/mira-home/jiquntu/cps-build/cmake
 fi
 
 # public: compiled with openmpi-2.0.1, configured with -enalbe-qmp=$prefix
