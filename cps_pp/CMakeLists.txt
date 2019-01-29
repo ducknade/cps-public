@@ -15,7 +15,7 @@ add_definitions(-DUSE_OMP -DUSE_QMP -DUSE_QIO)
 include_directories(SYSTEM "/home/jiquntu/cps-build/cmake/local/include")
 include_directories(SYSTEM ${MPI_CXX_INCLUDE_PATH})
 
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/generated/include)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/generated/include/alg)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/generated/src)
 
 include_directories(${CMAKE_BINARY_DIR}/generated/include)

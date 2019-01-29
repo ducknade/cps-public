@@ -58,7 +58,7 @@ FOREACH(item ${ARG_VML_SRC})
   add_custom_command(
     OUTPUT "${CMAKE_BINARY_DIR}/generated/include/${item}.h"
     OUTPUT "${CMAKE_BINARY_DIR}/generated/src/${item}.C"
-    COMMAND cd ${CMAKE_SOURCE_DIR}/include/input && ${CMAKE_CURRENT_BINARY_DIR}/rpcgenvml -h -C -x -u util/vml/ -v alg/  ${item}.x >${CMAKE_BINARY_DIR}/generated/include/${item}.h
+    COMMAND cd ${CMAKE_SOURCE_DIR}/include/input && ${CMAKE_CURRENT_BINARY_DIR}/rpcgenvml -h -C -x -u util/vml/ -v alg/  ${item}.x >${CMAKE_BINARY_DIR}/generated/include/alg/${item}.h
     COMMAND cd ${CMAKE_SOURCE_DIR}/include/input && ${CMAKE_CURRENT_BINARY_DIR}/rpcgenvml -c -C -x -u util/vml/ -v alg/  ${item}.x >${CMAKE_BINARY_DIR}/generated/src/${item}.C
     DEPENDS "${CMAKE_SOURCE_DIR}/include/input/${item}.x" rpcgenvml
   )
