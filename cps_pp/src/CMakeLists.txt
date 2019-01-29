@@ -1,46 +1,20 @@
 set(CPS_OBJS
   alg/alg_actiondensity/alg_actiondensity.C
-  alg/alg_arg/ape_smear_arg.C
   alg/alg_arg/ape_smear_arg_init.C
-  alg/alg_arg/array_arg.C
   alg/alg_arg/array_arg_init.C
-  alg/alg_arg/bfm_arg.C
-  alg/alg_arg/cg_arg.C
   alg/alg_arg/cg_arg_init.C
-  alg/alg_arg/dens_arg.C
-  alg/alg_arg/do_arg.C
   alg/alg_arg/do_arg_init.C
-  alg/alg_arg/eig_arg.C
   alg/alg_arg/eig_arg_init.C
-  alg/alg_arg/eigcg_arg.C
   alg/alg_arg/eigcg_arg_init.C
   alg/alg_arg/enum_int.C
-  alg/alg_arg/fix_gauge_arg.C
-  alg/alg_arg/ghb_arg.C
-  alg/alg_arg/hmc_arg.C
-  alg/alg_arg/hmd_arg.C
-  alg/alg_arg/hyp_smear_arg.C
   alg/alg_arg/hyp_smear_arg_init.C
-  alg/alg_arg/int_arg.C
   alg/alg_arg/int_arg_resize.C
-  alg/alg_arg/kinetic_smear_arg.C
   alg/alg_arg/kinetic_smear_arg_init.C
-  alg/alg_arg/lanc_arg.C
-  alg/alg_arg/meas_arg.C
-  alg/alg_arg/mom_arg.C
-  alg/alg_arg/noise_arg.C
-  alg/alg_arg/nuc3pt_arg.C
   alg/alg_arg/nuc3pt_arg_init.C
-  alg/alg_arg/pbp_arg.C
-  alg/alg_arg/pot_arg.C
-  alg/alg_arg/qpropw_arg.C
   alg/alg_arg/qpropw_arg_init.C
-  alg/alg_arg/remez_arg.C
   alg/alg_arg/remez_arg_init.C
-  alg/alg_arg/s_spect_arg.C
   alg/alg_arg/threept_arg.C
   alg/alg_arg/threept_arg_init.C
-  alg/alg_arg/w_spect_arg.C
   alg/alg_arg/w_spect_arg_init.C
   alg/alg_base/alg_base.C
   alg/alg_dens/alg_dens.C
@@ -403,17 +377,52 @@ set(CPS_OBJS
   util/dirac_op/d_op_base/noarch/invcg_r_norm.c 
   util/dirac_op/d_op_base/noarch/invcg_xp_update.c )
 
+set(CPS_GEN_ARG_OBJS
+  ${CMAKE_BINARY_DIR}/generated/src/ape_smear_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/array_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/bfm_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/cg_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/dens_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/do_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/eig_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/eigcg_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/enum.C
+  ${CMAKE_BINARY_DIR}/generated/src/eq_state_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/fix_gauge_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/ghb_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/hmc_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/hmd_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/hyp_smear_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/inst_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/int_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/kinetic_smear_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/lanc_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/mdwf_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/meas_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/mom_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/noise_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/nuc3pt_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/pbp_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/pot_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/qpropw_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/remez_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/s_spect_arg.C
+  ${CMAKE_BINARY_DIR}/generated/src/w_spect_arg.C )
 
-add_library(cps STATIC ${CPS_OBJS})
+FOREACH( item in ${CPS_GEN_ARG_OBJS} )
+  set_source_files_properties( ${item} PROPERTIES GENERATED TRUE )
+ENDFOREACH( item in ${CPS_GEN_ARG_OBJS} )
+
+add_library(cps STATIC ${CPS_OBJS} ${CPS_GEN_ARG_OBJS})
 add_dependencies(cps generate-foo)
 
-install(TARGETS cps EXPORT cpsTargets
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        INCLUDES DESTINATION include)
-
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)
-
-export(EXPORT cpsTargets FILE "${CMAKE_CURRENT_BINARY_DIR}/cpsTargets.cmake" NAMESPACE cps::)
-set(ConfigPackageLocation lib/cmake/cps/)
-install(EXPORT cpsTargets NAMESPACE cps:: DESTINATION ${ConfigPackageLocation})
+# install(TARGETS cps EXPORT cpsTargets
+#         LIBRARY DESTINATION lib
+#         ARCHIVE DESTINATION lib
+#         INCLUDES DESTINATION include)
+# 
+# install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION include)
+# 
+# export(EXPORT cpsTargets FILE "${CMAKE_CURRENT_BINARY_DIR}/cpsTargets.cmake" NAMESPACE cps::)
+# set(ConfigPackageLocation lib/cmake/cps/)
+# install(EXPORT cpsTargets NAMESPACE cps:: DESTINATION ${ConfigPackageLocation})
