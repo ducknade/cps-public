@@ -413,8 +413,11 @@ FOREACH( item in ${CPS_GEN_ARG_OBJS} )
   set_source_files_properties( ${item} PROPERTIES GENERATED TRUE )
 ENDFOREACH( item in ${CPS_GEN_ARG_OBJS} )
 
-add_library(cps STATIC ${CPS_OBJS} ${CPS_GEN_ARG_OBJS})
-add_dependencies(cps generate-foo)
+add_library( cps STATIC ${CPS_OBJS} ${CPS_GEN_ARG_OBJS} )
+add_dependencies( cps generate-foo )
+add_dependencies( cps gsl )
+add_dependencies( cps qmp )
+add_dependencies( cps qio )
 
 # install(TARGETS cps EXPORT cpsTargets
 #         LIBRARY DESTINATION lib
