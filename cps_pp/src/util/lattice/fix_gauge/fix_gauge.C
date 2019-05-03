@@ -1065,7 +1065,7 @@ IFloat FixHPlane::delta(int recurse)
 			Matrix& A = findA();   // reference to A_buf
 			tmp_m.Dagger(A);
 			A -= tmp_m;
-			A -= A.Tr()/COLORS;
+			A -= A.Tr()/(Float)COLORS;
 			for(int i=0; i<COLORS*COLORS; i++)
 				dlt += norm(A[i]);
 		}

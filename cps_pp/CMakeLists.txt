@@ -50,7 +50,7 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/generated/src)
 include_directories(${CMAKE_BINARY_DIR}/generated/include)
 add_subdirectory(misc)
 
-add_definitions(-g -O2 -fopenmp -wd858)
+add_definitions(-g -O2 -fopenmp)
 add_definitions(-DUSE_OMP -DUSE_QMP -DUSE_QIO)
 
 # The main library
